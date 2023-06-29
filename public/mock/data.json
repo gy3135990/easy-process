@@ -1,0 +1,90 @@
+{
+  "processId": "10001",
+  "processName": "请假审批",
+  "nodeConfig": {
+    "nodeName": "发起人",
+    "nodeType": "start",
+    "config": {
+      "name": "张三",
+      "age": 88
+    },
+    "childNode": {
+      "nodeName": "审批人",
+      "nodeType": "approver",
+      "childNode": {
+        "nodeName": "路由",
+        "nodeType": "router",
+        "conditionNodes": [
+          {
+            "nodeName": "条件1",
+            "nodeType": "condition",
+            "config": {
+              "fieldId": "字段id",
+              "fieldType": "表单类型 input-文本 radio-单选 checkbox-多选 select-下拉 time-时间 time-range-时间范围 date-日期 date-range-日期范围",
+              "operator": "操作符 >、>=、<、<=、between、in",
+              "value": "值"
+            },
+            "childNode": {}
+          },
+          {
+            "nodeName": "条件2",
+            "nodeType": "condition",
+            "config": {
+              "fieldId": "字段id",
+              "fieldType": "表单类型 input-文本 radio-单选 checkbox-多选 select-下拉 time-时间 time-range-时间范围 date-日期 date-range-日期范围",
+              "operator": "操作符 >、>=、<、<=、between、in",
+              "value": "值",
+              "isUnlimited": "是否为无条件 0-否 1-是 （无条件节点在条件集合的最后）"
+            },
+            "childNode": {
+              "nodeName": "路由",
+              "nodeType": "router",
+              "conditionNodes": [
+                {
+                  "nodeName": "条件1",
+                  "nodeType": "condition",
+                  "config": {
+                    "fieldId": "字段id",
+                    "fieldType": "表单类型 input-文本 radio-单选 checkbox-多选 select-下拉 time-时间 time-range-时间范围 date-日期 date-range-日期范围",
+                    "operator": "操作符 >、>=、<、<=、between、in",
+                    "value": "值"
+                  },
+                  "childNode": {}
+                },
+                {
+                  "nodeName": "条件2",
+                  "nodeType": "condition",
+                  "config": {
+                    "fieldId": "字段id",
+                    "fieldType": "表单类型 input-文本 radio-单选 checkbox-多选 select-下拉 time-时间 time-range-时间范围 date-日期 date-range-日期范围",
+                    "operator": "操作符 >、>=、<、<=、between、in",
+                    "value": "值",
+                    "isUnlimited": "是否为无条件 0-否 1-是 （无条件节点在条件集合的最后）"
+                  },
+                  "childNode": {}
+                }
+              ],
+              "childNode": {
+                "nodeName": "审批人",
+                "nodeType": "approver",
+                "childNode": {
+                  "nodeName": "抄送人",
+                  "nodeType": "notify"
+                }
+              }
+            }
+          }
+        ],
+        "childNode": {
+          "nodeName": "审批人",
+          "nodeType": "approver",
+          "childNode": {
+            "nodeName": "抄送人",
+            "nodeType": "notify"
+          }
+        }
+      }
+    }
+  }
+}
+
