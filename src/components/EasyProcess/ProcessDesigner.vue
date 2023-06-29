@@ -69,6 +69,17 @@ const setZoom = (type) => {
     zoom.value += 10;
   }
 };
+
+/**
+ * 获取流程配置结果
+ */
+const getResult = () => {
+  return config.value
+}
+
+defineExpose({
+  getResult
+});
 </script>
 <style lang="less" scoped>
 

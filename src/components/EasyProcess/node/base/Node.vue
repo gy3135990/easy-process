@@ -11,8 +11,20 @@
       </div>
     </div>
     <div class="ep-node-add">
-      <div class="ep-node-add-btn">
+      <div class="ep-node-add-btn" v-on:mouseenter="showAddSelect(true)" v-on:mouseleave="showAddSelect(false)">
         <el-icon class="ep-node-add-btn-icon"><Plus /></el-icon>
+        <div class="ep-node-add-select">
+          <div class="ep-node-add-select-box" v-if="isShowAddSelect" v-on:mouseenter="showAddSelect(true)" v-on:mouseleave="showAddSelect(false)">
+            <div class="ep-node-add-select-item" v-for="item in nodeSelect">
+<!--              <img class="ep-node-add-select-item-icon" :src="nodeIcon(item.nodeType)" />-->
+
+              <svg-icon :icon-class="item.nodeType" class="ep-node-add-select-item" color="#1c84c6"/>
+              <div class="ep-node-add-select-item-title">
+                {{item.title}}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- 节点配置Drawer -->
@@ -24,9 +36,10 @@
 import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
 import Drawer from "./Drawer";
+import {nodeIcon} from "../../utils/tools";
 
 const props = defineProps({
-  node: { // 传入的流程配置数据
+  node: { // 传入的流程节点数据
     type: Object,
     default: {}
   },
@@ -37,12 +50,27 @@ const { proxy } = getCurrentInstance();
 // 节点配置数据
 const config = ref(nodeConfig[props.node.nodeType])
 
-// 加载节点组件
+// 是否显示添加节点选择框
+const isShowAddSelect = ref(true)
+const nodeSelect = ref([])
+
+
 const modules = import.meta.glob('../*/*Node.vue')
 const nodeComponents = shallowRef({});
+
 Object.keys(nodeConfig).forEach(key => {
+  let item = nodeConfig[key]
+  // 加载节点组件
   let component = defineAsyncComponent(modules[`../${key}/${key}Node.vue`])
   nodeComponents.value[key] = component
+
+  // 生成可增加节点数据
+  if(item.canAdd) {
+    nodeSelect.value.push({
+      "title": item.title,
+      "nodeType": key
+    })
+  }
 })
 
 onMounted(async () => {
@@ -67,6 +95,18 @@ const cancelUpdateConfig = () => {
 
 }
 
+// 显示添加节点选择框
+let addSelectTimeout
+const showAddSelect = (flag) => {
+  /*if(flag) {
+    clearTimeout(addSelectTimeout)
+    isShowAddSelect.value = flag
+  } else {
+    addSelectTimeout = setTimeout(()=> {
+      isShowAddSelect.value = flag
+    }, 300)
+  }*/
+}
 
 </script>
 
@@ -87,7 +127,7 @@ const cancelUpdateConfig = () => {
   min-height: 80px;
   border-radius: 5px;
   font-size: 14px;
-  box-shadow: 1px 1px 6px -2px;
+  box-shadow: 5px 5px 10px 5px #5a5e66;
   white-space: normal;
   word-break: break-word;
 
@@ -142,13 +182,64 @@ const cancelUpdateConfig = () => {
     border-radius: 40px;
     background-color: #1c84c6;
     cursor: pointer;
-    box-shadow: 1px 1px 6px -2px;
+    box-shadow: 1px 1px 10px 1px #5a5e66;
     position: relative;
 
     .ep-node-add-btn-icon {
       font-size: 20px;
       font-weight: bold;
       color: #FFFFFF;
+    }
+
+    .ep-node-add-select {
+      position: relative;
+      width: 0px;
+      height: 100%;
+
+      .ep-node-add-select-box {
+        position: absolute;
+        z-index: 3;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 25px;
+        //width: 100px;
+        height: 80px;
+        background-color: #FFFFFF;
+        border-radius: 5px;
+        box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
+        display: flex;
+        //flex-flow: row wrap;
+
+        &:before{
+          content: '';
+          width: 0;
+          height: 0;
+          border: 10px solid;
+          position: absolute;
+          top: 50%;
+          left: -20px;
+          transform: translateY(-50%);
+          border-color: transparent #FFFFFF transparent transparent;
+        }
+
+        .ep-node-add-select-item {
+          width: 80px;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          .ep-node-add-select-item-icon {
+            width: 35px;
+            height: 35px;
+          }
+          .ep-node-add-select-item-title {
+            color: #5a5e66;
+            font-size: 14px;
+          }
+        }
+      }
+
     }
   }
 

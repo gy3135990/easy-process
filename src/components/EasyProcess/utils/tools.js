@@ -9,3 +9,16 @@ export const copy = (source) => {
     }
     return null;
 }
+
+const nodeIconModules = import.meta.glob("../assets/icon/node/*.svg", { eager: true });
+
+export const nodeIcon = (nodeType) => {
+    console.info("nodeType", nodeType)
+    let key = `../assets/icon/node/${nodeType}.svg`
+    if (nodeIconModules[key]) {
+        console.info("2222", nodeIconModules[key].default)
+        return nodeIconModules[key].default
+    } else {
+        return null
+    }
+}
