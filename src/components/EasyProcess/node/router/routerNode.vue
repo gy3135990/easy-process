@@ -27,6 +27,8 @@ import NodeWrap from "../NodeWrap";
 import AddNode from "../base/AddNode";
 import {ref, reactive, onMounted, getCurrentInstance} from "vue";
 import {copy} from "../../utils/tools";
+import {nodeConfig} from "../../config/nodeConfig";
+import { CONDITION } from "../../config/nodeType"
 
 const props = defineProps({
   node: { // 传入的流程配置数据
@@ -57,7 +59,9 @@ const removeCondition = (index) => {
 
 // 添加条件分支
 const addCondition = () => {
-
+  let defaultNode = copy(nodeConfig[CONDITION].defaultNode)
+  let length = props.node.conditionNodes.length
+  props.node.conditionNodes.splice(length - 1, 0, defaultNode)
 }
 </script>
 
