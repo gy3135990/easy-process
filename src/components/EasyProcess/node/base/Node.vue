@@ -15,10 +15,8 @@
         <el-icon class="ep-node-add-btn-icon"><Plus /></el-icon>
         <div class="ep-node-add-select">
           <div class="ep-node-add-select-box" v-if="isShowAddSelect" v-on:mouseenter="showAddSelect(true)" v-on:mouseleave="showAddSelect(false)">
-            <div class="ep-node-add-select-item" v-for="item in nodeSelect">
-<!--              <img class="ep-node-add-select-item-icon" :src="nodeIcon(item.nodeType)" />-->
-
-              <svg-icon :icon-class="item.nodeType" class="ep-node-add-select-item" color="#1c84c6"/>
+            <div :class="{'ep-node-add-select-item': true, 'ep-node-add-selected': item.selected}" v-for="item in nodeSelect" v-on:mouseenter="addNodeSelected(item, true)" v-on:mouseleave="addNodeSelected(item, false)">
+              <svg-icon :icon-class="item.icon.className" class="ep-node-add-select-item-icon" :color="item.selected ? '#FFFFFF' : item.icon.color"/>
               <div class="ep-node-add-select-item-title">
                 {{item.title}}
               </div>
@@ -36,7 +34,6 @@
 import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
 import Drawer from "./Drawer";
-import {nodeIcon} from "../../utils/tools";
 
 const props = defineProps({
   node: { // 传入的流程节点数据
@@ -54,7 +51,6 @@ const config = ref(nodeConfig[props.node.nodeType])
 const isShowAddSelect = ref(true)
 const nodeSelect = ref([])
 
-
 const modules = import.meta.glob('../*/*Node.vue')
 const nodeComponents = shallowRef({});
 
@@ -68,7 +64,8 @@ Object.keys(nodeConfig).forEach(key => {
   if(item.canAdd) {
     nodeSelect.value.push({
       "title": item.title,
-      "nodeType": key
+      "icon": item.icon,
+      "isSelected": false
     })
   }
 })
@@ -107,7 +104,13 @@ const showAddSelect = (flag) => {
     }, 300)
   }*/
 }
-
+const addNodeSelected = (item, flag) => {
+  if (flag) {
+    item.selected = true
+  } else {
+    item.selected = false
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -127,7 +130,7 @@ const showAddSelect = (flag) => {
   min-height: 80px;
   border-radius: 5px;
   font-size: 14px;
-  box-shadow: 5px 5px 10px 5px #5a5e66;
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
   white-space: normal;
   word-break: break-word;
 
@@ -181,14 +184,14 @@ const showAddSelect = (flag) => {
     height: 30px;
     border-radius: 40px;
     background-color: #1c84c6;
-    cursor: pointer;
-    box-shadow: 1px 1px 10px 1px #5a5e66;
+    box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
     position: relative;
 
     .ep-node-add-btn-icon {
       font-size: 20px;
       font-weight: bold;
       color: #FFFFFF;
+      cursor: pointer;
     }
 
     .ep-node-add-select {
@@ -208,7 +211,7 @@ const showAddSelect = (flag) => {
         border-radius: 5px;
         box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
         display: flex;
-        //flex-flow: row wrap;
+        padding: 16px;
 
         &:before{
           content: '';
@@ -229,14 +232,24 @@ const showAddSelect = (flag) => {
           flex-direction: column;
           justify-content: center;
           align-items: center;
+          margin: 0px 10px;
+          cursor: pointer;
+          border: 1px solid #ccc;
+          border-radius: 100px;
+          color: #5a5e66;
+
           .ep-node-add-select-item-icon {
             width: 35px;
             height: 35px;
           }
           .ep-node-add-select-item-title {
-            color: #5a5e66;
             font-size: 14px;
           }
+        }
+
+        .ep-node-add-selected {
+          background-color: #1e83e9!important;
+          color: #FFFFFF!important;
         }
       }
 
