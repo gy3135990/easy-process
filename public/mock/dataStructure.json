@@ -4,9 +4,9 @@
   "nodeConfig": {
     "nodeName": "节点名称",
     "nodeType": "节点类型 start-发起人节点 approver-审批节点 router-路由节点 condition-条件节点 notify-抄送节点",
-    "config": {},
-    "childNode": {},
-    "conditionNodes": [ // 条件节点，节点类型为router时有效
+    "config": {}, // 节点配置，根据需求可以自定义
+    "childNode": {}, // 下级节点
+    "conditionNodes": [ // 条件节点，节点类型为router时有效，最少会有两个条件节点
       {
         "nodeName": "条件1",
         "nodeType": "condition",

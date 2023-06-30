@@ -1,7 +1,7 @@
 <template>
   <!-- 路由节点 -->
   <div class="ep-node-router">
-    <div class="ep-condition-node-add">添加条件</div>
+    <div class="ep-condition-node-add" @click="addCondition">添加条件</div>
     <div class="ep-node-router-box">
       <div class="ep-node-router-col" v-for="(condition, index) in props.node.conditionNodes">
         <!-- 生成节点 -->
@@ -44,22 +44,20 @@ onMounted(async () => {
 
 });
 
-// 移除当前节点
-const emit = defineEmits(["removeNode"]);
-const removeNode = () => {
-
-}
-
 // 移除条件
+const emit = defineEmits(["removeNode"]);
 const removeCondition = (index) => {
-  console.log("index", index)
-
   let conditionNum = props.node.conditionNodes.length
   if(conditionNum > 2) {
     props.node.conditionNodes.splice(index, 1)
   } else {
     emit("removeNode");
   }
+}
+
+// 添加条件分支
+const addCondition = () => {
+
 }
 </script>
 

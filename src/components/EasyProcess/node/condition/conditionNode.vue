@@ -1,7 +1,12 @@
 <template>
   <!-- 条件节点 -->
   <div class="ep-node-condition">
-    {{props.node.nodeName}}
+    <div v-if="!props.node.isLastCondition">
+      {{props.node.nodeName}}
+    </div>
+    <div v-else>
+      其他条件进入此流程
+    </div>
   </div>
 
 </template>
