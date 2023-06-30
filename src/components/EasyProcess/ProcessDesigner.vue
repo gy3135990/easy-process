@@ -40,7 +40,6 @@ let processData = ref({});
 watch(
     () => props.data,
     (val) => {
-      console.info("watch processData")
       init()
     }
 );
