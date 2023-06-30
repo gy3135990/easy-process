@@ -1,7 +1,7 @@
 <template>
   <!-- 条件节点 -->
   <div class="ep-node-condition">
-    条件节点
+    {{props.node.nodeName}}
   </div>
 
 </template>

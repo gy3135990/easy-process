@@ -4,32 +4,14 @@
   "nodeConfig": {
     "nodeName": "节点名称",
     "nodeType": "节点类型 start-发起人节点 approver-审批节点 router-路由节点 condition-条件节点 notify-抄送节点",
-    "config": { // 属性与节点类型相关，除了permissions外其他属性并不是通用的
-      // 发起人节点
-      "initiator": "发起人id",
-      // 审批节点
-      "approverType": "审批人类型 1-指定人员 2-主管 3-发起人自选 4-发起人自己 5-连续多级主管",
-      "deptManagerLevel": "部门主管层级 1-直接主管 2-第2级主管 3-第3级主管 4-第4级主管",
-      "approverEmpty": "审批人为空时 1-自动审批通过 2-转交给审核管理员",
-      "permissions": [
-        {
-          "fieldId": "字段id",
-          "permission": "权限 1-不可编辑 2-可编辑 3-不可见"
-        }
-      ]
-    },
+    "config": {},
     "childNode": {},
     "conditionNodes": [ // 条件节点，节点类型为router时有效
       {
         "nodeName": "条件1",
         "nodeType": "condition",
-        "config": {
-          "fieldId": "字段id",
-          "fieldType": "表单类型 input-文本 radio-单选 checkbox-多选 select-下拉 time-时间 time-range-时间范围 date-日期 date-range-日期范围",
-          "operator": "操作符 >、>=、<、<=、between、in",
-          "value": "值",
-          "isUnlimited": "是否为无条件 0-否 1-是 （无条件节点在条件集合的最后）"
-        },
+        "isLastCondition": "true | false 是否为最后一个条件节点，最后一个条件节点不能设置任何条件，默认为通过",
+        "config": {},
         "childNode": {}
       }
     ]

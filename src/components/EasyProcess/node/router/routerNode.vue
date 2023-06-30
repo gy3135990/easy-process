@@ -5,7 +5,7 @@
     <div class="ep-node-router-box">
       <div class="ep-node-router-col" v-for="(condition, index) in props.node.conditionNodes">
         <!-- 生成节点 -->
-        <NodeWrap :node="condition"/>
+        <NodeWrap :node="condition" @removeNode="removeCondition(index)" :canRemoved="!condition.isLastCondition"/>
         <!-- 用来遮挡最左列的线 -->
         <template v-if="index == 0">
           <div class="cover-line top-left-cover-line"></div>
@@ -18,17 +18,15 @@
         </template>
       </div>
     </div>
-    <div class="ep-node-add">
-      <div class="ep-node-add-btn">
-        <el-icon class="ep-node-add-btn-icon"><Plus /></el-icon>
-      </div>
-    </div>
+    <AddNode :node="props.node"/>
   </div>
 </template>
 
 <script setup name="RouterNode">
 import NodeWrap from "../NodeWrap";
+import AddNode from "../base/AddNode";
 import {ref, reactive, onMounted, getCurrentInstance} from "vue";
+import {copy} from "../../utils/tools";
 
 const props = defineProps({
   node: { // 传入的流程配置数据
@@ -46,6 +44,23 @@ onMounted(async () => {
 
 });
 
+// 移除当前节点
+const emit = defineEmits(["removeNode"]);
+const removeNode = () => {
+
+}
+
+// 移除条件
+const removeCondition = (index) => {
+  console.log("index", index)
+
+  let conditionNum = props.node.conditionNodes.length
+  if(conditionNum > 2) {
+    props.node.conditionNodes.splice(index, 1)
+  } else {
+    emit("removeNode");
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -111,45 +126,6 @@ onMounted(async () => {
   .bottom-right-cover-line{
     bottom: -4px;
     right: -1px
-  }
-}
-.ep-node-add {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 30px 0px;
-  position: relative;
-
-  .ep-node-add-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 40px;
-    background-color: #1c84c6;
-    cursor: pointer;
-    box-shadow: 1px 1px 6px -2px;
-
-    .ep-node-add-btn-icon {
-      font-size: 20px;
-      font-weight: bold;
-      color: #FFFFFF;
-    }
-  }
-
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-    margin: auto;
-    width: 2px;
-    height: 100%;
-    background-color: #cacaca
   }
 }
 

@@ -2,7 +2,7 @@
   <div class="ep-container">
     <!-- 流程 -->
     <div class="ep-process" :style="`transform: scale(${ zoom / 100});`">
-      <NodeWrap v-if="props.data && props.data.nodeConfig" :node="props.data.nodeConfig"/>
+      <NodeWrap v-if="processData && processData.nodeConfig" :node="processData.nodeConfig"/>
       <EndNode/>
     </div>
     <!-- 缩放 -->
@@ -15,42 +15,39 @@
 </template>
 
 <script setup name="ProcessDesigner">
-import {ref, reactive, onMounted, getCurrentInstance, defineAsyncComponent} from "vue";
-import {defaultConfig} from "./config/defaultConfig";
-import {copy} from "./utils/tools";
-
 import NodeWrap from "./node/NodeWrap";
 import EndNode from "./node/end/EndNode";
 
+import {ref, reactive, onMounted, getCurrentInstance, toRaw, watch} from "vue";
+import {defaultConfig} from "./config/defaultConfig";
+import {copy} from "./utils/tools";
+import {nodeConfig} from "./config/nodeConfig";
+
+const { proxy } = getCurrentInstance();
 
 const props = defineProps({
-  data: { // 传入的流程配置数据
+  data: { // 传入的流程节点数据
     type: Object,
     default: {}
   },
 });
 
-const { proxy } = getCurrentInstance();
-
 // 缩放值
 let zoom = ref(100);
 
-// 流程配置数据
-let config = ref({});
+// 流程数据
+let processData = ref({});
+watch(
+    () => props.data,
+    (val) => {
+      console.info("watch processData")
+      init()
+    }
+);
 
 onMounted(async () => {
-  initConfig()
+  init()
 });
-
-/**
- * 初始化流程配置数据
- * */
-const initConfig = () => {
-  config.value = copy(props.data)
-  Object.keys(defaultConfig).forEach(key => {
-    config.value[key] = config.value[key] || defaultConfig[key]
-  });
-}
 
 /**
  * 设置绽放
@@ -70,11 +67,20 @@ const setZoom = (type) => {
   }
 };
 
+// 初始化流程
+const init = () => {
+  if(props.data && props.data.nodeConfig) {
+    processData.value = copy(props.data)
+  } else {
+    processData.value = copy(defaultConfig)
+  }
+}
+
 /**
  * 获取流程配置结果
  */
 const getResult = () => {
-  return config.value
+  return copy(processData.value)
 }
 
 defineExpose({

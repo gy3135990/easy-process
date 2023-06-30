@@ -7,13 +7,14 @@
       </div>
     </div>
     <div class="body">
-      <ProcessDesigner ref="process" :data="processData"></ProcessDesigner>
+      <ProcessDesigner ref="process" :data="processData"/>
     </div>
   </div>
 </template>
 
 <script setup name="WorkFlow">
-import ProcessDesigner from "@/components/EasyProcess/processDesigner";
+import ProcessDesigner from "@/components/EasyProcess/ProcessDesigner";
+import { ElMessageBox } from 'element-plus'
 import {getCurrentInstance, onMounted, ref} from "vue";
 import { getWorkFlowData } from "@/api/api.js";
 const { proxy } = getCurrentInstance();
@@ -35,6 +36,7 @@ onMounted(async () => {
 const publish = () => {
   let result = proxy.$refs.process.getResult();
   console.info("发布流程:", result)
+  ElMessageBox.alert(result, '结果')
 }
 </script>
 
