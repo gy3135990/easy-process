@@ -5,12 +5,14 @@
     "nodeName": "发起人",
     "nodeType": "start",
     "config": {
-      "name": "张三",
-      "age": 88
+      "name": "张三"
     },
     "childNode": {
       "nodeName": "审批人",
       "nodeType": "approver",
+      "config": {
+        "name": "张三"
+      },
       "childNode": {
         "nodeName": "路由",
         "nodeType": "router",
@@ -19,14 +21,18 @@
             "nodeName": "条件1",
             "nodeType": "condition",
             "isLastCondition": false,
-            "config": {},
+            "config": {
+              "days": 1
+            },
             "childNode": {}
           },
           {
             "nodeName": "条件2",
             "nodeType": "condition",
             "isLastCondition": false,
-            "config": {},
+            "config": {
+              "days": 3
+            },
             "childNode": {}
           },
           {
@@ -40,9 +46,15 @@
         "childNode": {
           "nodeName": "审批人",
           "nodeType": "approver",
+          "config": {
+            "name": "李四"
+          },
           "childNode": {
             "nodeName": "抄送人",
-            "nodeType": "notify"
+            "nodeType": "notify",
+            "config": {
+              "name": "王五"
+            }
           }
         }
       }

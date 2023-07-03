@@ -1,7 +1,11 @@
 <template>
   <!-- 审核人配置 -->
   <div>
-    审核人配置
+    <el-form :model="props.config" label-width="80px">
+      <el-form-item label="审核人">
+        <el-input v-model="props.config.name" />
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -9,7 +13,7 @@
 import {ref, reactive, onMounted, getCurrentInstance} from "vue";
 
 const props = defineProps({
-  node: { // 传入的流程配置数据
+  config: { // 传入的流程配置数据
     type: Object,
     default: {}
   },

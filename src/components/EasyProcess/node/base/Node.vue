@@ -2,9 +2,10 @@
   <div class="ep-node">
     <div class="ep-node-content">
       <div class="ep-node-header" :style="{color: config.color, 'background-color': config.bgColor}">
-        <slot name="icon"></slot>
+        <svg-icon :icon-class="config.icon.className" class="ep-node-icon" color="#FFFFFF"/>
         <div class="ep-node-header-title">{{config.title}}</div>
-        <el-icon class="ep-node-close" v-if="props.canRemoved && config.canRemoved" @click="removeNode"><CloseBold /></el-icon>
+<!--        <el-icon class="ep-node-close" v-if="props.canRemoved && config.canRemoved" @click="removeNode"><CloseBold /></el-icon>-->
+        <svg-icon icon-class="close" class="ep-node-close" color="#FFFFFF" v-if="props.canRemoved && config.canRemoved" @click="removeNode"/>
       </div>
       <div class="ep-node-body" @click="showNodeDrawer">
         <component :is="nodeComponents[props.node.nodeType]" :node="props.node"/>
@@ -113,6 +114,10 @@ const cancelUpdateConfig = () => {
     border-top-right-radius: 5px;
     padding: 5px 10px;
     color: #FFFFFF;
+
+    .ep-node-icon {
+      font-size: 16px;
+    }
 
     .ep-node-header-title {
       flex: 1;

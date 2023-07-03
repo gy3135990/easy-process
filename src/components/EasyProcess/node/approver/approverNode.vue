@@ -1,7 +1,7 @@
 <template>
   <!-- 审批人节点 -->
   <div>
-    审批人节点
+    审批人: {{node.config.name}}
   </div>
 </template>
 

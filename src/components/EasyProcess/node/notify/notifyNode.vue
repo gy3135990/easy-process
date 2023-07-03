@@ -1,7 +1,7 @@
 <template>
   <!-- 抄送人节点 -->
   <div>
-    抄送人节点
+    抄送人: {{node.config.name}}
   </div>
 </template>
 

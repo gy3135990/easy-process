@@ -1,7 +1,11 @@
 <template>
   <!-- 条件配置 -->
   <div>
-    条件配置
+    <el-form :model="props.config" label-width="80px">
+      <el-form-item label="请假天数">
+        <el-input v-model="props.config.days" />
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -9,7 +13,7 @@
 import {ref, reactive, onMounted, getCurrentInstance} from "vue";
 
 const props = defineProps({
-  node: { // 传入的流程配置数据
+  config: { // 传入的流程配置数据
     type: Object,
     default: {}
   },

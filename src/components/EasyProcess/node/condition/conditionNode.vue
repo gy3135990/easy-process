@@ -2,7 +2,7 @@
   <!-- 条件节点 -->
   <div class="ep-node-condition">
     <div v-if="!props.node.isLastCondition">
-      {{props.node.nodeName}}
+      请假天数: {{node.config.days}}天
     </div>
     <div v-else>
       其他条件进入此流程
