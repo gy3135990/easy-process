@@ -2,7 +2,7 @@
   <div class="ep-container">
     <!-- 流程 -->
     <div class="ep-process" :style="`transform: scale(${ zoom / 100});`">
-      <NodeWrap v-if="processData && processData.nodeConfig" :node="processData.nodeConfig"/>
+      <NodeWrap v-if="processData && processData.nodeConfig" :node="processData.nodeConfig" :bizData="processData.bizData"/>
       <EndNode/>
     </div>
     <!-- 缩放 -->
@@ -29,7 +29,7 @@ const props = defineProps({
   data: { // 传入的流程节点数据
     type: Object,
     default: {}
-  },
+  }
 });
 
 // 缩放值

@@ -18,7 +18,7 @@
         "nodeType": "router",
         "conditionNodes": [
           {
-            "nodeName": "条件1",
+            "nodeName": "条件",
             "nodeType": "condition",
             "isLastCondition": false,
             "config": {
@@ -33,7 +33,7 @@
             }
           },
           {
-            "nodeName": "条件2",
+            "nodeName": "条件",
             "nodeType": "condition",
             "isLastCondition": false,
             "config": {
@@ -48,7 +48,7 @@
             }
           },
           {
-            "nodeName": "其他",
+            "nodeName": "条件",
             "nodeType": "condition",
             "isLastCondition": true,
             "config": {},
@@ -70,6 +70,11 @@
           }
         }
       }
+    }
+  },
+  "bizData": {
+    "formData": {
+
     }
   }
 }

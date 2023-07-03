@@ -7,7 +7,7 @@ export const nodeConfig = {}
 nodeConfig[ROUTER] = {
     "title": "条件分支", // 节点标题
     "canAdd": true, // 节点是否可以增加
-    "hasDrawer": false,
+    "hasDrawer": false, // 节点是否可以进行配置
     "icon": { // 图标
         "className": "router", // 类名
         "color": "#3CB371" // 颜色
@@ -43,7 +43,7 @@ nodeConfig[CONDITION] = {
     "bgColor": "#3CB371", // 节点标题背景颜色
     "canAdd": false, // 节点是否可以增加
     "canRemoved": true, // 节点是否能够移除
-    "hasDrawer": true,
+    "hasDrawer": true, // 节点是否可以进行配置
     "icon": { // 图标
         "className": "condition", // 类名
         "color": "#3CB371" // 颜色

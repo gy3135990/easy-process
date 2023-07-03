@@ -20,6 +20,10 @@ const props = defineProps({
     type: Object,
     default: {}
   },
+  bizData: { // 业务数据
+    type: Object,
+    default: {}
+  },
 });
 
 const { proxy } = getCurrentInstance();

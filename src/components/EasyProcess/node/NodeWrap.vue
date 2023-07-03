@@ -1,7 +1,7 @@
 <template>
   <div class="ep-node-wrap" v-if="props.node">
-    <RouterNode :node="props.node" @removeNode="removeNode" v-if="props.node.nodeType == 'router'"/>
-    <Node :node="props.node" :canRemoved="props.canRemoved" @removeNode="removeNode" v-else/>
+    <RouterNode :node="props.node" :bizData="props.bizData" @removeNode="removeNode" v-if="props.node.nodeType == 'router'"/>
+    <Node :node="props.node" :bizData="props.bizData" :canRemoved="props.canRemoved" @removeNode="removeNode" v-else/>
     <!-- 子节点 -->
     <NodeWrap :node="props.node.childNode" @removeNode="removeChildNode" v-if="props.node.childNode && props.node.childNode.nodeType" />
   </div>
@@ -15,6 +15,10 @@ import RouterNode from "./router/RouterNode";
 
 const props = defineProps({
   node: { // 当前流程节点数据
+    type: Object,
+    default: {}
+  },
+  bizData: { // 业务数据
     type: Object,
     default: {}
   },

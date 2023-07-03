@@ -5,7 +5,7 @@
     <div class="ep-node-router-box">
       <div class="ep-node-router-col" v-for="(condition, index) in props.node.conditionNodes">
         <!-- 生成节点 -->
-        <NodeWrap :node="condition" @removeNode="removeCondition(index)" :canRemoved="!condition.isLastCondition"/>
+        <NodeWrap :node="condition" :bizData="props.bizData" @removeNode="removeCondition(index)" :canRemoved="!condition.isLastCondition"/>
         <!-- 用来遮挡最左列的线 -->
         <template v-if="index == 0">
           <div class="cover-line top-left-cover-line"></div>
@@ -28,10 +28,14 @@ import AddNode from "../base/AddNode";
 import {ref, reactive, onMounted, getCurrentInstance} from "vue";
 import {copy} from "../../utils/tools";
 import {nodeConfig} from "../../config/nodeConfig";
-import { CONDITION } from "../../config/nodeType"
+import {CONDITION} from "../../config/nodeType"
 
 const props = defineProps({
   node: { // 传入的流程配置数据
+    type: Object,
+    default: {}
+  },
+  bizData: { // 业务数据
     type: Object,
     default: {}
   },

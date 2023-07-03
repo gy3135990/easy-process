@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="ep-node-drawer-body">
-          <component :is="drawerComponents[node.nodeType]" :config="node.config"/>
+          <component :is="drawerComponents[node.nodeType]" :config="node.config" :bizData="bizData"/>
         </div>
       </template>
       <template #footer>
@@ -36,6 +36,8 @@ const { proxy } = getCurrentInstance();
 
 // 节点数据的副本
 let node = ref(null);
+// 业务数据的副本
+let bizData = ref(null);
 // 节点配置数据
 const config = ref(null)
 // 是否显示配置界面
@@ -57,11 +59,10 @@ onMounted(async () => {
 });
 
 // 显示节点配置组件
-const show = (data) => {
-  console.info("show", data)
-
+const show = (data, bizData) => {
   // 复制数据
   node.value = copy(data)
+  bizData.value = copy(bizData)
   config.value = nodeConfig[node.value.nodeType]
 
   isShow.value = true

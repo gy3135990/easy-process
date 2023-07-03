@@ -4,14 +4,19 @@
       <div class="ep-node-header" :style="{color: config.color, 'background-color': config.bgColor}">
         <svg-icon :icon-class="config.icon.className" class="ep-node-icon" color="#FFFFFF"/>
         <div class="ep-node-header-title">{{config.title}}</div>
-<!--        <el-icon class="ep-node-close" v-if="props.canRemoved && config.canRemoved" @click="removeNode"><CloseBold /></el-icon>-->
         <svg-icon icon-class="close" class="ep-node-close" color="#FFFFFF" v-if="props.canRemoved && config.canRemoved" @click="removeNode"/>
       </div>
       <div class="ep-node-body" @click="showNodeDrawer">
-        <component :is="nodeComponents[props.node.nodeType]" :node="props.node"/>
+        <component :is="nodeComponents[props.node.nodeType]" :node="props.node" :bizData="props.bizData"/>
       </div>
     </div>
     <AddNode :node="props.node"/>
+    <div class="ep-node-move ep-node-move-left">
+      <svg-icon icon-class="left" class="ep-node-move-icon" color="#696969"/>
+    </div>
+    <div class="ep-node-move ep-node-move-right">
+      <svg-icon icon-class="right" class="ep-node-close" color="#696969"/>
+    </div>
     <!-- 节点配置Drawer -->
     <Drawer ref="nodeDrawer" @updateConfig="updateConfig" @cancelUpdateConfig="cancelUpdateConfig"/>
   </div>
@@ -26,6 +31,10 @@ import {copy} from "../../utils/tools";
 
 const props = defineProps({
   node: { // 传入的流程节点数据
+    type: Object,
+    default: {}
+  },
+  bizData: { // 业务数据
     type: Object,
     default: {}
   },
@@ -63,7 +72,7 @@ onMounted(async () => {
 // 显示节点配置组件
 const showNodeDrawer = () => {
   if(config.value.hasDrawer) {
-    proxy.$refs.nodeDrawer.show(props.node)
+    proxy.$refs.nodeDrawer.show(props.node, props.bizData)
   }
 }
 
@@ -143,5 +152,15 @@ const cancelUpdateConfig = () => {
     color: #5a5e66;
     cursor: pointer;
   }
+}
+
+.ep-node-move {
+  position: absolute;
+}
+.ep-node-move-left {
+
+}
+.ep-node-move-right {
+
 }
 </style>

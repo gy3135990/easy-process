@@ -8,7 +8,7 @@
 Node >= 14
 ```
 
-## 技术造型
+## 技术选型
 
 - vue3
 - vite4
@@ -106,17 +106,64 @@ easy-process
     "nodeType": "节点类型 start-发起人节点 approver-审批节点 router-路由节点 condition-条件节点 notify-抄送节点",
     "config": {}, // 节点配置，根据需求可以自定义
     "childNode": {}, // 下级节点
-    "conditionNodes": [ // 条件节点，节点类型为router时有效，最少会有两个条件节点
+    "conditionNodes": [ // 条件节点，节点类型为router时有效，至少会有两个条件节点
       {
-        "nodeName": "条件1",
+        "nodeName": "节点名称",
         "nodeType": "condition",
         "isLastCondition": "true | false 是否为最后一个条件节点，最后一个条件节点不能设置任何条件，默认为通过",
         "config": {},
         "childNode": {}
       }
     ]
+  },
+  "bizData": { // 该属性为自定义的业务数据，在各节点中可获取传入的业务数据，用于业务处理，比如传入表单数据，注意，业务数据只能用于只读操作
+    
   }
 }
 
 ```
 
+### 定义节点属性
+
+节点的属性定义在config属性下，具体需要哪些属性请依据业务自行定义。
+
+节点组件一般会由两个组件组成：
+
+- xxxNode.vue（用于在流程节点上展示定义的属性配置）
+- xxxDrawer.vue（用于配置该节点的属性）
+
+xxxNode.vue组件下会通过props.node传入当前节点数据
+
+xxxDrawer.vue组件下会通过props.config传入当前节点属性配置的**副本**数据，因为是地址传递，所以可以直接对其内部的属性进行修改。在点击确定会将修改后的副本数据覆盖原来的数据。
+
+
+
+### 节点的默认配置
+
+在config/nodeConfig.js文件下维护各节点的默认配置，格式如下：
+
+```json
+{
+    "title": "条件", // 节点标题
+    "color": "#FFFFFF", // 节点标题颜色
+    "bgColor": "#3CB371", // 节点标题背景颜色
+    "canAdd": false, // 节点是否可以增加
+    "canRemoved": true, // 节点是否能够移除
+    "hasDrawer": true, // 节点是否可以进行配置(点击后侧弹出属性配置抽屉)
+    "icon": { // 图标（使用的svg图标）
+        "className": "condition", // 类名（svg图标的文件名，不包含后缀）
+        "color": "#3CB371" // 图标颜色（注：如果你导入的svg图标不能设置颜色，请用IDE打开图标文件，找到并删除fill属性并保存即可）
+    },
+    "defaultNode": { // 默认节点结构，用于添加节点时
+        "nodeName": "条件",
+        "nodeType": "condition",
+        "isLastCondition": false,
+        "config": {},
+        "childNode": {}
+    },
+}
+```
+
+
+
+### 开发一个新类型的节点
