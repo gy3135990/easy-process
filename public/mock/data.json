@@ -24,7 +24,13 @@
             "config": {
               "days": 1
             },
-            "childNode": {}
+            "childNode": {
+              "nodeName": "审批人",
+              "nodeType": "approver",
+              "config": {
+                "name": "赵六"
+              }
+            }
           },
           {
             "nodeName": "条件2",
@@ -33,10 +39,16 @@
             "config": {
               "days": 3
             },
-            "childNode": {}
+            "childNode": {
+              "nodeName": "审批人",
+              "nodeType": "approver",
+              "config": {
+                "name": "老王"
+              }
+            }
           },
           {
-            "nodeName": "条件2",
+            "nodeName": "其他",
             "nodeType": "condition",
             "isLastCondition": true,
             "config": {},
