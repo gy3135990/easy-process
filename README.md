@@ -16,7 +16,7 @@
 
 ## 体验入口
 
-[戳我体验]: http://process.uncodeshop.com/
+[戳我体验](http://process.uncodeshop.com/)
 
 
 
