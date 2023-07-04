@@ -16,7 +16,7 @@
 
 ## 体验入口
 
-[戳我体验](http://process.uncodeshop.com)
+[戳我体验]: http://process.uncodeshop.com/
 
 
 
@@ -305,3 +305,18 @@ onMounted(async () => {
 6、运行项目进行测试
 
  
+
+## 联系
+
+邮箱：331607151@qq.com
+
+QQ群：21107513
+
+
+
+## 捐助
+
+如果您觉得我们的开源软件对你有所帮助，请扫下方二维码打赏我们一杯咖啡。
+
+<img src="https://foruda.gitee.com/images/1688456190407826732/532fba84_8787754.jpeg" alt="输入图片说明" title="QQ图片20230704153558.jpg" style="zoom:25%;" />
+
