@@ -19,14 +19,14 @@ nodeConfig[ROUTER] = {
         "childNode": null,
         "conditionNodes": [
             {
-                "nodeName": "条件1",
+                "nodeName": "条件",
                 "nodeType": "condition",
                 "isLastCondition": false,
                 "config": {},
                 "childNode": null
             },
             {
-                "nodeName": "条件2",
+                "nodeName": "条件",
                 "nodeType": "condition",
                 "isLastCondition": true,
                 "config": {},
