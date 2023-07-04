@@ -141,13 +141,11 @@ const moveNode = (direction) => {
   let index = props.conditionIndex
   let length = props.conditionNodes.length
   if (direction == 1) {
-    console.log("1111")
     let c = props.conditionNodes[index]
     props.conditionNodes[index] = props.conditionNodes[index - 1]
     props.conditionNodes[index - 1] = c
 
   } else {
-    console.log("222")
     let c = props.conditionNodes[index]
     props.conditionNodes[index] = props.conditionNodes[index + 1]
     props.conditionNodes[index + 1] = c
