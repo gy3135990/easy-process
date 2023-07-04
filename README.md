@@ -108,7 +108,7 @@ easy-process
     "childNode": {}, // 下级节点
     "conditionNodes": [ // 条件节点，节点类型为router时有效，至少会有两个条件节点
       {
-        "nodeName": "节点名称",
+        "nodeName": "条件",
         "nodeType": "condition",
         "isLastCondition": "true | false 是否为最后一个条件节点，最后一个条件节点不能设置任何条件，默认为通过",
         "config": {},

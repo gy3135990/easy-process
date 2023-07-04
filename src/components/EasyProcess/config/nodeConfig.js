@@ -9,7 +9,7 @@ nodeConfig[ROUTER] = {
     "canAdd": true, // 节点是否可以增加
     "hasDrawer": false, // 节点是否可以进行配置
     "icon": { // 图标
-        "className": "router", // 类名
+        "name": "router", // 图标名
         "color": "#3CB371" // 颜色
     },
     "defaultNode": { // 默认节点结构，用于添加节点时
@@ -45,7 +45,7 @@ nodeConfig[CONDITION] = {
     "canRemoved": true, // 节点是否能够移除
     "hasDrawer": true, // 节点是否可以进行配置
     "icon": { // 图标
-        "className": "condition", // 类名
+        "name": "condition", // 图标名
         "color": "#3CB371" // 颜色
     },
     "defaultNode": {
@@ -66,7 +66,7 @@ nodeConfig[START] = {
     "canRemoved": false, // 节点是否能够移除
     "hasDrawer": true, // 节点是否可以进行配置
     "icon": { // 图标
-        "className": "start", // 类名
+        "name": "start", // 图标名
         "color": "#1e83e9" // 颜色
     },
     "defaultNode": { // 默认节点结构，用于添加节点时
@@ -86,7 +86,7 @@ nodeConfig[APPROVER] = {
     "canRemoved": true, // 节点是否能够移除
     "hasDrawer": true,
     "icon": { // 图标
-        "className": "approver", // 类名
+        "name": "approver", // 图标名
         "color": "#FF8C00" // 颜色
     },
     "defaultNode": { // 默认节点结构，用于添加节点时
@@ -106,7 +106,7 @@ nodeConfig[NOTIFY] = {
     "canRemoved": true, // 节点是否能够移除
     "hasDrawer": true,
     "icon": { // 图标
-        "className": "notify", // 类名
+        "name": "notify", // 图标名
         "color": "#808000" // 颜色
     },
     "defaultNode": { // 默认节点结构，用于添加节点时

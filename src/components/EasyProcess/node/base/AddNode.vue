@@ -5,7 +5,7 @@
       <div class="ep-node-add-select">
         <div class="ep-node-add-select-box" v-if="isShowAddSelect">
           <div :class="{'ep-node-add-select-item': true, 'ep-node-add-selected': item.selected}" v-for="item in nodeSelect" v-on:click="addNode(item.type)" v-on:mouseenter="addNodeSelected(item, true)" v-on:mouseleave="addNodeSelected(item, false)">
-            <svg-icon :icon-class="item.icon.className" class="ep-node-add-select-item-icon" :color="item.selected ? '#FFFFFF' : item.icon.color"/>
+            <svg-icon :icon-class="item.icon.name" class="ep-node-add-select-item-icon" :color="item.selected ? '#FFFFFF' : item.icon.color"/>
             <div class="ep-node-add-select-item-title">
               {{item.title}}
             </div>

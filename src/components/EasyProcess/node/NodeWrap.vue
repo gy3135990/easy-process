@@ -1,7 +1,7 @@
 <template>
   <div class="ep-node-wrap" v-if="props.node">
     <RouterNode :node="props.node" :bizData="props.bizData" @removeNode="removeNode" v-if="props.node.nodeType == 'router'"/>
-    <Node :node="props.node" :bizData="props.bizData" :canRemoved="props.canRemoved" @removeNode="removeNode" v-else/>
+    <Node :node="props.node" :bizData="props.bizData" :conditionNodes="props.conditionNodes" :conditionIndex="props.conditionIndex" :canRemoved="props.canRemoved" @removeNode="removeNode" v-else/>
     <!-- 子节点 -->
     <NodeWrap :node="props.node.childNode" @removeNode="removeChildNode" v-if="props.node.childNode && props.node.childNode.nodeType" />
   </div>
@@ -21,6 +21,14 @@ const props = defineProps({
   bizData: { // 业务数据
     type: Object,
     default: {}
+  },
+  conditionNodes: { // 条件集合，当节点类型为condition时有效
+    type: Array,
+    default: []
+  },
+  conditionIndex: { // 当前条件节点的顺序，当节点类型为condition时有效
+    type: Number,
+    default: 0
   },
   canRemoved: { // 当前节点是否可以移除
     type: Boolean,

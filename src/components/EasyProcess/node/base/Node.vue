@@ -1,33 +1,36 @@
 <template>
   <div class="ep-node">
-    <div class="ep-node-content">
+    <div class="ep-node-content" @mouseenter="mouseenter(true)" @mouseleave="mouseleave(false)">
       <div class="ep-node-header" :style="{color: config.color, 'background-color': config.bgColor}">
-        <svg-icon :icon-class="config.icon.className" class="ep-node-icon" color="#FFFFFF"/>
+        <svg-icon :icon-class="config.icon.name" class="ep-node-icon" color="#FFFFFF"/>
         <div class="ep-node-header-title">{{config.title}}</div>
         <svg-icon icon-class="close" class="ep-node-close" color="#FFFFFF" v-if="props.canRemoved && config.canRemoved" @click="removeNode"/>
       </div>
       <div class="ep-node-body" @click="showNodeDrawer">
         <component :is="nodeComponents[props.node.nodeType]" :node="props.node" :bizData="props.bizData"/>
       </div>
+
+      <div class="ep-node-move ep-node-move-left" v-if="isShowLeftMoveBtn">
+        <svg-icon icon-class="left" class="ep-node-move-icon" :color="isSelectedLeftMoveBtn ? '#1e83e9' : '#696969'" @click="moveNode(1)" @mouseenter="selectedMoveBtn(1, true)" @mouseleave="selectedMoveBtn(1, false)"/>
+      </div>
+      <div class="ep-node-move ep-node-move-right" v-if="isShowRightMoveBtn">
+        <svg-icon icon-class="right" class="ep-node-move-icon" :color="isSelectedRightMoveBtn ? '#1e83e9' : '#696969'" @click="moveNode(2)" @mouseenter="selectedMoveBtn(2, true)" @mouseleave="selectedMoveBtn(2, false)"/>
+      </div>
     </div>
     <AddNode :node="props.node"/>
-    <div class="ep-node-move ep-node-move-left">
-      <svg-icon icon-class="left" class="ep-node-move-icon" color="#696969"/>
-    </div>
-    <div class="ep-node-move ep-node-move-right">
-      <svg-icon icon-class="right" class="ep-node-close" color="#696969"/>
-    </div>
+
     <!-- 节点配置Drawer -->
     <Drawer ref="nodeDrawer" @updateConfig="updateConfig" @cancelUpdateConfig="cancelUpdateConfig"/>
   </div>
 </template>
 
 <script setup name="Node">
-import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent, watch} from "vue";
-import {nodeConfig} from "../../config/nodeConfig";
 import Drawer from "./Drawer";
 import AddNode from "./AddNode";
+import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent, watch} from "vue";
+import {nodeConfig} from "../../config/nodeConfig";
 import {copy} from "../../utils/tools";
+import {CONDITION} from "../../config/nodeType"
 
 const props = defineProps({
   node: { // 传入的流程节点数据
@@ -37,6 +40,14 @@ const props = defineProps({
   bizData: { // 业务数据
     type: Object,
     default: {}
+  },
+  conditionNodes: { // 条件集合，当节点类型为condition时有效
+    type: Array,
+    default: []
+  },
+  conditionIndex: { // 当前条件节点的顺序，当节点类型为condition时有效
+    type: Number,
+    default: 0
   },
   canRemoved: { // 当前节点是否可以移除
     type: Boolean,
@@ -65,6 +76,12 @@ Object.keys(nodeConfig).forEach(key => {
   nodeComponents.value[key] = component
 })
 
+// 节点左右移动按钮状态
+const isShowLeftMoveBtn = ref(false)
+const isSelectedLeftMoveBtn = ref(false)
+const isShowRightMoveBtn = ref(false)
+const isSelectedRightMoveBtn = ref(false)
+
 onMounted(async () => {
 
 });
@@ -80,6 +97,61 @@ const showNodeDrawer = () => {
 const emit = defineEmits(["removeNode"]);
 const removeNode = () => {
   emit("removeNode");
+}
+
+// 鼠标移入事件
+const mouseenter = () => {
+  showMoveBtn(1, true)
+  showMoveBtn(2, true)
+}
+
+// 鼠标移出事件
+const mouseleave = () => {
+  showMoveBtn(1, false)
+  showMoveBtn(2, false)
+}
+
+// 节点左右移动按钮状态
+const showMoveBtn = (direction, flag) => {
+  let index = props.conditionIndex
+  let length = props.conditionNodes.length
+  if(props.node.nodeType == CONDITION && index != length - 1) {
+    if(direction == 1 && index != 0) {
+      isShowLeftMoveBtn.value = flag
+    } else if (direction == 2 && index != length - 2) {
+      isShowRightMoveBtn.value = flag
+    }
+
+  }
+}
+
+const selectedMoveBtn = (direction, flag) => {
+  if (direction == 1) {
+    isSelectedLeftMoveBtn.value = flag
+  } else {
+    isSelectedRightMoveBtn.value = flag
+  }
+}
+
+/**
+ * 移动节点
+ * @param direction 方向：1-左移 2-右移
+ */
+const moveNode = (direction) => {
+  let index = props.conditionIndex
+  let length = props.conditionNodes.length
+  if (direction == 1) {
+    console.log("1111")
+    let c = props.conditionNodes[index]
+    props.conditionNodes[index] = props.conditionNodes[index - 1]
+    props.conditionNodes[index - 1] = c
+
+  } else {
+    console.log("222")
+    let c = props.conditionNodes[index]
+    props.conditionNodes[index] = props.conditionNodes[index + 1]
+    props.conditionNodes[index + 1] = c
+  }
 }
 
 // 更新节点配置属性
@@ -113,6 +185,7 @@ const cancelUpdateConfig = () => {
   box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
   white-space: normal;
   word-break: break-word;
+  position: relative;
 
   .ep-node-header {
     width: 100%;
@@ -156,11 +229,18 @@ const cancelUpdateConfig = () => {
 
 .ep-node-move {
   position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .ep-node-move-left {
-
+  left: -40px;
 }
 .ep-node-move-right {
-
+  right: -40px;
+}
+.ep-node-move-icon {
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
 }
 </style>
