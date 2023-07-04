@@ -1,7 +1,7 @@
 <template>
   <div class="ep-node-add">
     <div class="ep-node-add-btn" v-on:mouseenter="showAddSelect(true)" v-on:mouseleave="showAddSelect(false)">
-      <el-icon class="ep-node-add-btn-icon"><Plus /></el-icon>
+      <svg-icon icon-class="plus" class="ep-node-add-btn-icon" color="#FFFFFF"/>
       <div class="ep-node-add-select">
         <div class="ep-node-add-select-box" v-if="isShowAddSelect">
           <div :class="{'ep-node-add-select-item': true, 'ep-node-add-selected': item.selected}" v-for="item in nodeSelect" v-on:click="addNode(item.type)" v-on:mouseenter="addNodeSelected(item, true)" v-on:mouseleave="addNodeSelected(item, false)">

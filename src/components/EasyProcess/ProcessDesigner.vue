@@ -7,9 +7,9 @@
     </div>
     <!-- 缩放 -->
     <div class="ep-zoom">
-      <div class="ep-zoom-out" :class="zoom == 50 && 'disabled'" @click="setZoom(1)"></div>
+      <svg-icon icon-class="subtract" class="ep-zoom-icon" color="#5a5e66" :class="zoom == 50 && 'disabled'" @click="setZoom(1)"/>
       <span>{{ zoom }}%</span>
-      <div class="ep-zoom-in" :class="zoom == 300 && 'disabled'" @click="setZoom(2)"></div>
+      <svg-icon icon-class="plus" class="ep-zoom-icon" color="#5a5e66" :class="zoom == 300 && 'disabled'" @click="setZoom(2)"/>
     </div>
   </div>
 </template>
@@ -93,26 +93,22 @@ defineExpose({
   display: flex;
   justify-content: center;
   box-sizing: border-box;
-  padding: 16px;
   width: 100%;
   height: 100%;
   background-color: #f5f5f7;
   overflow-x: hidden;
   overflow-y: auto;
+  padding: 16px;
 }
 
 .ep-process {
-  width: 100%;
+
 }
 
 .ep-zoom {
   display: flex;
   position: absolute;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   height: 40px;
   width: 125px;
@@ -121,30 +117,10 @@ defineExpose({
   z-index: 10
 }
 
-.ep-zoom .ep-zoom-in,
-.ep-zoom .ep-zoom-out {
-  width: 30px;
-  height: 30px;
-  background: #fff;
-  color: #c1c1cd;
+.ep-zoom-icon {
+  width: 25px;
+  height: 25px;
   cursor: pointer;
-  background-size: 100%;
-  background-repeat: no-repeat;
-}
-
-.ep-zoom .ep-zoom-out {
-  background-image: url(https://gw.alicdn.com/tfs/TB1s0qhBHGYBuNjy0FoXXciBFXa-90-90.png)
-}
-
-.ep-zoom .ep-zoom-out.disabled {
-  opacity: .5
-}
-
-.ep-zoom .ep-zoom-in {
-  background-image: url(https://gw.alicdn.com/tfs/TB1UIgJBTtYBeNjy1XdXXXXyVXa-90-90.png)
-}
-
-.ep-zoom .ep-zoom-in.disabled {
-  opacity: .5
+  border: 1px solid #5a5e66;
 }
 </style>
