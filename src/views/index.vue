@@ -16,18 +16,15 @@
 import ProcessDesigner from "@/components/EasyProcess/ProcessDesigner";
 import { ElMessageBox } from 'element-plus'
 import {getCurrentInstance, onMounted, ref} from "vue";
-import { getWorkFlowData } from "@/api/api.js";
 const { proxy } = getCurrentInstance();
+import mockData from '~/public/mock/data.json'
 
 // 审批数据
 let processData = ref({})
 
 onMounted(async () => {
   // 获取审批数据
-  getWorkFlowData({processId: '10001'}).then(response => {
-    console.info("getWorkFlowData", response)
-    processData.value = response.data;
-  })
+  processData.value = mockData;
 })
 
 /**
