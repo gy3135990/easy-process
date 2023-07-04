@@ -102,7 +102,8 @@ defineExpose({
 }
 
 .ep-process {
-
+  position: relative;
+  height: 100%;
 }
 
 .ep-zoom {
