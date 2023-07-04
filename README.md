@@ -16,7 +16,9 @@
 
 ## 体验入口
 
-别着急，正在部署中……
+[戳我体验](http://process.uncodeshop.com)
+
+
 
 ## 开发环境
 
@@ -44,7 +46,6 @@ easy-process
 ├─ public
 │  └─ mock								// mock测试数据
 ├─ src
-│  └─ api								// API接口
 │  └─ assets							// 静态资源
 │  └─ components
 │    └─ EasyProcess						// 流程设计器
@@ -76,8 +77,6 @@ easy-process
 │        └─ utils						
 │          └─ tools.js					// 工具类
 │    └─ SvgIcon							// svg图标组件
-│  └─ utils
-│    └─ request.js						// axios工具类
 │  └─ views
 │    └─ index.vue						// demo
 ├─ README.md							// 使用手册
