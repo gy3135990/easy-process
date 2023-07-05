@@ -12,10 +12,13 @@
 
 - MIT
 
+## 项目地址
+
+[https://gitee.com/quxiou-code/easy-process](https://gitee.com/quxiou-code/easy-process)
+
 ## 体验入口
 
-[戳我体验](http://process.uncodeshop.com/)
-
+[http://process.uncodeshop.com](http://process.uncodeshop.com)
 
 
 ## 开发环境
