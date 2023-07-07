@@ -13,8 +13,11 @@ Easy Process 流程设计器，基于vue3 + vite4 + element-plus实现，具备�
 - MIT
 
 ## 项目地址
-
+### gitee
 [https://gitee.com/quxiou-code/easy-process](https://gitee.com/quxiou-code/easy-process)
+
+### github
+[https://github.com/gy3135990/easy-process](https://github.com/gy3135990/easy-process)
 
 ## 体验入口
 
@@ -219,7 +222,7 @@ nodeConfig[NEWTYPE] = {
     "bgColor": "#808000", // 节点标题背景颜色
     "canAdd": true, // 节点是否可以增加
     "canRemoved": true, // 节点是否能够移除
-    "hasDrawer": true,
+    "hasDrawer": true, // 节点是否可以进行配置(点击后侧弹出属性配置抽屉)
     "icon": { // 图标
         "name": "notify", // 图标名，项目使用的是svg图标，请将图标文件放至src/assets/icons/svg目录下（注：如果你导入的svg图标设置颜色不生效，请用IDE打开图标文件，找到并删除fill属性（可能存在多个）并保存即可）
         "color": "#808000" // 颜色
