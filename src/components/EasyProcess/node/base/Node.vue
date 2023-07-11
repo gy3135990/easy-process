@@ -174,11 +174,12 @@ const moveNode = (direction) => {
 // 更新节点配置属性
 const updateConfig = (data) => {
   props.node.config = data
+  props.validator.validate()
 }
 
 // 取消更新节点配置属性
 const cancelUpdateConfig = () => {
-
+  props.validator.validate()
 }
 
 // 注册验证器
