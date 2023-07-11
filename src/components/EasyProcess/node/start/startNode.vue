@@ -17,9 +17,18 @@ const props = defineProps({
 
 const { proxy } = getCurrentInstance();
 
+const emit = defineEmits(["validator"]);
 onMounted(async () => {
-
+  emit("validator", validator);
 });
+
+// 验证器
+const validator = () => {
+  return {
+    "valid": props.node.config.name ? true : false,
+    "message": "请选择发起人"
+  }
+}
 
 </script>
 

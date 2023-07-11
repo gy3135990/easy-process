@@ -1,13 +1,13 @@
 <template>
   <div :class="{'ep-node': true, 'ep-node-arrows': !isStart}">
-    <div class="ep-node-content" @mouseenter="mouseenter(true)" @mouseleave="mouseleave(false)">
+    <div :class="{'ep-node-content': true, 'ep-node-error': !validatorResult.valid}" @mouseenter="mouseenter(true)" @mouseleave="mouseleave(false)">
       <div class="ep-node-header" :style="{color: config.color, 'background-color': config.bgColor}">
         <svg-icon :icon-class="config.icon.name" class="ep-node-icon" color="#FFFFFF"/>
         <div class="ep-node-header-title">{{config.title}}</div>
         <svg-icon icon-class="close" class="ep-node-close" color="#FFFFFF" v-if="props.canRemoved && config.canRemoved" @click="removeNode"/>
       </div>
       <div class="ep-node-body" @click="showNodeDrawer">
-        <component :is="nodeComponents[props.node.nodeType]" :node="props.node" :bizData="props.bizData"/>
+        <component ref="node" :is="nodeComponents[props.node.nodeType]" :node="props.node" :bizData="props.bizData" @validator="validator"/>
       </div>
 
       <div class="ep-node-move ep-node-move-left" v-if="isShowLeftMoveBtn">
@@ -15,6 +15,12 @@
       </div>
       <div class="ep-node-move ep-node-move-right" v-if="isShowRightMoveBtn">
         <svg-icon icon-class="right" class="ep-node-move-icon" :color="isSelectedRightMoveBtn ? '#1e83e9' : '#696969'" @click="moveNode(2)" @mouseenter="selectedMoveBtn(2, true)" @mouseleave="selectedMoveBtn(2, false)"/>
+      </div>
+      <div class="ep-node-error-msg" v-if="!validatorResult.valid">
+        <div class="ep-node-error-msg-box">
+          <svg-icon icon-class="tips" class="ep-node-error-icon" color="red" @mouseenter="showErrorTips(true)" @mouseleave="showErrorTips(false)"/>
+          <div class="ep-node-error-tips" v-if="errorTips">请选择发起人</div>
+        </div>
       </div>
     </div>
     <AddNode :node="props.node"/>
@@ -29,7 +35,7 @@ import Drawer from "./Drawer";
 import AddNode from "./AddNode";
 import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent, watch, computed} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
-import {copy} from "../../utils/tools";
+import {copy, getUUID} from "../../utils/tools";
 import {START, CONDITION} from "../../config/nodeType"
 
 const props = defineProps({
@@ -53,9 +59,14 @@ const props = defineProps({
     type: Boolean,
     default: true
   },
+  validator: {
+    type: Object
+  }
 });
 
 const { proxy } = getCurrentInstance();
+
+const nodeId = getUUID()
 
 // 节点配置数据
 const config = ref(nodeConfig[props.node.nodeType])
@@ -81,6 +92,10 @@ const isShowLeftMoveBtn = ref(false)
 const isSelectedLeftMoveBtn = ref(false)
 const isShowRightMoveBtn = ref(false)
 const isSelectedRightMoveBtn = ref(false)
+
+// 验证结果
+const validatorResult = ref({valid: true})
+const errorTips = ref(false)
 
 onMounted(async () => {
 
@@ -165,6 +180,22 @@ const updateConfig = (data) => {
 const cancelUpdateConfig = () => {
 
 }
+
+// 注册验证器
+const validator = (fun) => {
+  if(fun && fun instanceof Function) {
+    props.validator.registerNodeRules(nodeId, () => {
+      let result = fun()
+      validatorResult.value = result
+      return result
+    })
+  }
+}
+
+const showErrorTips = (flag) => {
+  errorTips.value = flag
+}
+
 </script>
 
 <style lang="less" scoped>
@@ -205,6 +236,7 @@ const cancelUpdateConfig = () => {
   white-space: normal;
   word-break: break-word;
   position: relative;
+  box-sizing: border-box;
 
   .ep-node-header {
     width: 100%;
@@ -215,6 +247,7 @@ const cancelUpdateConfig = () => {
     border-top-right-radius: 5px;
     padding: 5px 10px;
     color: #FFFFFF;
+    box-sizing: border-box;
 
     .ep-node-icon {
       font-size: 16px;
@@ -243,7 +276,55 @@ const cancelUpdateConfig = () => {
     padding: 10px;
     color: #5a5e66;
     cursor: pointer;
+    box-sizing: border-box;
   }
+}
+
+.ep-node-error {
+  border: 2px solid red;
+}
+.ep-node-error-msg {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -55px;
+  z-index: 1;
+
+  .ep-node-error-msg-box {
+    position: relative;
+    .ep-node-error-icon {
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+    }
+    .ep-node-error-tips {
+      position: absolute;
+      z-index: 3;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 45px;
+      min-width: 150px;
+      background-color: #FFFFFF;
+      border-radius: 5px;
+      box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
+      display: flex;
+      padding: 16px;
+
+
+      &:before{
+        content: '';
+        width: 0;
+        height: 0;
+        border: 10px solid;
+        position: absolute;
+        top: 50%;
+        left: -20px;
+        transform: translateY(-50%);
+        border-color: transparent #FFFFFF transparent transparent;
+      }
+    }
+  }
+
 }
 
 .ep-node-move {
@@ -252,10 +333,10 @@ const cancelUpdateConfig = () => {
   transform: translateY(-50%);
 }
 .ep-node-move-left {
-  left: -40px;
+  left: -30px;
 }
 .ep-node-move-right {
-  right: -40px;
+  right: -30px;
 }
 .ep-node-move-icon {
   width: 35px;

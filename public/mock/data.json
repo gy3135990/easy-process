@@ -5,7 +5,7 @@
     "nodeName": "发起人",
     "nodeType": "start",
     "config": {
-      "name": "张三"
+      "name": null
     },
     "childNode": {
       "nodeName": "审批人",

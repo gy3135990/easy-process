@@ -5,7 +5,7 @@
     <div class="ep-node-router-box">
       <div class="ep-node-router-col" v-for="(condition, index) in props.node.conditionNodes">
         <!-- 生成节点 -->
-        <NodeWrap :node="condition" :bizData="props.bizData" :conditionNodes="props.node.conditionNodes" :conditionIndex="index" @removeNode="removeCondition(index)" :canRemoved="!condition.isLastCondition"/>
+        <NodeWrap :node="condition" :bizData="props.bizData" :validator="props.validator" :conditionNodes="props.node.conditionNodes" :conditionIndex="index" @removeNode="removeCondition(index)" :canRemoved="!condition.isLastCondition"/>
         <!-- 用来遮挡最左列的线 -->
         <template v-if="index == 0">
           <div class="cover-line top-left-cover-line"></div>
@@ -39,6 +39,9 @@ const props = defineProps({
     type: Object,
     default: {}
   },
+  validator: {
+    type: Object
+  }
 });
 
 const { proxy } = getCurrentInstance();

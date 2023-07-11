@@ -2,7 +2,7 @@
   <div class="ep-container">
     <!-- 流程 -->
     <div class="ep-process" :style="`transform: scale(${ zoom / 100});`">
-      <NodeWrap v-if="processData && processData.nodeConfig" :node="processData.nodeConfig" :bizData="processData.bizData"/>
+      <NodeWrap v-if="processData && processData.nodeConfig" :node="processData.nodeConfig" :bizData="processData.bizData" :validator="validator"/>
       <EndNode/>
     </div>
     <!-- 缩放 -->
@@ -21,6 +21,7 @@ import EndNode from "./node/end/EndNode";
 import {ref, reactive, onMounted, getCurrentInstance, toRaw, watch} from "vue";
 import {defaultConfig} from "./config/defaultConfig";
 import {copy} from "./utils/tools";
+import Validator from "./utils/validator";
 import {nodeConfig} from "./config/nodeConfig";
 
 const { proxy } = getCurrentInstance();
@@ -35,6 +36,8 @@ const props = defineProps({
 // 缩放值
 let zoom = ref(100);
 
+let validator = new Validator();
+
 // 流程数据
 let processData = ref({});
 watch(
@@ -43,6 +46,7 @@ watch(
       init()
     }
 );
+
 
 onMounted(async () => {
   init()
@@ -75,6 +79,11 @@ const init = () => {
   }
 }
 
+const validate = (callback) => {
+  let result = validator.validate()
+  callback(result.valid, result.messages)
+}
+
 /**
  * 获取流程配置结果
  */
@@ -83,6 +92,7 @@ const getResult = () => {
 }
 
 defineExpose({
+  validate,
   getResult
 });
 </script>

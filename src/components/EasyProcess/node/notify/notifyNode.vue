@@ -25,6 +25,14 @@ onMounted(async () => {
 
 });
 
+// 验证器
+const validator = () => {
+
+}
+
+defineExpose({
+  validator
+});
 </script>
 
 <style lang="less" scoped>

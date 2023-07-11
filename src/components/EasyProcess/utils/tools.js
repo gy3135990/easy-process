@@ -1,3 +1,13 @@
+import {v4 as uuidv4 } from 'uuid'
+
+/**
+ * 获取UUID
+ * @returns {*}
+ */
+export const getUUID = () =>{
+    return uuidv4()
+}
+
 /**
  * 复制对象(深拷贝)
  * @param source

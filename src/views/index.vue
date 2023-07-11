@@ -31,9 +31,17 @@ onMounted(async () => {
  * 发布流程
  */
 const publish = () => {
-  let result = proxy.$refs.process.getResult();
-  console.info("发布流程:", result)
-  ElMessageBox.alert(result, '结果')
+  proxy.$refs.process.validate((valid, messages) => {
+    if(valid) {
+      let result = proxy.$refs.process.getResult();
+      console.info("发布流程:", result)
+      ElMessageBox.alert(result, '结果')
+    } else {
+      ElMessageBox.alert(messages, '结果')
+    }
+
+  })
+
 }
 </script>
 
