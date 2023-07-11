@@ -19,7 +19,7 @@
       <div class="ep-node-error-msg" v-if="!validatorResult.valid">
         <div class="ep-node-error-msg-box">
           <svg-icon icon-class="tips" class="ep-node-error-icon" color="red" @mouseenter="showErrorTips(true)" @mouseleave="showErrorTips(false)"/>
-          <div class="ep-node-error-tips" v-if="errorTips">请选择发起人</div>
+          <div class="ep-node-error-tips" v-if="errorTips && validatorResult.message">{{validatorResult.message}}</div>
         </div>
       </div>
     </div>
