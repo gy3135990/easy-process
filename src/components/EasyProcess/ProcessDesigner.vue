@@ -89,7 +89,6 @@ defineExpose({
 <style lang="less" scoped>
 
 .ep-container {
-  position: relative;
   display: flex;
   justify-content: center;
   box-sizing: border-box;
@@ -114,7 +113,7 @@ defineExpose({
   height: 40px;
   width: 125px;
   right: 40px;
-  margin-top: 30px;
+  top: 70px;
   z-index: 10
 }
 
