@@ -1,5 +1,5 @@
 <template>
-  <div class="ep-node">
+  <div :class="{'ep-node': true, 'ep-node-arrows': !isStart}">
     <div class="ep-node-content" @mouseenter="mouseenter(true)" @mouseleave="mouseleave(false)">
       <div class="ep-node-header" :style="{color: config.color, 'background-color': config.bgColor}">
         <svg-icon :icon-class="config.icon.name" class="ep-node-icon" color="#FFFFFF"/>
@@ -27,10 +27,10 @@
 <script setup name="Node">
 import Drawer from "./Drawer";
 import AddNode from "./AddNode";
-import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent, watch} from "vue";
+import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent, watch, computed} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
 import {copy} from "../../utils/tools";
-import {CONDITION} from "../../config/nodeType"
+import {START, CONDITION} from "../../config/nodeType"
 
 const props = defineProps({
   node: { // 传入的流程节点数据
@@ -85,6 +85,10 @@ const isSelectedRightMoveBtn = ref(false)
 onMounted(async () => {
 
 });
+
+const isStart = computed(() => {
+  return props.node.nodeType == START
+})
 
 // 显示节点配置组件
 const showNodeDrawer = () => {
@@ -170,6 +174,23 @@ const cancelUpdateConfig = () => {
   align-items: center;
   position: relative;
   margin: 0px 100px;
+}
+
+.ep-node-arrows {
+  &:before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    width: 0;
+    height: 4px;
+    border-style: solid;
+    border-width: 8px 6px 4px;
+    border-color: #cacaca transparent transparent;
+    background: #f5f5f7
+  }
 }
 
 .ep-node-content {
