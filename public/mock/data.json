@@ -11,7 +11,7 @@
       "nodeName": "审批人",
       "nodeType": "approver",
       "config": {
-        "name": "张三"
+        "name": null
       },
       "childNode": {
         "nodeName": "路由",

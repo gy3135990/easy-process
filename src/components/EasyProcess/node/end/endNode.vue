@@ -34,6 +34,7 @@ onMounted(async () => {
   justify-content: center;
   align-items: center;
 
+
   .ep-node-end-icon {
     width: 15px;
     height: 15px;
@@ -42,6 +43,7 @@ onMounted(async () => {
   }
   .ep-node-end-text {
     color: #5a5e66;
+    margin-bottom: 20px;
   }
 }
 </style>

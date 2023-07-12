@@ -74,6 +74,7 @@ watch(
     () => props.node,
     (val) => {
       config.value = nodeConfig[props.node.nodeType]
+      props.validator.validate()
     }
 );
 

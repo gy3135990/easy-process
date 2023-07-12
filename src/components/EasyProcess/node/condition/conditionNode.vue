@@ -31,18 +31,24 @@ const { proxy } = getCurrentInstance();
 // 流程配置数据
 let config = ref({});
 
+const emit = defineEmits(["validator"]);
 onMounted(async () => {
-
+  emit("validator", validator);
 });
 
 // 验证器
 const validator = () => {
-
+  let valid = true;
+  if (!props.node.isLastCondition) {
+    if (!props.node.config.days) {
+      valid = false
+    }
+  }
+  return {
+    "valid": valid,
+    "message": "请选择条件"
+  }
 }
-
-defineExpose({
-  validator
-});
 </script>
 
 <style lang="less" scoped>

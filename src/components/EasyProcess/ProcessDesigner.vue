@@ -16,7 +16,7 @@
 
 <script setup name="ProcessDesigner">
 import NodeWrap from "./node/NodeWrap";
-import EndNode from "./node/end/EndNode";
+import EndNode from "./node/end/endNode";
 
 import {ref, reactive, onMounted, getCurrentInstance, toRaw, watch} from "vue";
 import {defaultConfig} from "./config/defaultConfig";
