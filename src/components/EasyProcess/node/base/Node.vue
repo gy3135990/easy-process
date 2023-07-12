@@ -104,6 +104,7 @@ onMounted(async () => {
 
 onUnmounted(async () => {
   props.validator.removeNodeRules(nodeId)
+  props.validator.validate()
 });
 
 const isStart = computed(() => {
