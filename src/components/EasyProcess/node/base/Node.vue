@@ -33,7 +33,7 @@
 <script setup name="Node">
 import Drawer from "./Drawer";
 import AddNode from "./AddNode";
-import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent, watch, computed} from "vue";
+import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent, watch, computed, onUnmounted} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
 import {copy, getUUID} from "../../utils/tools";
 import {START, CONDITION} from "../../config/nodeType"
@@ -100,6 +100,10 @@ const errorTips = ref(false)
 
 onMounted(async () => {
 
+});
+
+onUnmounted(async () => {
+  props.validator.removeNodeRules(nodeId)
 });
 
 const isStart = computed(() => {

@@ -74,9 +74,7 @@ const addNode = (nodeType) => {
     let addNode = copy(typeConfig.defaultNode)
     let childNode = copy(props.node.childNode)
     addNode.childNode = childNode
-    console.info("addNode", addNode)
     props.node.childNode = addNode
-    console.info("props.node.childNode", props.node.childNode)
   }
 }
 </script>
