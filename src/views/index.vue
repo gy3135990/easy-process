@@ -9,11 +9,13 @@
     <div class="body">
       <ProcessDesigner ref="process" :data="processData"/>
     </div>
+    <Drawer></Drawer>
   </div>
 </template>
 
 <script setup name="WorkFlow">
 import ProcessDesigner from "@/components/EasyProcess/ProcessDesigner";
+import Drawer from "@/components/Drawer/Drawer";
 import { ElMessageBox } from 'element-plus'
 import {getCurrentInstance, onMounted, ref} from "vue";
 const { proxy } = getCurrentInstance();
