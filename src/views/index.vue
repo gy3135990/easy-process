@@ -9,7 +9,19 @@
     <div class="body">
       <ProcessDesigner ref="process" :data="processData"/>
     </div>
-    <Drawer></Drawer>
+    <Drawer v-model="showDrawer" title="测试标题" icon="setting" :with-header="false">
+      <template #default>
+        <el-form  label-width="80px">
+          <el-form-item label="审核人">
+            <el-input  />
+          </el-form-item>
+        </el-form>
+      </template>
+      <template #footer>
+        <el-button>取消</el-button>
+        <el-button type="primary">确定</el-button>
+      </template>
+    </Drawer>
   </div>
 </template>
 
@@ -23,6 +35,7 @@ import mockData from '~/public/mock/data.json'
 
 // 审批数据
 let processData = ref({})
+let showDrawer = ref(true)
 
 onMounted(async () => {
   // 获取审批数据

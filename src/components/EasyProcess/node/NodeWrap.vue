@@ -1,7 +1,7 @@
 <template>
   <div class="ep-node-wrap" v-if="props.node">
     <RouterNode :node="props.node" :bizData="props.bizData" :validator="props.validator" @removeNode="removeNode" v-if="props.node.nodeType == 'router'"/>
-    <Node :node="props.node" :bizData="props.bizData" :validator="props.validator" :conditionNodes="props.conditionNodes" :conditionIndex="props.conditionIndex" :canRemoved="props.canRemoved" @removeNode="removeNode" v-else/>
+    <BaseNode :node="props.node" :bizData="props.bizData" :validator="props.validator" :conditionNodes="props.conditionNodes" :conditionIndex="props.conditionIndex" :canRemoved="props.canRemoved" @removeNode="removeNode" v-else/>
     <!-- 子节点 -->
     <NodeWrap :node="props.node.childNode" :validator="props.validator" @removeNode="removeChildNode" v-if="props.node.childNode && props.node.childNode.nodeType" />
   </div>
@@ -10,7 +10,7 @@
 <script setup name="NodeWrap">
 import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent} from "vue";
 import {nodeConfig} from "../config/nodeConfig";
-import Node from "./base/Node";
+import BaseNode from "./base/BaseNode";
 import RouterNode from "./router/RouterNode";
 
 const props = defineProps({

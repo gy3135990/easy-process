@@ -12,7 +12,6 @@
 </template>
 
 <script setup name="ConditionNode">
-import Node from "../base/Node";
 import {ref, reactive, onMounted, getCurrentInstance} from "vue";
 
 const props = defineProps({

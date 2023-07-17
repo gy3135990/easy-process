@@ -26,12 +26,12 @@
     <AddNode :node="props.node"/>
 
     <!-- 节点配置Drawer -->
-    <Drawer ref="nodeDrawer" @updateConfig="updateConfig" @cancelUpdateConfig="cancelUpdateConfig"/>
+    <BaseDrawer ref="nodeDrawer" @updateConfig="updateConfig" @cancelUpdateConfig="cancelUpdateConfig"/>
   </div>
 </template>
 
-<script setup name="Node">
-import Drawer from "./Drawer";
+<script setup name="BaseNode">
+import BaseDrawer from "./BaseDrawer";
 import AddNode from "./AddNode";
 import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent, watch, computed, onUnmounted} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";

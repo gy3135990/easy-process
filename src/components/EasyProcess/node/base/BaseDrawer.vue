@@ -23,7 +23,7 @@
     </el-drawer>
   </div>
 </template>
-<script setup name="Drawer">
+<script setup name="BaseDrawer">
 import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
 import {copy} from "../../utils/tools";
