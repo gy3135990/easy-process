@@ -2,7 +2,10 @@
   <div class="ep-container">
     <!-- 流程 -->
     <div class="ep-process" :style="`transform: scale(${ zoom / 100});`">
-      <NodeWrap v-if="processData && processData.nodeConfig" :node="processData.nodeConfig" :bizData="processData.bizData" :validator="validator"/>
+      <!-- 递归节点 -->
+      <NodeWrap v-if="processData && processData.nodeConfig" :node="processData.nodeConfig"
+                :bizData="processData.bizData" :validator="validator"/>
+      <!-- 结束节点 -->
       <EndNode/>
     </div>
     <!-- 缩放 -->
@@ -18,7 +21,7 @@
 import NodeWrap from "./node/NodeWrap";
 import EndNode from "./node/end/endNode";
 
-import {ref, reactive, onMounted, getCurrentInstance, toRaw, watch} from "vue";
+import {ref, onMounted, getCurrentInstance, watch} from "vue";
 import {defaultConfig} from "./config/defaultConfig";
 import {copy} from "./utils/tools";
 import Validator from "./utils/validator";

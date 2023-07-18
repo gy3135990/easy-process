@@ -1,6 +1,6 @@
 <template>
   <div v-if="node" class="ep-node-drawer-container">
-    <Drawer v-model="isShow" :title="config.title + '设置'" icon="setting" width="600px">
+    <Drawer v-model="isShow" :title="`${config.title}设置`" icon="setting" width="600px">
       <template #default>
         <component :is="drawerComponents[node.nodeType]" :config="node.config" :bizData="bizData"/>
       </template>
@@ -14,7 +14,7 @@
 <script setup name="BaseDrawer">
 import Drawer from "@/components/Drawer/Drawer";
 import Button from "@/components/Button/Button";
-import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent} from "vue";
+import {ref, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
 import {copy} from "../../utils/tools";
 

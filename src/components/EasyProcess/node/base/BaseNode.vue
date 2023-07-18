@@ -1,21 +1,27 @@
 <template>
   <div :class="{'ep-node': true, 'ep-node-arrows': !isStart}">
     <div :class="{'ep-node-content': true, 'ep-node-error': !validatorResult.valid}" @mouseenter="mouseenter(true)" @mouseleave="mouseleave(false)">
+      <!-- header -->
       <div class="ep-node-header" :style="{color: config.color, 'background-color': config.bgColor}">
         <svg-icon :icon-class="config.icon.name" class="ep-node-icon" color="#FFFFFF"/>
         <div class="ep-node-header-title">{{config.title}}</div>
         <svg-icon icon-class="close" class="ep-node-close" color="#FFFFFF" v-if="props.canRemoved && config.canRemoved" @click="removeNode"/>
       </div>
+      <!-- body -->
       <div class="ep-node-body" @click="showNodeDrawer">
         <component ref="node" :is="nodeComponents[props.node.nodeType]" :node="props.node" :bizData="props.bizData" @validator="validator"/>
       </div>
-
+      <!-- 同级节点左移动 -->
       <div class="ep-node-move ep-node-move-left" v-if="isShowLeftMoveBtn">
-        <svg-icon icon-class="left" class="ep-node-move-icon" :color="isSelectedLeftMoveBtn ? '#1e83e9' : '#696969'" @click="moveNode(1)" @mouseenter="selectedMoveBtn(1, true)" @mouseleave="selectedMoveBtn(1, false)"/>
+        <svg-icon icon-class="left" class="ep-node-move-icon" :color="isSelectedLeftMoveBtn ? '#1e83e9' : '#696969'"
+                  @click="moveNode(1)" @mouseenter="selectedMoveBtn(1, true)" @mouseleave="selectedMoveBtn(1, false)"/>
       </div>
+      <!-- 同级节点右移动 -->
       <div class="ep-node-move ep-node-move-right" v-if="isShowRightMoveBtn">
-        <svg-icon icon-class="right" class="ep-node-move-icon" :color="isSelectedRightMoveBtn ? '#1e83e9' : '#696969'" @click="moveNode(2)" @mouseenter="selectedMoveBtn(2, true)" @mouseleave="selectedMoveBtn(2, false)"/>
+        <svg-icon icon-class="right" class="ep-node-move-icon" :color="isSelectedRightMoveBtn ? '#1e83e9' : '#696969'"
+                  @click="moveNode(2)" @mouseenter="selectedMoveBtn(2, true)" @mouseleave="selectedMoveBtn(2, false)"/>
       </div>
+      <!-- 校验错误提示 -->
       <div class="ep-node-error-msg" v-if="!validatorResult.valid">
         <div class="ep-node-error-msg-box">
           <svg-icon icon-class="tips" class="ep-node-error-icon" color="red" @mouseenter="showErrorTips(true)" @mouseleave="showErrorTips(false)"/>
@@ -33,7 +39,7 @@
 <script setup name="BaseNode">
 import BaseDrawer from "./BaseDrawer";
 import AddNode from "./AddNode";
-import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent, watch, computed, onUnmounted} from "vue";
+import {ref, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent, watch, computed, onUnmounted} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
 import {copy, getUUID} from "../../utils/tools";
 import {START, CONDITION} from "../../config/nodeType"

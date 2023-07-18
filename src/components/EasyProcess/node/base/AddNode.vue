@@ -17,7 +17,7 @@
 </template>
 
 <script setup name="AddNode">
-import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent} from "vue";
+import {ref, onMounted, getCurrentInstance} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
 import {copy} from "../../utils/tools";
 

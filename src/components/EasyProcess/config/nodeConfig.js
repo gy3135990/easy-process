@@ -84,7 +84,7 @@ nodeConfig[APPROVER] = {
     "bgColor": "#FF8C00", // 节点标题背景颜色
     "canAdd": true, // 节点是否可以增加
     "canRemoved": true, // 节点是否能够移除
-    "hasDrawer": true,
+    "hasDrawer": true, // 节点是否可以进行配置
     "icon": { // 图标
         "name": "approver", // 图标名
         "color": "#FF8C00" // 颜色
@@ -104,7 +104,7 @@ nodeConfig[NOTIFY] = {
     "bgColor": "#808000", // 节点标题背景颜色
     "canAdd": true, // 节点是否可以增加
     "canRemoved": true, // 节点是否能够移除
-    "hasDrawer": true,
+    "hasDrawer": true, // 节点是否可以进行配置
     "icon": { // 图标
         "name": "notify", // 图标名
         "color": "#808000" // 颜色
