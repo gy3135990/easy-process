@@ -1,29 +1,19 @@
 <template>
   <div v-if="node" class="ep-node-drawer-container">
-    <el-drawer v-model="isShow" class="ep-node-drawer" :append-to-body="true" :with-header="false">
+    <Drawer v-model="isShow" :title="config.title + '设置'" icon="setting" width="600px">
       <template #default>
-        <div class="ep-node-drawer-header">
-          <div class="ep-node-drawer-header-icon">
-            <el-icon><Setting /></el-icon>
-          </div>
-          <div class="ep-node-drawer-header-title">
-            {{config.title}}设置
-          </div>
-        </div>
-        <div class="ep-node-drawer-body">
-          <component :is="drawerComponents[node.nodeType]" :config="node.config" :bizData="bizData"/>
-        </div>
+        <component :is="drawerComponents[node.nodeType]" :config="node.config" :bizData="bizData"/>
       </template>
       <template #footer>
-        <div style="flex: auto">
-          <el-button @click="cancelUpdateConfig">取消</el-button>
-          <el-button type="primary" @click="updateConfig">确定</el-button>
-        </div>
+        <Button @click="cancelUpdateConfig">取消</Button>
+        <Button type="primary" @click="updateConfig">确定</Button>
       </template>
-    </el-drawer>
+    </Drawer>
   </div>
 </template>
 <script setup name="BaseDrawer">
+import Drawer from "@/components/Drawer/Drawer";
+import Button from "@/components/Button/Button";
 import {ref, reactive, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
 import {copy} from "../../utils/tools";
@@ -86,35 +76,9 @@ defineExpose({
 });
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 
 .ep-node-drawer {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
 
-  .el-drawer__body {
-    padding: 0 !important;
-  }
-}
-
-.ep-node-drawer-header {
-  display: flex;
-  padding: 20px;
-  border-bottom: 1px solid #cacaca;
-
-  .ep-node-drawer-header-icon {
-    font-size: 20px;
-    margin-right: 8px;
-  }
-  .ep-node-drawer-header-title {
-    color: #5a5e66;
-    font-size: 16px;
-    font-weight: bold;
-  }
-}
-.ep-node-drawer-body {
-  padding: 20px;
-  overflow-y: auto;
 }
 </style>

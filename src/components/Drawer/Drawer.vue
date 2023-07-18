@@ -2,10 +2,10 @@
   <Teleport to="body" v-if="props.modelValue">
     <div class="drawer">
       <!-- header -->
-      <div class="drawer-header" v-if="!props.withHeader">
+      <div class="drawer-header" v-if="!props.hideHeader">
         <svg-icon :icon-class="props.icon" class="drawer-header-icon" color="#5a5e66" v-if="props.icon"/>
         <div class="drawer-header-title">{{props.title}}</div>
-        <svg-icon icon-class="close" class="drawer-header-close" color="#5a5e66"/>
+        <svg-icon icon-class="close" class="drawer-header-close" color="#5a5e66" @click="close" v-if="!props.hideCloseBtn"/>
       </div>
       <!-- body -->
       <div class="drawer-body">
@@ -13,9 +13,7 @@
       </div>
       <!-- footer -->
       <div class="drawer-footer">
-        <slot name="footer">
-
-        </slot>
+        <slot name="footer"></slot>
       </div>
     </div>
     <!-- 遮罩 -->
@@ -24,7 +22,7 @@
 </template>
 
 <script setup name="Drawer">
-import {ref, reactive, onMounted, getCurrentInstance} from "vue";
+import {ref, reactive, onMounted, onUnmounted, getCurrentInstance} from "vue";
 
 const props = defineProps({
   modelValue: {
@@ -43,16 +41,42 @@ const props = defineProps({
     type: Number,
     default: 2000
   },
-  'with-header': { // 控制是否显示 header 栏, 默认为 true, 当此项为 false 时, title attribute 和 title slot 均不生效
+  'hide-header': { // 控制是否显示 header 栏, 默认为 false
     type: Boolean,
     default: false
+  },
+  'hide-close-btn': { // 控制是否显示 关闭按钮, 默认为 false
+    type: Boolean,
+    default: false
+  },
+  width: {
+    type: String,
+    default: '500px'
   },
 });
 
 const { proxy } = getCurrentInstance();
 
+onMounted(() => {
+  window.addEventListener('keydown', escListener);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', escListener);
+});
+
+// 监听ESC事件
+const escListener = (event) => {
+  if (event.keyCode === 27) {
+    close()
+  }
+}
+
+const emit = defineEmits(["update:modelValue", "close"]);
 const close = () => {
-  proxy.$emit("update:modelValue", false)
+  // proxy.$emit("update:modelValue", false)
+  emit("update:modelValue", false)
+  emit("close");
 }
 
 </script>
@@ -60,7 +84,7 @@ const close = () => {
 <style lang="less" scoped>
 .drawer {
   position: fixed;
-  width: 500px;
+  width: v-bind("props.width");
   height: 100%;
   background-color: #FFFFFF;
   box-shadow: -5px -5px 10px 2px rgba(0, 0, 0, 0.2);

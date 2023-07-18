@@ -3,8 +3,6 @@ const Validator = (function () {
         this.nodeRules = {}
 
         this.registerNodeRules = (nodeId, validatorFun) => {
-            console.info("registerNodeRules nodeId = ", nodeId)
-            console.info("registerNodeRules validatorFun = ", validatorFun)
             if(validatorFun && validatorFun instanceof Function) {
                 this.nodeRules[nodeId] = validatorFun
             }

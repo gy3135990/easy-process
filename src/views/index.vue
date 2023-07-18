@@ -9,25 +9,11 @@
     <div class="body">
       <ProcessDesigner ref="process" :data="processData"/>
     </div>
-    <Drawer v-model="showDrawer" title="测试标题" icon="setting" :with-header="false">
-      <template #default>
-        <el-form  label-width="80px">
-          <el-form-item label="审核人">
-            <el-input  />
-          </el-form-item>
-        </el-form>
-      </template>
-      <template #footer>
-        <el-button>取消</el-button>
-        <el-button type="primary">确定</el-button>
-      </template>
-    </Drawer>
   </div>
 </template>
 
 <script setup name="WorkFlow">
 import ProcessDesigner from "@/components/EasyProcess/ProcessDesigner";
-import Drawer from "@/components/Drawer/Drawer";
 import { ElMessageBox } from 'element-plus'
 import {getCurrentInstance, onMounted, ref} from "vue";
 const { proxy } = getCurrentInstance();
