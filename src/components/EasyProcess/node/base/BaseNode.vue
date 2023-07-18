@@ -114,6 +114,9 @@ const isStart = computed(() => {
 // 显示节点配置组件
 const showNodeDrawer = () => {
   if(config.value.hasDrawer) {
+    if(props.node.nodeType == CONDITION && props.node.isLastCondition) {
+      return false;
+    }
     proxy.$refs.nodeDrawer.show(props.node, props.bizData)
   }
 }
