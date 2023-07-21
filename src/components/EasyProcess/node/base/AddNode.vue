@@ -2,17 +2,16 @@
   <div class="ep-node-add">
     <div class="ep-node-add-btn" v-on:mouseenter="showAddSelect(true)" v-on:mouseleave="showAddSelect(false)">
       <svg-icon icon-class="plus" class="ep-node-add-btn-icon" color="#FFFFFF"/>
-      <div class="ep-node-add-select">
-        <div class="ep-node-add-select-box" v-if="isShowAddSelect">
-          <div :class="{'ep-node-add-select-item': true, 'ep-node-add-selected': item.selected}" v-for="item in nodeSelect" v-on:click="addNode(item.type)" v-on:mouseenter="addNodeSelected(item, true)" v-on:mouseleave="addNodeSelected(item, false)">
-            <svg-icon :icon-class="item.icon.name" class="ep-node-add-select-item-icon" :color="item.selected ? '#FFFFFF' : item.icon.color"/>
-            <div class="ep-node-add-select-item-title">
-              {{item.title}}
-            </div>
+      <div ref="nodeAddSelect" class="ep-node-add-select-box" v-if="isShowAddSelect">
+        <div :class="{'ep-node-add-select-item': true, 'ep-node-add-selected': item.selected}" v-for="item in nodeSelect" v-on:click="addNode(item.type)" v-on:mouseenter="addNodeSelected(item, true)" v-on:mouseleave="addNodeSelected(item, false)">
+          <svg-icon :icon-class="item.icon.name" class="ep-node-add-select-item-icon" :color="item.selected ? '#FFFFFF' : item.icon.color"/>
+          <div class="ep-node-add-select-item-title">
+            {{item.title}}
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -57,6 +56,18 @@ onMounted(async () => {
 // 显示添加节点选择框
 const showAddSelect = (flag) => {
   isShowAddSelect.value = flag
+  // if(flag) {
+  //   proxy.$nextTick(()=> {
+  //     let box = proxy.$refs.nodeAddSelect.getBoundingClientRect()
+  //     let boxWidth = box.width
+  //     let boxLeft = box.left
+  //     let boxRight = box.right
+  //     const windowWidth = window.innerWidth;
+  //     if((boxRight + boxWidth) > windowWidth) {
+  //
+  //     }
+  //   })
+  // }
 }
 
 const addNodeSelected = (item, flag) => {
@@ -81,12 +92,18 @@ const addNode = (nodeType) => {
 
 <style lang="less" scoped>
 .ep-node-add {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 30px 0px;
+  padding: 40px 0px;
 
   .ep-node-add-btn {
+    position: absolute;
+    z-index: 10;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-60%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -95,7 +112,13 @@ const addNode = (nodeType) => {
     border-radius: 40px;
     background-color: #1c84c6;
     box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
-    position: relative;
+    transition-property: width, height;
+    transition-duration: 0.1s;
+
+    &:hover {
+      width: 35px;
+      height: 35px;
+    }
 
     .ep-node-add-btn-icon {
       font-size: 20px;
@@ -104,65 +127,58 @@ const addNode = (nodeType) => {
       cursor: pointer;
     }
 
-    .ep-node-add-select {
-      position: relative;
-      width: 0px;
-      height: 100%;
+    .ep-node-add-select-box {
+      position: absolute;
+      z-index: 10;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      //width: 100px;
+      height: 80px;
+      background-color: #FFFFFF;
+      border-radius: 5px;
+      box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
+      display: flex;
+      padding: 16px;
 
-      .ep-node-add-select-box {
+      &:before{
+        content: '';
+        width: 0;
+        height: 0;
+        border: 10px solid;
         position: absolute;
-        z-index: 3;
-        top: 50%;
-        transform: translateY(-50%);
-        left: 25px;
-        //width: 100px;
-        height: 80px;
-        background-color: #FFFFFF;
-        border-radius: 5px;
-        box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-color: transparent transparent #FFFFFF transparent;
+      }
+
+      .ep-node-add-select-item {
+        width: 80px;
+        height: 100%;
         display: flex;
-        padding: 16px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0px 10px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 100px;
+        color: #5a5e66;
 
-        &:before{
-          content: '';
-          width: 0;
-          height: 0;
-          border: 10px solid;
-          position: absolute;
-          top: 50%;
-          left: -20px;
-          transform: translateY(-50%);
-          border-color: transparent #FFFFFF transparent transparent;
+        .ep-node-add-select-item-icon {
+          width: 35px;
+          height: 35px;
         }
-
-        .ep-node-add-select-item {
-          width: 80px;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          margin: 0px 10px;
-          cursor: pointer;
-          border: 1px solid #ccc;
-          border-radius: 100px;
-          color: #5a5e66;
-
-          .ep-node-add-select-item-icon {
-            width: 35px;
-            height: 35px;
-          }
-          .ep-node-add-select-item-title {
-            font-size: 14px;
-          }
-        }
-
-        .ep-node-add-selected {
-          background-color: #1e83e9!important;
-          color: #FFFFFF!important;
+        .ep-node-add-select-item-title {
+          font-size: 14px;
         }
       }
 
+      .ep-node-add-selected {
+        background-color: #1e83e9!important;
+        color: #FFFFFF!important;
+      }
     }
   }
 

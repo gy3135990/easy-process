@@ -108,7 +108,7 @@ defineExpose({
   width: 100%;
   height: 100%;
   background-color: #f5f5f7;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: auto;
   padding: 16px;
 }

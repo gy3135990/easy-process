@@ -43,7 +43,7 @@ onMounted(async () => {
   }
   .ep-node-end-text {
     color: #5a5e66;
-    margin-bottom: 20px;
+    margin-bottom: 100px;
   }
 }
 </style>

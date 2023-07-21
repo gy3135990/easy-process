@@ -246,13 +246,19 @@ const showErrorTips = (flag) => {
   align-items: center;
   width: 200px;
   min-height: 80px;
-  border-radius: 5px;
   font-size: 14px;
   box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
   white-space: normal;
   word-break: break-word;
   position: relative;
   box-sizing: border-box;
+  border-radius: 5px;
+  transition-property: box-shadow;
+  transition-duration: 0.1s;
+
+  &:hover {
+    box-shadow: 5px 5px 12px 5px rgba(0, 0, 0, 0.2);
+  }
 
   .ep-node-header {
     width: 100%;
@@ -297,7 +303,10 @@ const showErrorTips = (flag) => {
 }
 
 .ep-node-error {
-  border: 2px solid red;
+  box-shadow: 0px 0px 10px 2px rgba(243, 5, 5, 0.5);
+  &:hover {
+    box-shadow: 0px 0px 12px 4px rgba(243, 5, 5, 0.5);
+  }
 }
 .ep-node-error-msg {
   position: absolute;
