@@ -56,7 +56,7 @@ onMounted(async () => {
 });
 
 /**
- * 设置绽放
+ * 设置缩放
  * @param type
  */
 const setZoom = (type) => {
