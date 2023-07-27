@@ -87,6 +87,7 @@ const addNode = (nodeType) => {
     addNode.childNode = childNode
     props.node.childNode = addNode
   }
+  showAddSelect(false)
 }
 </script>
 
