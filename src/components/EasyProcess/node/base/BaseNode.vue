@@ -9,7 +9,7 @@
       </div>
       <!-- body -->
       <div class="ep-node-body" @click="showNodeDrawer">
-        <component ref="node" :is="nodeComponents[props.node.nodeType]" :tempNodeId="tempNodeId" :node="props.node" :bizData="props.bizData"/>
+        <component ref="node" :is="nodeComponents[props.node.nodeType]" :tempNodeId="tempNodeId" :node="props.node"/>
       </div>
       <!-- 同级节点左移动 -->
       <div class="ep-node-move ep-node-move-left" v-if="isShowLeftMoveBtn">
@@ -22,10 +22,10 @@
                   @click="moveNode(2)" @mouseenter="selectedMoveBtn(2, true)" @mouseleave="selectedMoveBtn(2, false)"/>
       </div>
       <!-- 校验错误提示 -->
-      <div class="ep-node-error-msg" v-if="!validatorResult.valid">
+      <div class="ep-node-error-msg" v-if="isError">
         <div class="ep-node-error-msg-box">
           <svg-icon icon-class="tips" class="ep-node-error-icon" color="red" @mouseenter="showErrorTips(true)" @mouseleave="showErrorTips(false)"/>
-          <div class="ep-node-error-tips" v-if="errorTips && validatorResult.message">{{validatorResult.message}}</div>
+          <div class="ep-node-error-tips" v-if="errorTips && errorMsg">{{errorMsg}}</div>
         </div>
       </div>
     </div>
@@ -47,10 +47,6 @@ import {KEY_VALIDATOR} from "../../config/keys"
 
 const props = defineProps({
   node: { // 传入的流程节点数据
-    type: Object,
-    default: {}
-  },
-  bizData: { // 业务数据
     type: Object,
     default: {}
   },
@@ -78,6 +74,8 @@ const config = ref(nodeConfig[props.node.nodeType])
 
 // 获取流程验证器实例
 const validator = inject(KEY_VALIDATOR)
+const errorMsg = ref(null)
+const errorTips = ref(false)
 
 watch(
     () => props.node,
@@ -103,9 +101,6 @@ const isSelectedLeftMoveBtn = ref(false)
 const isShowRightMoveBtn = ref(false)
 const isSelectedRightMoveBtn = ref(false)
 
-// 验证结果
-const validatorResult = ref({valid: true})
-const errorTips = ref(false)
 
 onMounted(async () => {
 
@@ -121,11 +116,12 @@ const isStart = computed(() => {
 })
 
 const isError = computed(() => {
-
   let result = validator.getResult(tempNodeId)
   if(result) {
+    errorMsg.value = result.message
     return !result.valid
   }
+  errorMsg.value = null
   return false
 })
 
@@ -135,7 +131,7 @@ const showNodeDrawer = () => {
     if(props.node.nodeType == CONDITION && props.node.isLastCondition) {
       return false;
     }
-    proxy.$refs.nodeDrawer.show(props.node, props.bizData)
+    proxy.$refs.nodeDrawer.show(props.node)
   }
 }
 

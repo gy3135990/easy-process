@@ -10,7 +10,8 @@
 </template>
 
 <script setup name="StartDrawer">
-import {ref, reactive, onMounted, getCurrentInstance} from "vue";
+import {getCurrentInstance, inject} from "vue";
+import {KEY_PROCESS_DATA} from "../../config/keys";
 
 const props = defineProps({
   config: { // 传入的流程配置数据
@@ -21,10 +22,8 @@ const props = defineProps({
 
 const { proxy } = getCurrentInstance();
 
-onMounted(async () => {
-
-});
-
+// 获取流程数据
+const processData = inject(KEY_PROCESS_DATA)
 </script>
 
 <style lang="less" scoped>

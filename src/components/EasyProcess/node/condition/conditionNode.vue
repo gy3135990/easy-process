@@ -12,8 +12,8 @@
 </template>
 
 <script setup name="ConditionNode">
-import {onMounted, getCurrentInstance, inject} from "vue";
-import {KEY_VALIDATOR} from "../../config/keys"
+import {getCurrentInstance, inject} from "vue";
+import {KEY_PROCESS_DATA, KEY_VALIDATOR} from "../../config/keys"
 
 const props = defineProps({
   tempNodeId: { // 临时节点ID
@@ -22,15 +22,13 @@ const props = defineProps({
   node: { // 传入的流程配置数据
     type: Object,
     default: {}
-  },
-  bizData: { // 业务数据
-    type: Object,
-    default: {}
-  },
+  }
 });
 
 const { proxy } = getCurrentInstance();
 
+// 获取流程数据
+const processData = inject(KEY_PROCESS_DATA)
 // 获取流程验证器实例
 const validator = inject(KEY_VALIDATOR)
 
@@ -47,10 +45,6 @@ validator.register(props.tempNodeId, () => {
     "message": "请选择条件"
   }
 })
-
-onMounted(async () => {
-
-});
 
 </script>
 

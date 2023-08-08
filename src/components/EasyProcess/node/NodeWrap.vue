@@ -1,9 +1,9 @@
 <template>
   <div class="ep-node-wrap" v-if="props.node">
     <!-- 路由节点 -->
-    <RouterNode :node="props.node" :bizData="props.bizData" @removeNode="removeNode" v-if="props.node.nodeType == 'router'"/>
+    <RouterNode :node="props.node" @removeNode="removeNode" v-if="props.node.nodeType == ROUTER"/>
     <!-- 普通节点 -->
-    <BaseNode :node="props.node" :bizData="props.bizData" :conditionNodes="props.conditionNodes" :conditionIndex="props.conditionIndex"
+    <BaseNode :node="props.node" :conditionNodes="props.conditionNodes" :conditionIndex="props.conditionIndex"
               :canRemoved="props.canRemoved" @removeNode="removeNode" v-else/>
     <!-- 子节点 -->
     <NodeWrap :node="props.node.childNode" @removeNode="removeChildNode" v-if="props.node.childNode && props.node.childNode.nodeType" />
@@ -11,17 +11,13 @@
 </template>
 
 <script setup name="NodeWrap">
-import {ref, onMounted, getCurrentInstance} from "vue";
-import {nodeConfig} from "../config/nodeConfig";
 import BaseNode from "./base/BaseNode";
 import RouterNode from "./router/RouterNode";
+import {ref, onMounted, getCurrentInstance} from "vue";
+import {ROUTER} from "../config/nodeType"
 
 const props = defineProps({
   node: { // 当前流程节点数据
-    type: Object,
-    default: {}
-  },
-  bizData: { // 业务数据
     type: Object,
     default: {}
   },
@@ -62,8 +58,5 @@ const removeChildNode = () => {
 </script>
 
 <style lang="less" scoped>
-.ep-node-wrap {
-
-}
 
 </style>

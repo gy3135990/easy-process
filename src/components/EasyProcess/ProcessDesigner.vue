@@ -3,7 +3,7 @@
     <!-- 流程 -->
     <div class="ep-process" :style="`transform: scale(${ zoom / 100});`">
       <!-- 递归节点 -->
-      <NodeWrap v-if="processData && processData.nodeConfig" :node="processData.nodeConfig" :bizData="processData.bizData"/>
+      <NodeWrap v-if="processData && processData.nodeConfig" :node="processData.nodeConfig"/>
       <!-- 结束节点 -->
       <EndNode/>
     </div>
@@ -20,12 +20,11 @@
 import NodeWrap from "./node/NodeWrap";
 import EndNode from "./node/end/endNode";
 
-import {ref, onMounted, getCurrentInstance, watch, provide} from "vue";
-import {defaultConfig} from "./config/defaultConfig";
-import {copy} from "./utils/tools";
-import {createValidator} from "./utils/validator";
-import {nodeConfig} from "./config/nodeConfig";
-import {KEY_VALIDATOR} from "./config/keys"
+import { ref, onMounted, getCurrentInstance, watch, provide } from "vue";
+import { defaultConfig } from "./config/defaultConfig";
+import { copy } from "./utils/tools";
+import { createValidator } from "./utils/validator";
+import { KEY_VALIDATOR, KEY_PROCESS_DATA } from "./config/keys"
 
 const { proxy } = getCurrentInstance();
 
@@ -45,6 +44,9 @@ provide(KEY_VALIDATOR, validator)
 
 // 流程数据
 let processData = ref({});
+// 依赖注入: 流程数据
+provide(KEY_PROCESS_DATA, validator)
+
 watch(
     () => props.data,
     (val) => {
