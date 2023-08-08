@@ -329,11 +329,7 @@ const props = defineProps({
   node: { // 传入的流程配置数据
     type: Object,
     default: {}
-  },
-  bizData: { // 业务数据
-    type: Object,
-    default: {}
-  },
+  }
 });
 
 // 获取流程数据
@@ -376,11 +372,7 @@ const props = defineProps({
   config: { // 传入的流程配置数据
     type: Object,
     default: {}
-  },
-  bizData: { // 业务数据
-    type: Object,
-    default: {}
-  },
+  }
 });
 
 const { proxy } = getCurrentInstance();
