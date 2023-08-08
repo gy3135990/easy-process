@@ -40,10 +40,11 @@ Node >= 14
 | 计划         | 状态   | 备注                                                         |
 | ------------ | ------ | ------------------------------------------------------------ |
 | 基础功能     | 已完成 |                                                              |
-| 节点校验功能 | 已完成 | 类似于表单校验功能，进行特殊样式的提示                         |
+| 节点校验功能 | 已完成 | 类似于表单校验功能，进行特殊样式的提示                       |
 | 提升可移植性 | 已完成 | 设计器组件的UI样式完全脱离第三方组件，提升可移植性           |
-| 添加动画特效 | 已完成 | 添加动画特效，提升用户体验                                   |
-| 优化逐级透传 | 进行中 | 部分功能使用Prop 逐级透传实现，这使代码非常不优雅，决定使用依赖注入方式重构此部分代码。 |
+| 添加动画特效 | 已完成 | 添加动画特效，提升用户体                                     |
+| 优化逐级透传 | 已完成 | 部分功能使用Prop 逐级透传实现，这使代码非常不优雅，决定使用依赖注入方式重构此部分代码。 |
+| 优化用户体验 | 进行中 |                                                              |
 
 
 
@@ -74,6 +75,7 @@ easy-process
 │        └─ defaultConfig.js			// 初始化时默认流程结构
 │        └─ nodeConfig.js				// 各节点属性配置
 │        └─ nodeType.js					// 节点类型
+│        └─ keys.js						// 定义KEY
 │      └─ node							// 流程设计器-节点组件
 │        └─ NodeWrap.vue				// 用于递归生成流程节点的组件
 │        └─ base						// 通用组件
@@ -94,6 +96,8 @@ easy-process
 │        └─ notify						// 审批人节点
 │          └─ notifyNode.vue			// 抄送人节点组件
 │          └─ notifyDrawer.vue			// 抄送人节点属性配置组件
+│        └─ end							// 结束节点
+│          └─ endNode.vue				// 结束节点组件（仅用于展示，并没有实际意义）
 │        └─ utils						
 │          └─ tools.js					// 工具类
 │  └─ views
@@ -154,13 +158,14 @@ easy-process
         "childNode": {}
       }
     ]
-  },
-  "bizData": { // 该属性为自定义的业务数据，在各节点中可获取传入的业务数据，用于业务处理，比如传入表单数据，注意，业务数据只能用于只读操作
-    
   }
 }
 
 ```
+
+注：以上数据结构除了nodeConfig字段内的结构是固定的外，使用者可以添加任意其他业务字段，获取数据方式见**依赖注入**章节。
+
+
 
 ### 定义节点
 
@@ -175,7 +180,19 @@ xxxNode.vue组件下会通过props.node传入当前节点数据
 
 xxxDrawer.vue组件下会通过props.config传入当前节点属性配置的**副本**数据，因为是地址传递，所以可以直接对其内部的属性进行修改。在点击确定会将修改后的副本数据覆盖原来的数据。
 
-xxxNode.vue和xxxDrawer.vue组件下可通过props.bizData获取到传入的业务数据
+
+
+### 依赖注入
+
+传入组件的`processData`数据可以通过以下方式，在`<ProcessDesigner />`组件内的任意子组件中获取到。
+
+```javascript
+import {inject} from "vue";
+import { KEY_PROCESS_DATA } from "@/components/EasyProcess/config/keys"
+
+// 获取流程数据，processData是一个被ref()包裹的响应式数据
+const processData = inject(KEY_PROCESS_DATA)
+```
 
 
 
@@ -209,11 +226,22 @@ xxxNode.vue和xxxDrawer.vue组件下可通过props.bizData获取到传入的业�
 
 ### 节点校验功能
 
-1、在src/components/EasyProcess/node/*/xxxNode.vue文件的validator方法中实现节点校验逻辑：
+1、在src/components/EasyProcess/node/*/xxxNode.vue文件中添加以下代码实现节点校验逻辑：
 
 ```javascript
-// 验证器
-const validator = () => {
+import { KEY_VALIDATOR } from "../../config/keys"
+
+const props = defineProps({
+  tempNodeId: { // 临时节点ID，该值是从BaseNode.vue组件中传入的
+    type: String
+  }
+});
+
+// 获取流程验证器实例
+const validator = inject(KEY_VALIDATOR)
+
+// 注册验证器
+validator.register(props.tempNodeId, () => {
   // 验证当前节点逻辑……
     
   // 返回验证结果
@@ -221,7 +249,7 @@ const validator = () => {
     "valid": true, // true | false 是否验证通过
     "message": "" // 当valid = false时的提示信息
   }
-}
+})
 ```
 
 2、获取验证结果
@@ -291,9 +319,13 @@ xxxNode.vue
 </template>
 
 <script setup name="NewTypeNode">
-import {ref, reactive, onMounted, getCurrentInstance} from "vue";
+import {ref, reactive, onMounted, getCurrentInstance} from "vue"
+import { KEY_VALIDATOR, KEY_PROCESS_DATA } from "../../config/keys"
 
 const props = defineProps({
+  tempNodeId: { // 临时节点ID
+    type: String
+  },
   node: { // 传入的流程配置数据
     type: Object,
     default: {}
@@ -304,13 +336,13 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["validator"]);
-onMounted(async () => {
-  emit("validator", validator);
-});
+// 获取流程数据
+const processData = inject(KEY_PROCESS_DATA)
+// 获取流程验证器实例
+const validator = inject(KEY_VALIDATOR)
 
-// 验证器
-const validator = () => {
+// 注册验证器
+validator.register(props.tempNodeId, () => {
   // 验证当前节点逻辑……
     
   // 返回验证结果
@@ -318,7 +350,7 @@ const validator = () => {
     "valid": true, // true | false 是否验证通过
     "message": "" // 当valid = false时的提示信息
   }
-}
+})
 
 </script>
 
