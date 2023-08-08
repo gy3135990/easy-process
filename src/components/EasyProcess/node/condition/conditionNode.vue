@@ -12,9 +12,13 @@
 </template>
 
 <script setup name="ConditionNode">
-import {ref, reactive, onMounted, getCurrentInstance} from "vue";
+import {onMounted, getCurrentInstance, inject} from "vue";
+import {KEY_VALIDATOR} from "../../config/keys"
 
 const props = defineProps({
+  tempNodeId: { // 临时节点ID
+    type: String
+  },
   node: { // 传入的流程配置数据
     type: Object,
     default: {}
@@ -27,16 +31,11 @@ const props = defineProps({
 
 const { proxy } = getCurrentInstance();
 
-// 流程配置数据
-let config = ref({});
+// 获取流程验证器实例
+const validator = inject(KEY_VALIDATOR)
 
-const emit = defineEmits(["validator"]);
-onMounted(async () => {
-  emit("validator", validator);
-});
-
-// 验证器
-const validator = () => {
+// 注册验证器
+validator.register(props.tempNodeId, () => {
   let valid = true;
   if (!props.node.isLastCondition) {
     if (!props.node.config.days) {
@@ -47,7 +46,12 @@ const validator = () => {
     "valid": valid,
     "message": "请选择条件"
   }
-}
+})
+
+onMounted(async () => {
+
+});
+
 </script>
 
 <style lang="less" scoped>

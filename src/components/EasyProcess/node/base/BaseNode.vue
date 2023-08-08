@@ -1,6 +1,6 @@
 <template>
   <div :class="{'ep-node': true, 'ep-node-arrows': !isStart}">
-    <div :class="{'ep-node-content': true, 'ep-node-error': !validatorResult.valid}" @mouseenter="mouseenter(true)" @mouseleave="mouseleave(false)">
+    <div :class="{'ep-node-content': true, 'ep-node-error': isError}" @mouseenter="mouseenter(true)" @mouseleave="mouseleave(false)">
       <!-- header -->
       <div class="ep-node-header" :style="{color: config.color, 'background-color': config.bgColor}">
         <svg-icon :icon-class="config.icon.name" class="ep-node-icon" color="#FFFFFF"/>
@@ -9,7 +9,7 @@
       </div>
       <!-- body -->
       <div class="ep-node-body" @click="showNodeDrawer">
-        <component ref="node" :is="nodeComponents[props.node.nodeType]" :node="props.node" :bizData="props.bizData" @validator="validator"/>
+        <component ref="node" :is="nodeComponents[props.node.nodeType]" :tempNodeId="tempNodeId" :node="props.node" :bizData="props.bizData"/>
       </div>
       <!-- 同级节点左移动 -->
       <div class="ep-node-move ep-node-move-left" v-if="isShowLeftMoveBtn">
@@ -39,10 +39,11 @@
 <script setup name="BaseNode">
 import BaseDrawer from "./BaseDrawer";
 import AddNode from "./AddNode";
-import {ref, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent, watch, computed, onUnmounted} from "vue";
+import {ref, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent, watch, computed, onUnmounted, inject} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
 import {copy, getUUID} from "../../utils/tools";
 import {START, CONDITION} from "../../config/nodeType"
+import {KEY_VALIDATOR} from "../../config/keys"
 
 const props = defineProps({
   node: { // 传入的流程节点数据
@@ -65,22 +66,24 @@ const props = defineProps({
     type: Boolean,
     default: true
   },
-  validator: {
-    type: Object
-  }
 });
 
 const { proxy } = getCurrentInstance();
 
-const nodeId = getUUID()
+// 生成临时节点ID
+const tempNodeId = getUUID()
 
 // 节点配置数据
 const config = ref(nodeConfig[props.node.nodeType])
+
+// 获取流程验证器实例
+const validator = inject(KEY_VALIDATOR)
+
 watch(
     () => props.node,
     (val) => {
       config.value = nodeConfig[props.node.nodeType]
-      props.validator.validate()
+      validator.validate()
     }
 );
 
@@ -109,12 +112,21 @@ onMounted(async () => {
 });
 
 onUnmounted(async () => {
-  props.validator.removeNodeRules(nodeId)
-  props.validator.validate()
+  validator.remove(tempNodeId)
+  validator.validate()
 });
 
 const isStart = computed(() => {
   return props.node.nodeType == START
+})
+
+const isError = computed(() => {
+
+  let result = validator.getResult(tempNodeId)
+  if(result) {
+    return !result.valid
+  }
+  return false
 })
 
 // 显示节点配置组件
@@ -189,23 +201,12 @@ const moveNode = (direction) => {
 // 更新节点配置属性
 const updateConfig = (data) => {
   props.node.config = data
-  props.validator.validate()
+  validator.validate()
 }
 
 // 取消更新节点配置属性
 const cancelUpdateConfig = () => {
-  props.validator.validate()
-}
-
-// 注册验证器
-const validator = (fun) => {
-  if(fun && fun instanceof Function) {
-    props.validator.registerNodeRules(nodeId, () => {
-      let result = fun()
-      validatorResult.value = result
-      return result
-    })
-  }
+  validator.validate()
 }
 
 const showErrorTips = (flag) => {

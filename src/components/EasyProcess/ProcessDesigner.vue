@@ -3,8 +3,7 @@
     <!-- 流程 -->
     <div class="ep-process" :style="`transform: scale(${ zoom / 100});`">
       <!-- 递归节点 -->
-      <NodeWrap v-if="processData && processData.nodeConfig" :node="processData.nodeConfig"
-                :bizData="processData.bizData" :validator="validator"/>
+      <NodeWrap v-if="processData && processData.nodeConfig" :node="processData.nodeConfig" :bizData="processData.bizData"/>
       <!-- 结束节点 -->
       <EndNode/>
     </div>
@@ -21,11 +20,12 @@
 import NodeWrap from "./node/NodeWrap";
 import EndNode from "./node/end/endNode";
 
-import {ref, onMounted, getCurrentInstance, watch} from "vue";
+import {ref, onMounted, getCurrentInstance, watch, provide} from "vue";
 import {defaultConfig} from "./config/defaultConfig";
 import {copy} from "./utils/tools";
-import Validator from "./utils/validator";
+import {createValidator} from "./utils/validator";
 import {nodeConfig} from "./config/nodeConfig";
+import {KEY_VALIDATOR} from "./config/keys"
 
 const { proxy } = getCurrentInstance();
 
@@ -38,8 +38,10 @@ const props = defineProps({
 
 // 缩放值
 let zoom = ref(100);
-
-let validator = new Validator();
+// 创建节点验证器实例
+let validator = createValidator()
+// 依赖注入: 节点验证器实例
+provide(KEY_VALIDATOR, validator)
 
 // 流程数据
 let processData = ref({});
