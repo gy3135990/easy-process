@@ -229,6 +229,7 @@ const processData = inject(KEY_PROCESS_DATA)
 1、在src/components/EasyProcess/node/*/xxxNode.vue文件中添加以下代码实现节点校验逻辑：
 
 ```javascript
+import { inject } from "vue"
 import { KEY_VALIDATOR } from "../../config/keys"
 
 const props = defineProps({
@@ -319,7 +320,7 @@ xxxNode.vue
 </template>
 
 <script setup name="NewTypeNode">
-import {ref, reactive, onMounted, getCurrentInstance} from "vue"
+import { getCurrentInstance, inject } from "vue"
 import { KEY_VALIDATOR, KEY_PROCESS_DATA } from "../../config/keys"
 
 const props = defineProps({
@@ -366,7 +367,8 @@ xxxDrawer.vue
 </template>
 
 <script setup name="NewTypeDrawer">
-import {ref, reactive, onMounted, getCurrentInstance} from "vue";
+import { getCurrentInstance, inject } from "vue";
+import { KEY_PROCESS_DATA } from "../../config/keys"
 
 const props = defineProps({
   config: { // 传入的流程配置数据
@@ -375,12 +377,8 @@ const props = defineProps({
   }
 });
 
-const { proxy } = getCurrentInstance();
-
-onMounted(async () => {
-
-});
-
+// 获取流程数据
+const processData = inject(KEY_PROCESS_DATA)
 </script>
 
 <style lang="less" scoped>
