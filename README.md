@@ -57,7 +57,7 @@ npm run dev
 
 ## 目录结构
 
-~~~
+~~~js
 easy-process     
 ├─ public
 │  └─ mock								// mock测试数据
@@ -140,7 +140,7 @@ easy-process
 
 ### 流程配置数据结构
 
-```
+```javascript
 {
   "processId": "流程ID",
   "processName": "流程名称",
@@ -200,7 +200,7 @@ const processData = inject(KEY_PROCESS_DATA)
 
 在config/nodeConfig.js文件下维护各节点的默认配置，格式如下：
 
-```
+```javascript
 {
     "title": "条件", // 节点标题
     "color": "#FFFFFF", // 节点标题颜色
