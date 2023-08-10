@@ -29,6 +29,7 @@ const { proxy } = getCurrentInstance();
 
 // 获取流程数据
 const processData = inject(KEY_PROCESS_DATA)
+console.info(11111111, processData)
 // 获取流程验证器实例
 const validator = inject(KEY_VALIDATOR)
 

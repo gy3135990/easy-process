@@ -45,7 +45,7 @@ provide(KEY_VALIDATOR, validator)
 // 流程数据
 let processData = ref({});
 // 依赖注入: 流程数据
-provide(KEY_PROCESS_DATA, validator)
+provide(KEY_PROCESS_DATA, processData)
 
 watch(
     () => props.data,
