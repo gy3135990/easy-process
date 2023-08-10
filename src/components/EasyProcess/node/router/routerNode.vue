@@ -5,7 +5,7 @@
     <div class="ep-node-router-box">
       <div class="ep-node-router-col" v-for="(condition, index) in props.node.conditionNodes">
         <!-- 生成节点 -->
-        <NodeWrap :node="condition" :conditionNodes="props.node.conditionNodes" :conditionIndex="index" @removeNode="removeCondition(index)" :canRemoved="!condition.isLastCondition"/>
+        <NodeWrap :node="condition" :conditionNodes="props.node.conditionNodes" :conditionIndex="index" @removeNode="removeCondition(index)"/>
         <!-- 用来遮挡最左列的线 -->
         <template v-if="index == 0">
           <div class="cover-line top-left-cover-line"></div>

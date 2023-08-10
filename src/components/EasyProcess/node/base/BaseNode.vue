@@ -5,7 +5,7 @@
       <div class="ep-node-header" :style="{color: config.color, 'background-color': config.bgColor}">
         <svg-icon :icon-class="config.icon.name" class="ep-node-icon" color="#FFFFFF"/>
         <div class="ep-node-header-title">{{config.title}}</div>
-        <svg-icon icon-class="close" class="ep-node-close" color="#FFFFFF" v-if="props.canRemoved && config.canRemoved" @click="removeNode"/>
+        <svg-icon icon-class="close" class="ep-node-close" color="#FFFFFF" v-if="canRemoved" @click="removeNode"/>
       </div>
       <!-- body -->
       <div class="ep-node-body" @click="showNodeDrawer">
@@ -58,10 +58,6 @@ const props = defineProps({
     type: Number,
     default: 0
   },
-  canRemoved: { // 当前节点是否可以移除
-    type: Boolean,
-    default: true
-  },
 });
 
 const { proxy } = getCurrentInstance();
@@ -77,13 +73,10 @@ const validator = inject(KEY_VALIDATOR)
 const errorMsg = ref(null)
 const errorTips = ref(false)
 
-watch(
-    () => props.node,
-    (val) => {
-      config.value = nodeConfig[props.node.nodeType]
-      validator.validate()
-    }
-);
+watch(() => props.node, (val) => {
+  config.value = nodeConfig[props.node.nodeType]
+  validator.validate()
+});
 
 const modules = import.meta.glob('../*/*Node.vue')
 const nodeComponents = shallowRef({});
@@ -101,7 +94,6 @@ const isSelectedLeftMoveBtn = ref(false)
 const isShowRightMoveBtn = ref(false)
 const isSelectedRightMoveBtn = ref(false)
 
-
 onMounted(async () => {
 
 });
@@ -115,6 +107,7 @@ const isStart = computed(() => {
   return props.node.nodeType == START
 })
 
+// 节点验证结果是否异常
 const isError = computed(() => {
   let result = validator.getResult(tempNodeId)
   if(result) {
@@ -125,14 +118,38 @@ const isError = computed(() => {
   return false
 })
 
+// 节点是否可以被移除
+const canRemoved = computed(() => {
+  if (isLastCondition()) {
+    return false
+  }
+  return config.value.canRemoved
+})
+
 // 显示节点配置组件
 const showNodeDrawer = () => {
   if(config.value.hasDrawer) {
-    if(props.node.nodeType == CONDITION && props.node.isLastCondition) {
+    if(isLastCondition()) {
       return false;
     }
     proxy.$refs.nodeDrawer.show(props.node)
   }
+}
+
+// 判断当前节点是否为条件节点
+const isCondition = () => {
+  if (props.node.nodeType == CONDITION) {
+    return true
+  }
+  return false
+}
+
+// 判断当前节点是否为条件节点，且为最后一个条件
+const isLastCondition = () => {
+  if (isCondition() && props.node.isLastCondition) {
+    return true
+  }
+  return false
 }
 
 // 移除当前节点
@@ -157,7 +174,7 @@ const mouseleave = () => {
 const showMoveBtn = (direction, flag) => {
   let index = props.conditionIndex
   let length = props.conditionNodes.length
-  if(props.node.nodeType == CONDITION && index != length - 1) {
+  if(isCondition() && !isLastCondition()) {
     if(direction == 1 && index != 0) {
       isShowLeftMoveBtn.value = flag
     } else if (direction == 2 && index != length - 2) {
@@ -181,7 +198,6 @@ const selectedMoveBtn = (direction, flag) => {
  */
 const moveNode = (direction) => {
   let index = props.conditionIndex
-  let length = props.conditionNodes.length
   if (direction == 1) {
     let c = props.conditionNodes[index]
     props.conditionNodes[index] = props.conditionNodes[index - 1]
@@ -205,6 +221,7 @@ const cancelUpdateConfig = () => {
   validator.validate()
 }
 
+// 显示错误提示信息
 const showErrorTips = (flag) => {
   errorTips.value = flag
 }
