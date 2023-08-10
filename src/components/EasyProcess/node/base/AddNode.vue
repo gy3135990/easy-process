@@ -1,8 +1,8 @@
 <template>
   <div class="ep-node-add">
-    <div class="ep-node-add-btn" v-on:mouseenter="showAddSelect(true)" v-on:mouseleave="showAddSelect(false)">
+    <div ref="nodeAddBtn" class="ep-node-add-btn" v-on:mouseenter="showAddSelect(true)" v-on:mouseleave="showAddSelect(false)">
       <svg-icon icon-class="plus" class="ep-node-add-btn-icon" color="#FFFFFF"/>
-      <div ref="nodeAddSelect" class="ep-node-add-select-box" v-if="isShowAddSelect">
+      <div ref="nodeAddSelect" :class="['ep-node-add-select-box', nodeAddSelectPostion == 1 ? 'ep-node-add-left' : 'ep-node-add-right']" v-if="isShowAddSelect">
         <div :class="{'ep-node-add-select-item': true, 'ep-node-add-selected': item.selected}" v-for="item in nodeSelect" v-on:click="addNode(item.type)" v-on:mouseenter="addNodeSelected(item, true)" v-on:mouseleave="addNodeSelected(item, false)">
           <svg-icon :icon-class="item.icon.name" class="ep-node-add-select-item-icon" :color="item.selected ? '#FFFFFF' : item.icon.color"/>
           <div class="ep-node-add-select-item-title">
@@ -34,6 +34,7 @@ const config = ref(nodeConfig[props.node.nodeType])
 
 // 是否显示添加节点选择框
 const isShowAddSelect = ref(false)
+const nodeAddSelectPostion = ref(null)
 const nodeSelect = ref([])
 
 Object.keys(nodeConfig).forEach(key => {
@@ -56,18 +57,21 @@ onMounted(async () => {
 // 显示添加节点选择框
 const showAddSelect = (flag) => {
   isShowAddSelect.value = flag
-  // if(flag) {
-  //   proxy.$nextTick(()=> {
-  //     let box = proxy.$refs.nodeAddSelect.getBoundingClientRect()
-  //     let boxWidth = box.width
-  //     let boxLeft = box.left
-  //     let boxRight = box.right
-  //     const windowWidth = window.innerWidth;
-  //     if((boxRight + boxWidth) > windowWidth) {
-  //
-  //     }
-  //   })
-  // }
+  if(flag) {
+    proxy.$nextTick(()=> {
+      let box = proxy.$refs.nodeAddSelect.getBoundingClientRect()
+      let boxWidth = box.width
+      let btn = proxy.$refs.nodeAddBtn.getBoundingClientRect()
+      let btnRight = btn.right
+
+      const windowWidth = window.innerWidth;
+      if((btnRight + boxWidth) > windowWidth) {
+        nodeAddSelectPostion.value = 1
+      } else {
+        nodeAddSelectPostion.value = 2
+      }
+    })
+  }
 }
 
 const addNodeSelected = (item, flag) => {
@@ -131,10 +135,8 @@ const addNode = (nodeType) => {
     .ep-node-add-select-box {
       position: absolute;
       z-index: 10;
-      top: 50px;
-      left: 50%;
-      transform: translateX(-50%);
-      //width: 100px;
+      top: 50%;
+      transform: translateY(-50%);
       height: 80px;
       background-color: #FFFFFF;
       border-radius: 5px;
@@ -148,10 +150,8 @@ const addNode = (nodeType) => {
         height: 0;
         border: 10px solid;
         position: absolute;
-        top: -20px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-color: transparent transparent #FFFFFF transparent;
+        top: 50%;
+        transform: translateY(-50%);
       }
 
       .ep-node-add-select-item {
@@ -181,6 +181,25 @@ const addNode = (nodeType) => {
         color: #FFFFFF!important;
       }
     }
+
+    .ep-node-add-left {
+      right: 50px;
+
+      &:before {
+        right: -20px;
+        border-color: transparent transparent transparent #FFFFFF;
+      }
+    }
+
+    .ep-node-add-right {
+      left: 50px;
+
+      &:before {
+        left: -20px;
+        border-color: transparent #FFFFFF transparent transparent;
+      }
+    }
+
   }
 
   &:before {
