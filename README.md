@@ -44,65 +44,68 @@ Node >= 14
 | 提升可移植性 | 已完成 | 设计器组件的UI样式完全脱离第三方组件，提升可移植性           |
 | 添加动画特效 | 已完成 | 添加动画特效，提升用户体                                     |
 | 优化逐级透传 | 已完成 | 部分功能使用Prop 逐级透传实现，这使代码非常不优雅，决定使用依赖注入方式重构此部分代码。 |
-| 优化用户体验 | 进行中 |                                                              |
+| 优化代码     | 进行中 |                                                              |
 
 
 
 ## 运行项目
 
 ```shell
+# 安装依赖
 npm install
+
+# 运行项目
 npm run dev
 ```
 
 ## 目录结构
 
-~~~js
+~~~
 easy-process     
 ├─ public
 │  └─ mock								// mock测试数据
 ├─ src
-│  └─ assets							// 静态资源
-│  └─ components
-│    └─ Button
-│      └─ Button.vue					// 按钮组件
-│    └─ Drawer
-│      └─ Drawer.vue					// 抽屉组件
-│    └─ SvgIcon							// svg图标组件
-│    └─ EasyProcess						// 流程设计器
-│      └─ ProcessDesigner.vue			// 流程设计器组件（入口）
-│      └─ config						// 流程设计器-配置文件
-│        └─ defaultConfig.js			// 初始化时默认流程结构
-│        └─ nodeConfig.js				// 各节点属性配置
-│        └─ nodeType.js					// 节点类型
-│        └─ keys.js						// 定义KEY
-│      └─ node							// 流程设计器-节点组件
-│        └─ NodeWrap.vue				// 用于递归生成流程节点的组件
-│        └─ base						// 通用组件
-│          └─ BaseNode.vue				// 通用节点组件（该组件只是节点的外壳，具体内容由各节点组件内部实现）
-│          └─ BaseDrawer.vue			// 通用节点属性配置组件（该组件只是节点属性配置的外壳，具体内容由各节点组件内部实现）
-│          └─ AddNode.vue				// 添加节点组件
-│        └─ router						// 路由节点
-│          └─ routerNode.vue			// 路由节点组件
-│        └─ condition					// 条件节点
-│          └─ conditionNode.vue			// 条件节点组件
-│          └─ conditionDrawer.vue		// 条件节点属性配置组件
-│        └─ start						// 发起人节点
-│          └─ startNode.vue				// 发起人节点组件
-│          └─ startDrawer.vue			// 发起人节点属性配置组件
-│        └─ approver					// 审批人节点
-│          └─ approverNode.vue			// 审批人节点组件
-│          └─ approverDrawer.vue		// 审批人节点属性配置组件
-│        └─ notify						// 审批人节点
-│          └─ notifyNode.vue			// 抄送人节点组件
-│          └─ notifyDrawer.vue			// 抄送人节点属性配置组件
-│        └─ end							// 结束节点
-│          └─ endNode.vue				// 结束节点组件（仅用于展示，并没有实际意义）
-│        └─ utils						
-│          └─ tools.js					// 工具类
+│  ├─ assets							// 静态资源
+│  ├─ components
+│  │  ├─ Button
+│  │  │ └─ Button.vue					// 按钮组件
+│  │  ├─ Drawer
+│  │  │ └─ Drawer.vue					// 抽屉组件
+│  │  ├─ SvgIcon							// svg图标组件
+│  │  └─ EasyProcess						// 流程设计器
+│  │    ├─ ProcessDesigner.vue			// 流程设计器组件（入口）
+│  │    ├─ config						// 流程设计器-配置文件
+│  │    │  ├─ defaultConfig.js			// 初始化时默认流程结构
+│  │    │  ├─ nodeConfig.js				// 各节点属性配置
+│  │    │  ├─ nodeType.js					// 节点类型
+│  │    │  └─ keys.js						// 定义KEY
+│  │    └─ node							// 流程设计器-节点组件
+│  │       ├─ NodeWrap.vue				// 用于递归生成流程节点的组件
+│  │       ├─ base						// 通用组件
+│  │       │  ├─ BaseNode.vue				// 通用节点组件（该组件只是节点的外壳，具体内容由各节点组件内部实现）
+│  │       │  ├─ BaseDrawer.vue			// 通用节点属性配置组件（该组件只是节点属性配置的外壳，具体内容由各节点组件内部实现）
+│  │       │  └─ AddNode.vue				// 添加节点组件
+│  │       ├─ router						// 路由节点
+│  │       │  └─ routerNode.vue			// 路由节点组件
+│  │       ├─ condition					// 条件节点
+│  │       │  ├─ conditionNode.vue			// 条件节点组件
+│  │       │  └─ conditionDrawer.vue		// 条件节点属性配置组件
+│  │       ├─ start						// 发起人节点
+│  │       │  ├─ startNode.vue				// 发起人节点组件
+│  │       │  └─ startDrawer.vue			// 发起人节点属性配置组件
+│  │       ├─ approver					// 审批人节点
+│  │       │  ├─ approverNode.vue			// 审批人节点组件
+│  │       │  └─ approverDrawer.vue		// 审批人节点属性配置组件
+│  │       ├─ notify						// 审批人节点
+│  │       │  ├─ notifyNode.vue			// 抄送人节点组件
+│  │       │  └─ notifyDrawer.vue			// 抄送人节点属性配置组件
+│  │       ├─ end							// 结束节点
+│  │       │  └─ endNode.vue				// 结束节点组件（仅用于展示，并没有实际意义）
+│  │       └─ utils						
+│  │         └─ tools.js					// 工具类
 │  └─ views
-│    └─ index.vue						// demo
-├─ README.md							// 使用手册
+│     └─ index.vue						// demo
+└─ README.md							// 使用手册
 ~~~
 
 
@@ -398,12 +401,3 @@ const processData = inject(KEY_PROCESS_DATA)
 邮箱：331607151@qq.com
 
 QQ群：21107513
-
-
-
-## 捐助
-
-如果您觉得我们的开源软件对你有所帮助，请扫下方二维码打赏我们一杯咖啡。
-
-<img src="https://foruda.gitee.com/images/1688456190407826732/532fba84_8787754.jpeg" alt="输入图片说明" title="QQ图片20230704153558.jpg" style="zoom:25%;" />
-
