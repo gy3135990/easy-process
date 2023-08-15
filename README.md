@@ -71,38 +71,38 @@ easy-process
 │  │  │ └─ Button.vue					// 按钮组件
 │  │  ├─ Drawer
 │  │  │ └─ Drawer.vue					// 抽屉组件
-│  │  ├─ SvgIcon							// svg图标组件
-│  │  └─ EasyProcess						// 流程设计器
+│  │  ├─ SvgIcon						// svg图标组件
+│  │  └─ EasyProcess					// 流程设计器
 │  │    ├─ ProcessDesigner.vue			// 流程设计器组件（入口）
 │  │    ├─ config						// 流程设计器-配置文件
 │  │    │  ├─ defaultConfig.js			// 初始化时默认流程结构
 │  │    │  ├─ nodeConfig.js				// 各节点属性配置
-│  │    │  ├─ nodeType.js					// 节点类型
-│  │    │  └─ keys.js						// 定义KEY
+│  │    │  ├─ nodeType.js				// 节点类型
+│  │    │  └─ keys.js					// 定义KEY
 │  │    └─ node							// 流程设计器-节点组件
 │  │       ├─ NodeWrap.vue				// 用于递归生成流程节点的组件
 │  │       ├─ base						// 通用组件
-│  │       │  ├─ BaseNode.vue				// 通用节点组件（该组件只是节点的外壳，具体内容由各节点组件内部实现）
+│  │       │  ├─ BaseNode.vue			// 通用节点组件（该组件只是节点的外壳，具体内容由各节点组件内部实现）
 │  │       │  ├─ BaseDrawer.vue			// 通用节点属性配置组件（该组件只是节点属性配置的外壳，具体内容由各节点组件内部实现）
-│  │       │  └─ AddNode.vue				// 添加节点组件
-│  │       ├─ router						// 路由节点
+│  │       │  └─ AddNode.vue			// 添加节点组件
+│  │       ├─ router					// 路由节点
 │  │       │  └─ routerNode.vue			// 路由节点组件
 │  │       ├─ condition					// 条件节点
-│  │       │  ├─ conditionNode.vue			// 条件节点组件
-│  │       │  └─ conditionDrawer.vue		// 条件节点属性配置组件
+│  │       │  ├─ conditionNode.vue		// 条件节点组件
+│  │       │  └─ conditionDrawer.vue	// 条件节点属性配置组件
 │  │       ├─ start						// 发起人节点
-│  │       │  ├─ startNode.vue				// 发起人节点组件
-│  │       │  └─ startDrawer.vue			// 发起人节点属性配置组件
+│  │       │  ├─ startNode.vue			// 发起人节点组件
+│  │       │  └─ startDrawer.vue		// 发起人节点属性配置组件
 │  │       ├─ approver					// 审批人节点
-│  │       │  ├─ approverNode.vue			// 审批人节点组件
+│  │       │  ├─ approverNode.vue		// 审批人节点组件
 │  │       │  └─ approverDrawer.vue		// 审批人节点属性配置组件
-│  │       ├─ notify						// 审批人节点
+│  │       ├─ notify					// 审批人节点
 │  │       │  ├─ notifyNode.vue			// 抄送人节点组件
-│  │       │  └─ notifyDrawer.vue			// 抄送人节点属性配置组件
-│  │       ├─ end							// 结束节点
-│  │       │  └─ endNode.vue				// 结束节点组件（仅用于展示，并没有实际意义）
+│  │       │  └─ notifyDrawer.vue		// 抄送人节点属性配置组件
+│  │       ├─ end						// 结束节点
+│  │       │  └─ endNode.vue			// 结束节点组件（仅用于展示，并没有实际意义）
 │  │       └─ utils						
-│  │         └─ tools.js					// 工具类
+│  │         └─ tools.js				// 工具类
 │  └─ views
 │     └─ index.vue						// demo
 └─ README.md							// 使用手册
