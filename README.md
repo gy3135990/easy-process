@@ -71,7 +71,8 @@ easy-process
 │  │  │ └─ Button.vue					// 按钮组件
 │  │  ├─ Drawer
 │  │  │ └─ Drawer.vue					// 抽屉组件
-│  │  ├─ SvgIcon						// svg图标组件
+│  │  ├─ SvgIcon						
+│  │  │ └─ index.vue					// svg图标组件
 │  │  └─ EasyProcess					// 流程设计器
 │  │    ├─ ProcessDesigner.vue			// 流程设计器组件（入口）
 │  │    ├─ config						// 流程设计器-配置文件
