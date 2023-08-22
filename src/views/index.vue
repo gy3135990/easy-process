@@ -97,7 +97,8 @@ const publish = () => {
   top: 0;
   left: 0;
   padding-top: 50px;
-  width: 100%;
+  //width: 100%;
+  min-width: 100%;
   height: 100%;
   box-sizing: border-box;
 }
