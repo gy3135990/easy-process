@@ -179,8 +179,9 @@ const showMoveBtn = (direction, flag) => {
       isShowLeftMoveBtn.value = flag
     } else if (direction == 2 && index != length - 2) {
       isShowRightMoveBtn.value = flag
+    } else {
+      isShowRightMoveBtn.value = false
     }
-
   }
 }
 
