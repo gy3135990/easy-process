@@ -156,6 +156,8 @@ const isLastCondition = () => {
 const emit = defineEmits(["removeNode"]);
 const removeNode = () => {
   emit("removeNode");
+  isShowLeftMoveBtn.value = false
+  isShowRightMoveBtn.value = false
 }
 
 // 鼠标移入事件
