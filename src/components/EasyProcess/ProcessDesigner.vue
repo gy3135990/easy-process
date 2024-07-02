@@ -20,7 +20,7 @@
 import NodeWrap from "./node/NodeWrap";
 import EndNode from "./node/end/endNode";
 
-import { ref, onMounted, getCurrentInstance, watch, provide } from "vue";
+import {ref, onMounted, getCurrentInstance, watch, provide, nextTick} from "vue";
 import { defaultConfig } from "./config/defaultConfig";
 import { copy } from "./utils/tools";
 import { createValidator } from "./utils/validator";
@@ -84,11 +84,16 @@ const init = () => {
   } else {
     processData.value = copy(defaultConfig)
   }
+  nextTick(() => {
+    validate()
+  })
 }
 
 const validate = (callback) => {
   let result = validator.validate()
-  callback(result.valid, result.messages)
+  if (callback && typeof callback === 'function') {
+    callback(result.valid, result.messages)
+  }
 }
 
 /**
