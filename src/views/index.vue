@@ -21,8 +21,8 @@
         </el-descriptions-item>
 
         <el-descriptions-item label="开源许可协议">MIT</el-descriptions-item>
-        <el-descriptions-item label="项目地址">https://gitee.com/quxiou-code/easy-process</el-descriptions-item>
-        <el-descriptions-item label="体验入口">http://process.uncodeshop.com</el-descriptions-item>
+        <el-descriptions-item label="项目地址">https://gitee.com/quxiu-code/easy-process</el-descriptions-item>
+        <el-descriptions-item label="体验入口">http://process.uncode.vip</el-descriptions-item>
       </el-descriptions>
     </el-dialog>
   </div>
