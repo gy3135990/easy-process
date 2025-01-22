@@ -3,28 +3,12 @@
     <div class="header">
       <div class="title">{{processData.processName}}</div>
       <div class="publish">
-        <el-button type="primary" @click="isShowInfo = true" round plain>项目信息</el-button>
         <el-button type="primary" @click="publish" round>发布</el-button>
       </div>
     </div>
     <div class="body">
       <ProcessDesigner ref="process" :data="processData"/>
     </div>
-
-    <!-- 项目信息 -->
-    <el-dialog v-model="isShowInfo" title="项目信息">
-      <el-descriptions direction="vertical" :column="1" border>
-        <el-descriptions-item label="简介">
-          <p>Easy Process 流程设计器，基于vue3 + vite4 实现，具备低代码、快速应用及扩展的特点。</p>
-          <p>项目完全开源（永久），如果这个项目让你有所收获，记得 Star 关注哦，这对我是非常不错的鼓励与支持。</p>
-          <p>如果在使用过程中发现BUG，请提交Issues。</p>
-        </el-descriptions-item>
-
-        <el-descriptions-item label="开源许可协议">MIT</el-descriptions-item>
-        <el-descriptions-item label="项目地址">https://gitee.com/quxiu-code/easy-process</el-descriptions-item>
-        <el-descriptions-item label="体验入口">http://process.uncode.vip</el-descriptions-item>
-      </el-descriptions>
-    </el-dialog>
   </div>
 </template>
 
