@@ -4,7 +4,13 @@
       <!-- header -->
       <div class="ep-node-header" :style="{color: config.color, 'background-color': config.bgColor}">
         <svg-icon :icon-class="config.icon.name" class="ep-node-icon" color="#FFFFFF"/>
-        <div class="ep-node-header-title">{{config.title}}</div>
+        <div class="ep-node-header-title">
+          <div class="ep-node-header-title-text" v-if="!isShowEditNodeName">{{props.node.nodeName}}</div>
+          <div class="ep-node-header-title-input" v-if="isShowEditNodeName">
+            <input ref="nodeNameRef" v-model="props.node.nodeName" @blur="saveNodeName">
+          </div>
+          <svg-icon class="ep-node-header-title-edit" icon-class="edit" color="#FFFFFF" @click="showEditNodeName" v-if="!isShowEditNodeName"/>
+        </div>
         <svg-icon icon-class="close" class="ep-node-close" color="#FFFFFF" v-if="canRemoved" @click="removeNode"/>
       </div>
       <!-- body -->
@@ -39,7 +45,18 @@
 <script setup name="BaseNode">
 import BaseDrawer from "./BaseDrawer";
 import AddNode from "./AddNode";
-import {ref, shallowRef, onMounted, getCurrentInstance, defineAsyncComponent, watch, computed, onUnmounted, inject} from "vue";
+import {
+  ref,
+  shallowRef,
+  onMounted,
+  getCurrentInstance,
+  defineAsyncComponent,
+  watch,
+  computed,
+  onUnmounted,
+  inject,
+  nextTick
+} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
 import {copy, getUUID} from "../../utils/tools";
 import {START, CONDITION} from "../../config/nodeType"
@@ -67,6 +84,9 @@ const tempNodeId = getUUID()
 
 // 节点配置数据
 const config = ref(nodeConfig[props.node.nodeType])
+
+const isShowEditNodeName = ref(false)
+const nodeNameRef = ref(null)
 
 // 获取流程验证器实例
 const validator = inject(KEY_VALIDATOR)
@@ -229,6 +249,20 @@ const showErrorTips = (flag) => {
   errorTips.value = flag
 }
 
+const showEditNodeName = () => {
+  isShowEditNodeName.value = true
+  nextTick(()=>{
+    nodeNameRef.value.focus()
+  })
+
+}
+const saveNodeName = () => {
+  isShowEditNodeName.value = false
+  if (props.node.nodeName == null || props.node.nodeName.trim() === '') {
+    props.node.nodeName = config.value.title
+  }
+}
+
 </script>
 
 <style lang="less" scoped>
@@ -294,7 +328,34 @@ const showErrorTips = (flag) => {
 
     .ep-node-header-title {
       flex: 1;
-      margin-left: 4px
+      margin-left: 4px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .ep-node-header-title-text {
+        max-width: 110px;
+        min-width: 20px;
+        white-space: nowrap; /* 确保文本在一行内显示 */
+        overflow: hidden; /* 隐藏溢出的内容 */
+        text-overflow: ellipsis; /* 使用省略号表示溢出的文本 */
+      }
+      .ep-node-header-title-input {
+        input {
+          width: 120px;
+        }
+      }
+      .ep-node-header-title-edit {
+        width: 30px;
+        cursor: pointer;
+        display: none;
+      }
+    }
+
+    .ep-node-header-title:hover {
+      .ep-node-header-title-edit {
+        display: initial;
+      }
     }
 
     .ep-node-close {
