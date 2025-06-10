@@ -16,9 +16,6 @@ import {getCurrentInstance, inject} from "vue";
 import {KEY_PROCESS_DATA, KEY_VALIDATOR} from "../../config/keys"
 
 const props = defineProps({
-  tempNodeId: { // 临时节点ID
-    type: String
-  },
   node: { // 传入的流程配置数据
     type: Object,
     default: {}
@@ -33,7 +30,7 @@ const processData = inject(KEY_PROCESS_DATA)
 const validator = inject(KEY_VALIDATOR)
 
 // 注册验证器
-validator.register(props.tempNodeId, () => {
+validator.register(props.node.tempNodeId, () => {
   let valid = true;
   if (!props.node.isLastCondition) {
     if (!props.node.config.days) {

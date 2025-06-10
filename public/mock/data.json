@@ -2,22 +2,26 @@
   "processId": "10001",
   "processName": "请假审批",
   "nodeConfig": {
+    "tempNodeId": "root",
     "nodeName": "发起人",
     "nodeType": "start",
     "config": {
       "name": null
     },
     "childNode": {
+      "tempNodeId": "1",
       "nodeName": "审批人",
       "nodeType": "approver",
       "config": {
         "name": null
       },
       "childNode": {
+        "tempNodeId": "2",
         "nodeName": "路由",
         "nodeType": "router",
         "conditionNodes": [
           {
+            "tempNodeId": "3",
             "nodeName": "条件",
             "nodeType": "condition",
             "isLastCondition": false,
@@ -25,6 +29,7 @@
               "days": 1
             },
             "childNode": {
+              "tempNodeId": "4",
               "nodeName": "审批人",
               "nodeType": "approver",
               "config": {
@@ -33,6 +38,7 @@
             }
           },
           {
+            "tempNodeId": "5",
             "nodeName": "条件",
             "nodeType": "condition",
             "isLastCondition": false,
@@ -40,6 +46,7 @@
               "days": 3
             },
             "childNode": {
+              "tempNodeId": "6",
               "nodeName": "审批人",
               "nodeType": "approver",
               "config": {
@@ -48,6 +55,7 @@
             }
           },
           {
+            "tempNodeId": "7",
             "nodeName": "条件",
             "nodeType": "condition",
             "isLastCondition": true,
@@ -56,12 +64,14 @@
           }
         ],
         "childNode": {
+          "tempNodeId": "8",
           "nodeName": "审批人",
           "nodeType": "approver",
           "config": {
             "name": "李四"
           },
           "childNode": {
+            "tempNodeId": "9",
             "nodeName": "抄送人",
             "nodeType": "notify",
             "config": {

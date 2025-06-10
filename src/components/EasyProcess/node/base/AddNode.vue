@@ -18,7 +18,7 @@
 <script setup name="AddNode">
 import {ref, onMounted, getCurrentInstance} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
-import {copy} from "../../utils/tools";
+import {copy, getUUID} from "../../utils/tools";
 
 const props = defineProps({
   node: { // 传入的流程节点数据
@@ -87,6 +87,8 @@ const addNode = (nodeType) => {
   let typeConfig = nodeConfig[nodeType]
   if(typeConfig) {
     let addNode = copy(typeConfig.defaultNode)
+    // 生成临时节点ID
+    addNode.tempNodeId = getUUID()
     let childNode = copy(props.node.childNode)
     addNode.childNode = childNode
     props.node.childNode = addNode

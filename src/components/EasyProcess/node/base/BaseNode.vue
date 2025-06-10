@@ -15,7 +15,7 @@
       </div>
       <!-- body -->
       <div class="ep-node-body" @click="showNodeDrawer">
-        <component ref="node" :is="nodeComponents[props.node.nodeType]" :tempNodeId="tempNodeId" :node="props.node"/>
+        <component ref="node" :is="nodeComponents[props.node.nodeType]" :node="props.node"/>
       </div>
       <!-- 同级节点左移动 -->
       <div class="ep-node-move ep-node-move-left" v-if="isShowLeftMoveBtn">
@@ -79,9 +79,6 @@ const props = defineProps({
 
 const { proxy } = getCurrentInstance();
 
-// 生成临时节点ID
-const tempNodeId = getUUID()
-
 // 节点配置数据
 const config = ref(nodeConfig[props.node.nodeType])
 
@@ -119,7 +116,7 @@ onMounted(async () => {
 });
 
 onUnmounted(async () => {
-  validator.remove(tempNodeId)
+  validator.remove(props.node.tempNodeId)
   validator.validate()
 });
 
@@ -129,7 +126,7 @@ const isStart = computed(() => {
 
 // 节点验证结果是否异常
 const isError = computed(() => {
-  let result = validator.getResult(tempNodeId)
+  let result = validator.getResult(props.node.tempNodeId)
   if(result) {
     errorMsg.value = result.message
     return !result.valid

@@ -1,9 +1,9 @@
 <template>
   <div class="ep-node-wrap" v-if="props.node">
     <!-- 路由节点 -->
-    <RouterNode :node="props.node" @removeNode="removeNode" v-if="props.node.nodeType == ROUTER"/>
+    <RouterNode :node="props.node" @removeNode="removeNode" v-if="props.node.nodeType == ROUTER" :key="props.node.tempNodeId"/>
     <!-- 普通节点 -->
-    <BaseNode :node="props.node" :conditionNodes="props.conditionNodes" :conditionIndex="props.conditionIndex" @removeNode="removeNode" v-else/>
+    <BaseNode :node="props.node" :conditionNodes="props.conditionNodes" :conditionIndex="props.conditionIndex" @removeNode="removeNode" :key="props.node.tempNodeId" v-else/>
     <!-- 子节点 -->
     <NodeWrap :node="props.node.childNode" @removeNode="removeChildNode" v-if="props.node.childNode && props.node.childNode.nodeType" />
   </div>
