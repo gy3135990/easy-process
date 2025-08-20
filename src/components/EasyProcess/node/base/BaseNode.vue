@@ -19,13 +19,11 @@
       </div>
       <!-- 同级节点左移动 -->
       <div class="ep-node-move ep-node-move-left" v-if="isShowLeftMoveBtn">
-        <svg-icon icon-class="left" class="ep-node-move-icon" :color="isSelectedLeftMoveBtn ? '#1e83e9' : '#696969'"
-                  @click="moveNode(1)" @mouseenter="selectedMoveBtn(1, true)" @mouseleave="selectedMoveBtn(1, false)"/>
+        <svg-icon icon-class="left" class="ep-node-move-icon" @click="moveNode(1)"/>
       </div>
       <!-- 同级节点右移动 -->
       <div class="ep-node-move ep-node-move-right" v-if="isShowRightMoveBtn">
-        <svg-icon icon-class="right" class="ep-node-move-icon" :color="isSelectedRightMoveBtn ? '#1e83e9' : '#696969'"
-                  @click="moveNode(2)" @mouseenter="selectedMoveBtn(2, true)" @mouseleave="selectedMoveBtn(2, false)"/>
+        <svg-icon icon-class="right" class="ep-node-move-icon" @click="moveNode(2)"/>
       </div>
       <!-- 校验错误提示 -->
       <div class="ep-node-error-msg" v-if="isError">
@@ -60,7 +58,7 @@ import {
 import {nodeConfig} from "../../config/nodeConfig";
 import {copy, getUUID} from "../../utils/tools";
 import {START, CONDITION} from "../../config/nodeType"
-import {KEY_VALIDATOR} from "../../config/keys"
+import {KEY_PROCESS_CTRL, KEY_VALIDATOR} from "../../config/keys"
 
 const props = defineProps({
   node: { // 传入的流程节点数据
@@ -85,6 +83,8 @@ const config = ref(nodeConfig[props.node.nodeType])
 const isShowEditNodeName = ref(false)
 const nodeNameRef = ref(null)
 
+// 流程控制器实例
+const processCtrl = inject(KEY_PROCESS_CTRL)
 // 获取流程验证器实例
 const validator = inject(KEY_VALIDATOR)
 const errorMsg = ref(null)
@@ -107,15 +107,14 @@ Object.keys(nodeConfig).forEach(key => {
 
 // 节点左右移动按钮状态
 const isShowLeftMoveBtn = ref(false)
-const isSelectedLeftMoveBtn = ref(false)
 const isShowRightMoveBtn = ref(false)
-const isSelectedRightMoveBtn = ref(false)
 
 onMounted(async () => {
-
+  processCtrl.addNode(props.node.tempNodeId, props.node)
 });
 
 onUnmounted(async () => {
+  processCtrl.removeNode(props.node.tempNodeId)
   validator.remove(props.node.tempNodeId)
   validator.validate()
 });
@@ -201,14 +200,6 @@ const showMoveBtn = (direction, flag) => {
     } else {
       isShowRightMoveBtn.value = false
     }
-  }
-}
-
-const selectedMoveBtn = (direction, flag) => {
-  if (direction == 1) {
-    isSelectedLeftMoveBtn.value = flag
-  } else {
-    isSelectedRightMoveBtn.value = flag
   }
 }
 
@@ -442,5 +433,8 @@ const saveNodeName = () => {
   width: 35px;
   height: 35px;
   cursor: pointer;
+  &:hover {
+    fill: #1e83e9;
+  }
 }
 </style>

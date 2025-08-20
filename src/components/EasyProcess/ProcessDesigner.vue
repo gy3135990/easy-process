@@ -1,5 +1,5 @@
 <template>
-  <div class="ep-container">
+  <div id="ep-container" class="ep-container" @mousedown="startDragging">
     <!-- 流程 -->
     <div class="ep-process" :style="`transform: scale(${ zoom / 100});`">
       <!-- 递归节点 -->
@@ -9,9 +9,9 @@
     </div>
     <!-- 缩放 -->
     <div class="ep-zoom">
-      <svg-icon icon-class="subtract" class="ep-zoom-icon" color="#5a5e66" :class="zoom == 50 && 'disabled'" @click="setZoom(1)"/>
+      <svg-icon icon-class="subtract" class="ep-zoom-icon" color="#ffffff" @click="setZoom(1)"/>
       <span>{{ zoom }}%</span>
-      <svg-icon icon-class="plus" class="ep-zoom-icon" color="#5a5e66" :class="zoom == 300 && 'disabled'" @click="setZoom(2)"/>
+      <svg-icon icon-class="plus" class="ep-zoom-icon" color="#ffffff" @click="setZoom(2)"/>
     </div>
   </div>
 </template>
@@ -23,8 +23,9 @@ import EndNode from "./node/end/endNode";
 import {ref, onMounted, getCurrentInstance, watch, provide, nextTick} from "vue";
 import { defaultConfig } from "./config/defaultConfig";
 import { copy } from "./utils/tools";
+import { createProcessCtrl } from "./utils/processCtrl";
 import { createValidator } from "./utils/validator";
-import { KEY_VALIDATOR, KEY_PROCESS_DATA } from "./config/keys"
+import { KEY_PROCESS_CTRL, KEY_VALIDATOR, KEY_PROCESS_DATA } from "./config/keys"
 
 const { proxy } = getCurrentInstance();
 
@@ -37,6 +38,10 @@ const props = defineProps({
 
 // 缩放值
 let zoom = ref(100);
+// 创建流程控制器实例
+let processCtrl = createProcessCtrl()
+// 依赖注入: 流程控制器实例
+provide(KEY_PROCESS_CTRL, processCtrl)
 // 创建节点验证器实例
 let validator = createValidator()
 // 依赖注入: 节点验证器实例
@@ -64,13 +69,13 @@ onMounted(async () => {
  * @param type
  */
 const setZoom = (type) => {
-  if (type == 1) {
-    if (zoom.value == 50) {
+  if (type === 1) {
+    if (zoom.value === 40) {
       return;
     }
     zoom.value -= 10;
   } else {
-    if (zoom.value == 300) {
+    if (zoom.value === 100) {
       return;
     }
     zoom.value += 10;
@@ -103,16 +108,57 @@ const getResult = () => {
   return copy(processData.value)
 }
 
+const getProcessCtrl = () => {
+  return processCtrl
+}
+
+// 是否正在拖动
+const isDragging = ref(false)
+// 鼠标按下时的坐标
+const startX = ref(0)
+const startY = ref(0)
+// 初始滚动位置
+const scrollX = ref(0)
+const scrollY = ref(0)
+
+const startDragging = (event) => {
+  isDragging.value = true;
+  // 鼠标按下的位置
+  startX.value = event.clientX;
+  startY.value = event.clientY;
+  const element = document.getElementById("ep-container");
+  console.log("element.scrollLeft", element.scrollLeft);
+  scrollX.value = element.scrollLeft; // 记录初始滚动位置
+  scrollY.value = element.scrollTop; // 记录初始滚动位置
+  document.addEventListener('mousemove', doDragging);
+  document.addEventListener('mouseup', stopDragging);
+}
+const doDragging = (event) => {
+  if (isDragging.value) {
+    let deltaX = event.clientX - startX.value; // 计算鼠标移动的距离
+    let deltaY = event.clientY - startY.value; // 计算鼠标移动的距离
+    console.log("deltaX", deltaX)
+    console.log("scrollX.value", scrollX.value)
+    const element = document.getElementById("ep-container");
+    element.scrollLeft = scrollX.value - deltaX; // 更新滚动位置
+    element.scrollTop = scrollY.value - deltaY; // 更新滚动位置
+  }
+}
+const stopDragging = () => {
+  isDragging.value = false;
+  document.removeEventListener('mousemove', doDragging);
+  document.removeEventListener('mouseup', stopDragging);
+}
+
 defineExpose({
   validate,
-  getResult
+  getResult,
+  getProcessCtrl
 });
 </script>
 <style lang="less" scoped>
 
 .ep-container {
-  display: flex;
-  justify-content: center;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
@@ -120,11 +166,16 @@ defineExpose({
   overflow-x: auto;
   overflow-y: auto;
   padding: 16px;
+  &:active {
+    cursor: all-scroll;
+  }
 }
 
 .ep-process {
   position: relative;
+  width: max-content;
   height: 100%;
+  margin: auto;
 }
 
 .ep-zoom {
@@ -140,9 +191,11 @@ defineExpose({
 }
 
 .ep-zoom-icon {
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-  border: 1px solid #5a5e66;
+  background-color: #5a5e66;
+  border-radius: 5px;
+  padding: 3px;
 }
 </style>

@@ -175,6 +175,36 @@ easy-process
 
 注：以上数据结构除了nodeConfig字段内的结构是固定的外，使用者可以添加任意其他业务字段，获取数据方式见**依赖注入**章节。
 
+```json
+{
+  "processId": "流程ID",
+  "processName": "流程名称",
+  "nodes": [
+    {
+      "nodeId": "节点ID",
+      "nodeType": "节点类型 start-发起人节点 approver-审批节点 router-路由节点 condition-条件节点 notify-抄送节点",
+      "parentNodeId": "父级节点ID",
+    	"config": { // 节点配置，根据需求可以自定义
+        "conditions": [ // 条件集合
+          [ // 条件组
+            { // 条件
+              "name": "字段名",
+              "label": "字段描述",
+              "type": "字段类型",
+              "operator1": "运算符 eq-等于 ne-不等于 gt-大于 ge-大于等于 lt-小于 le-小于等于 bt-介于 in-包含任意 ine-完全包含",
+              "operator2": "运算符，当operator=bt时，可选值为lt|le",
+              "operator3": "运算符，当operator=bt时，可选值为lt|le",
+              "value1": "值1",
+              "value2": "值2",
+            }
+          ]
+        ]
+      }
+    },
+  ]
+}
+```
+
 
 
 ### 定义节点

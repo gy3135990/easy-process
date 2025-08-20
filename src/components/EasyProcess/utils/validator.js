@@ -1,6 +1,6 @@
 import { reactive } from "vue";
 export const createValidator = () => {
-    let validator = new Object();
+    let validator = {};
     validator.nodeRules = new Map()
     validator.results = reactive(new Map())
 

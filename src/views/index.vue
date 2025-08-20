@@ -84,6 +84,7 @@ const publish = () => {
   //width: 100%;
   min-width: 100%;
   height: 100%;
+  width: 100%;
   box-sizing: border-box;
 }
 </style>
