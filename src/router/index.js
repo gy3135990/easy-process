@@ -13,6 +13,16 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/test',
+    children: [
+      {
+        path: '/test',
+        component: () => import('@/views/test'),
+        name: 'Test'
+      }
+    ]
+  },
 ]
 
 const router = createRouter({

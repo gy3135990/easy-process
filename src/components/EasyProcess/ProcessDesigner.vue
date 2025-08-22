@@ -22,12 +22,16 @@ import EndNode from "./node/end/endNode";
 
 import {ref, onMounted, getCurrentInstance, watch, provide, nextTick} from "vue";
 import { defaultConfig } from "./config/defaultConfig";
+import { initLocalComponents } from "./config/asyncNodeComponent";
 import { copy } from "./utils/tools";
 import { createProcessCtrl } from "./utils/processCtrl";
 import { createValidator } from "./utils/validator";
 import { KEY_PROCESS_CTRL, KEY_VALIDATOR, KEY_PROCESS_DATA } from "./config/keys"
 
 const { proxy } = getCurrentInstance();
+
+// 加载节点组件
+initLocalComponents()
 
 const props = defineProps({
   data: { // 传入的流程节点数据
@@ -127,7 +131,6 @@ const startDragging = (event) => {
   startX.value = event.clientX;
   startY.value = event.clientY;
   const element = document.getElementById("ep-container");
-  console.log("element.scrollLeft", element.scrollLeft);
   scrollX.value = element.scrollLeft; // 记录初始滚动位置
   scrollY.value = element.scrollTop; // 记录初始滚动位置
   document.addEventListener('mousemove', doDragging);
@@ -137,8 +140,6 @@ const doDragging = (event) => {
   if (isDragging.value) {
     let deltaX = event.clientX - startX.value; // 计算鼠标移动的距离
     let deltaY = event.clientY - startY.value; // 计算鼠标移动的距离
-    console.log("deltaX", deltaX)
-    console.log("scrollX.value", scrollX.value)
     const element = document.getElementById("ep-container");
     element.scrollLeft = scrollX.value - deltaX; // 更新滚动位置
     element.scrollTop = scrollY.value - deltaY; // 更新滚动位置

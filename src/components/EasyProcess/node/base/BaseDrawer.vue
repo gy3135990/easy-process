@@ -12,10 +12,11 @@
   </div>
 </template>
 <script setup name="BaseDrawer">
-import Drawer from "@/components/Drawer/Drawer";
-import Button from "@/components/Button/Button";
-import {ref, shallowRef, getCurrentInstance, defineAsyncComponent} from "vue";
+import Drawer from "@/components/EasyProcess/components/Drawer/Drawer";
+import Button from "@/components/EasyProcess/components/Button/Button";
+import {defineAsyncComponent, getCurrentInstance, ref, shallowRef} from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
+import { drawerComponents } from "../../config/asyncNodeComponent";
 import {copy} from "../../utils/tools";
 
 const props = defineProps({
@@ -30,17 +31,6 @@ let node = ref(null);
 const config = ref(null)
 // 是否显示配置界面
 let isShow = ref(false);
-
-// 加载节点抽屉组件
-const modules = import.meta.glob('../*/*Drawer.vue')
-const drawerComponents = shallowRef({});
-Object.keys(nodeConfig).forEach(key => {
-  let item = nodeConfig[key]
-  if(item.hasDrawer) {
-    let component = defineAsyncComponent(modules[`../${key}/${key}Drawer.vue`])
-    drawerComponents.value[key] = component
-  }
-})
 
 // 显示节点配置组件
 const show = (data) => {

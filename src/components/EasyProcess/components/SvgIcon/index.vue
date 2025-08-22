@@ -22,7 +22,7 @@ export default defineComponent({
   },
   setup(props) {
     return {
-      iconName: computed(() => `#icon-${props.iconClass}`),
+      iconName: computed(() => `#icon-ep-${props.iconClass}`),
       svgClass: computed(() => {
         if (props.className) {
           return `svg-icon ${props.className}`

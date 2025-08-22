@@ -24,7 +24,6 @@
             "tempNodeId": "3",
             "nodeName": "条件",
             "nodeType": "condition",
-            "isLastCondition": false,
             "config": {
               "days": 1
             },
@@ -41,7 +40,6 @@
             "tempNodeId": "5",
             "nodeName": "条件",
             "nodeType": "condition",
-            "isLastCondition": false,
             "config": {
               "days": 3
             },
@@ -58,7 +56,6 @@
             "tempNodeId": "7",
             "nodeName": "条件",
             "nodeType": "condition",
-            "isLastCondition": true,
             "config": {},
             "childNode": {}
           }

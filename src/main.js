@@ -7,7 +7,7 @@ import 'element-plus/dist/index.css'
 
 // svg图标
 import 'virtual:svg-icons-register'
-import SvgIcon from '@/components/SvgIcon'
+import SvgIcon from '@/components/EasyProcess/components/SvgIcon'
 
 const app = createApp(App)
 app.use(router)

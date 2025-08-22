@@ -44,21 +44,21 @@
 import BaseDrawer from "./BaseDrawer";
 import AddNode from "./AddNode";
 import {
+  computed,
+  defineAsyncComponent,
+  getCurrentInstance,
+  inject,
+  nextTick,
+  onMounted,
+  onUnmounted,
   ref,
   shallowRef,
-  onMounted,
-  getCurrentInstance,
-  defineAsyncComponent,
-  watch,
-  computed,
-  onUnmounted,
-  inject,
-  nextTick
+  watch
 } from "vue";
 import {nodeConfig} from "../../config/nodeConfig";
-import {copy, getUUID} from "../../utils/tools";
-import {START, CONDITION} from "../../config/nodeType"
+import {CONDITION, START} from "../../config/nodeType"
 import {KEY_PROCESS_CTRL, KEY_VALIDATOR} from "../../config/keys"
+import { nodeComponents } from "../../config/asyncNodeComponent";
 
 const props = defineProps({
   node: { // 传入的流程节点数据
@@ -94,16 +94,6 @@ watch(() => props.node, (val) => {
   config.value = nodeConfig[props.node.nodeType]
   validator.validate()
 });
-
-const modules = import.meta.glob('../*/*Node.vue')
-const nodeComponents = shallowRef({});
-
-Object.keys(nodeConfig).forEach(key => {
-  let item = nodeConfig[key]
-  // 加载节点组件
-  let component = defineAsyncComponent(modules[`../${key}/${key}Node.vue`])
-  nodeComponents.value[key] = component
-})
 
 // 节点左右移动按钮状态
 const isShowLeftMoveBtn = ref(false)
@@ -162,7 +152,7 @@ const isCondition = () => {
 
 // 判断当前节点是否为条件节点，且为最后一个条件
 const isLastCondition = () => {
-  if (isCondition() && props.node.isLastCondition) {
+  if (isCondition() && props.conditionIndex === props.conditionNodes.length - 1) {
     return true
   }
   return false
