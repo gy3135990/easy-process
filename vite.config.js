@@ -29,6 +29,9 @@ export default defineConfig(({ mode, command }) => {
       host: true,
       open: true,
     },
+    optimizeDeps: {
+      exclude: ["fsevents"],
+    },
     //fix:error:stdin>:7356:1: warning: "@charset" must be the first rule in the file
     css: {
       postcss: {

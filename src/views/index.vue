@@ -7,13 +7,13 @@
       </div>
     </div>
     <div class="body">
-      <ProcessDesigner ref="process" :data="processData"/>
+      <ep-designer ref="process" :data="processData"/>
     </div>
   </div>
 </template>
 
 <script setup name="WorkFlow">
-import ProcessDesigner from "@/components/EasyProcess/ProcessDesigner";
+// import ProcessDesigner from "@/easy-process/ProcessDesigner";
 import { ElMessageBox } from 'element-plus'
 import {getCurrentInstance, onMounted, ref} from "vue";
 const { proxy } = getCurrentInstance();

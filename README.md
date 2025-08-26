@@ -82,9 +82,9 @@ easy-process
 │  │  └─ EasyProcess					// 流程设计器
 │  │    ├─ ProcessDesigner.vue			// 流程设计器组件（入口）
 │  │    ├─ config						// 流程设计器-配置文件
-│  │    │  ├─ defaultConfig.js			// 初始化时默认流程结构
-│  │    │  ├─ nodeConfig.js				// 各节点属性配置
-│  │    │  ├─ nodeType.js				// 节点类型
+│  │    │  ├─ default-config.js			// 初始化时默认流程结构
+│  │    │  ├─ node-config.js				// 各节点属性配置
+│  │    │  ├─ node-type.js				// 节点类型
 │  │    │  └─ keys.js					// 定义KEY
 │  │    └─ node							// 流程设计器-节点组件
 │  │       ├─ NodeWrap.vue				// 用于递归生成流程节点的组件
@@ -124,7 +124,7 @@ easy-process
 1. 导入流程设计器组件
 
    ```js
-   import ProcessDesigner from "@/components/EasyProcess/ProcessDesigner";
+   import ProcessDesigner from "@/components/easy-process/ProcessDesigner";
    ```
 
    
@@ -228,7 +228,7 @@ xxxDrawer.vue组件下会通过props.config传入当前节点属性配置的**�
 
 ```javascript
 import {inject} from "vue";
-import { KEY_PROCESS_DATA } from "@/components/EasyProcess/config/keys"
+import { KEY_PROCESS_DATA } from "@/components/easy-process/config/keys"
 
 // 获取流程数据，processData是一个被ref()包裹的响应式数据
 const processData = inject(KEY_PROCESS_DATA)
