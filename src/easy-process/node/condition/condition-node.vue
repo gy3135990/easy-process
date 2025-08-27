@@ -1,11 +1,11 @@
 <template>
   <!-- 条件节点 -->
   <div class="ep-node-condition">
-    <div v-if="!isLastCondition">
+    <div v-if="node.config.days">
       请假天数: {{node.config.days}}天
     </div>
     <div v-else>
-      其他条件进入此流程
+      未设置条件
     </div>
   </div>
 

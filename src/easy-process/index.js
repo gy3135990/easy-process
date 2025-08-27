@@ -11,6 +11,7 @@ const requireGlobalComponent = import.meta.glob([
  * @param options
  */
 const install = (app, options) => {
+    console.log("run install")
     if (install.installed) {
         return;
     }

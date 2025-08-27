@@ -12,7 +12,7 @@
 <script setup name="NodeWrap">
 import BaseNode from "./base/base-node.vue";
 import RouterNode from "./router/router-node.vue";
-import {ref, onMounted, getCurrentInstance} from "vue";
+import {getCurrentInstance, onMounted, ref} from "vue";
 import {ROUTER} from "../config/node-type.js"
 
 const props = defineProps({
@@ -51,8 +51,13 @@ const removeNode = () => {
 
 // 移除子节点
 const removeChildNode = () => {
-  let nextChildNode = props.node.childNode.childNode
-  props.node.childNode = nextChildNode
+  let nextNode = props.node.childNode.conditionNodes[0].childNode
+  if (nextNode) {
+    nextNode.childNode = props.node.childNode.childNode
+  } else {
+    nextNode = props.node.childNode.childNode
+  }
+  props.node.childNode = nextNode ? nextNode : null
 }
 </script>
 

@@ -43,3 +43,7 @@ const getNodeType = (pattern, path) => {
     }
     return null
 }
+
+export const getNodeComponent = () => {
+
+}

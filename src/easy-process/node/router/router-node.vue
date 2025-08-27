@@ -53,7 +53,8 @@ const removeCondition = (index) => {
   if(conditionNum > 2) {
     props.node.conditionNodes.splice(index, 1)
   } else {
-    emit("removeNode");
+    props.node.conditionNodes.splice(index, 1)
+    emit("removeNode")
   }
 }
 

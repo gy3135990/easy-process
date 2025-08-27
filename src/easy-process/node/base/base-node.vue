@@ -1,6 +1,6 @@
 <template>
   <div :class="{'ep-node': true, 'ep-node-arrows': !isStart}">
-    <div :class="{'ep-node-content': true, 'ep-node-error': isError}" @mouseenter="mouseenter(true)" @mouseleave="mouseleave(false)">
+    <div :class="{'ep-node-content': true, 'ep-node-error': isError}">
       <!-- header -->
       <div class="ep-node-header" :style="{color: config.color, 'background-color': config.bgColor}">
         <svg-icon :icon-class="config.icon.name" class="ep-node-icon" color="#FFFFFF"/>
@@ -18,11 +18,11 @@
         <component ref="node" :is="nodeComponents[props.node.nodeType]" :node="props.node" :isLastCondition="isLastCondition()"/>
       </div>
       <!-- 同级节点左移动 -->
-      <div class="ep-node-move ep-node-move-left" v-if="isShowLeftMoveBtn">
+      <div class="ep-node-move ep-node-move-left">
         <svg-icon icon-class="left" class="ep-node-move-icon" @click="moveNode(1)"/>
       </div>
       <!-- 同级节点右移动 -->
-      <div class="ep-node-move ep-node-move-right" v-if="isShowRightMoveBtn">
+      <div class="ep-node-move ep-node-move-right">
         <svg-icon icon-class="right" class="ep-node-move-icon" @click="moveNode(2)"/>
       </div>
       <!-- 校验错误提示 -->
@@ -95,10 +95,6 @@ watch(() => props.node, (val) => {
   validator.validate()
 });
 
-// 节点左右移动按钮状态
-const isShowLeftMoveBtn = ref(false)
-const isShowRightMoveBtn = ref(false)
-
 onMounted(async () => {
   processCtrl.addNode(props.node.tempNodeId, props.node)
 });
@@ -110,7 +106,7 @@ onUnmounted(async () => {
 });
 
 const isStart = computed(() => {
-  return props.node.nodeType == START
+  return props.node.nodeType === START
 })
 
 // 节点验证结果是否异常
@@ -126,9 +122,6 @@ const isError = computed(() => {
 
 // 节点是否可以被移除
 const canRemoved = computed(() => {
-  if (isLastCondition()) {
-    return false
-  }
   return config.value.canRemoved
 })
 
@@ -144,7 +137,7 @@ const showNodeDrawer = () => {
 
 // 判断当前节点是否为条件节点
 const isCondition = () => {
-  if (props.node.nodeType == CONDITION) {
+  if (props.node.nodeType === CONDITION) {
     return true
   }
   return false
@@ -162,35 +155,6 @@ const isLastCondition = () => {
 const emit = defineEmits(["removeNode"]);
 const removeNode = () => {
   emit("removeNode");
-  isShowLeftMoveBtn.value = false
-  isShowRightMoveBtn.value = false
-}
-
-// 鼠标移入事件
-const mouseenter = () => {
-  showMoveBtn(1, true)
-  showMoveBtn(2, true)
-}
-
-// 鼠标移出事件
-const mouseleave = () => {
-  showMoveBtn(1, false)
-  showMoveBtn(2, false)
-}
-
-// 节点左右移动按钮状态
-const showMoveBtn = (direction, flag) => {
-  let index = props.conditionIndex
-  let length = props.conditionNodes.length
-  if(isCondition() && !isLastCondition()) {
-    if(direction == 1 && index != 0) {
-      isShowLeftMoveBtn.value = flag
-    } else if (direction == 2 && index != length - 2) {
-      isShowRightMoveBtn.value = flag
-    } else {
-      isShowRightMoveBtn.value = false
-    }
-  }
 }
 
 /**
@@ -199,16 +163,24 @@ const showMoveBtn = (direction, flag) => {
  */
 const moveNode = (direction) => {
   let index = props.conditionIndex
-  if (direction == 1) {
-    let c = props.conditionNodes[index]
-    props.conditionNodes[index] = props.conditionNodes[index - 1]
-    props.conditionNodes[index - 1] = c
+  let c = props.conditionNodes[index]
+  let exchangeIndex
 
+  if (direction === 1) {
+    if (index > 0) {
+      exchangeIndex = index - 1
+    } else {
+      exchangeIndex = props.conditionNodes.length - 1
+    }
   } else {
-    let c = props.conditionNodes[index]
-    props.conditionNodes[index] = props.conditionNodes[index + 1]
-    props.conditionNodes[index + 1] = c
+    if (index < props.conditionNodes.length - 1) {
+      exchangeIndex = index + 1
+    } else {
+      exchangeIndex = 0
+    }
   }
+  props.conditionNodes[index] = props.conditionNodes[exchangeIndex]
+  props.conditionNodes[exchangeIndex] = c
 }
 
 // 更新节点配置属性
@@ -287,6 +259,9 @@ const saveNodeName = () => {
 
   &:hover {
     box-shadow: 5px 5px 12px 5px rgba(0, 0, 0, 0.2);
+    .ep-node-move {
+      display: block;
+    }
   }
 
   .ep-node-header {
@@ -409,6 +384,7 @@ const saveNodeName = () => {
 }
 
 .ep-node-move {
+  display: none;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
