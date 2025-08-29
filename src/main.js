@@ -39,5 +39,4 @@ app.use(ProcessDesigner, {
         }
     ]
 })
-// app.component('svg-icon', svg-icon)
 app.mount('#app')

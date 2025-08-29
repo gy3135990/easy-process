@@ -1,4 +1,4 @@
-import { GATEWAY, CONDITION, START, TASK } from "./default-node-type.js"
+import { GATEWAY, CONDITION, START, TASK, TERMINATE } from "./default-node-type.js"
 import {copy} from "@/easy-process/utils/common-tools.js";
 
 // 节点配置
@@ -63,6 +63,22 @@ nodeConfig[TASK] = {
     "icon": { // 图标
         "name": "icon-ep-task", // 图标名
         "color": "#FF8C00" // 颜色
+    }
+}
+
+// 终止节点配置
+nodeConfig[TERMINATE] = {
+    "nodeType": TERMINATE,
+    "nodeName": "终止", // 节点标题
+    "color": "#FFFFFF", // 节点标题颜色
+    "bgColor": "#F56C6C", // 节点标题背景颜色
+    "enable": true, // 节点是否可用
+    "canAdd": true, // 节点是否可以增加
+    "canRemoved": true, // 节点是否能够移除
+    "hasDrawer": true, // 节点是否可以进行配置
+    "icon": { // 图标
+        "name": "icon-ep-terminate", // 图标名
+        "color": "#F56C6C" // 颜色
     }
 }
 

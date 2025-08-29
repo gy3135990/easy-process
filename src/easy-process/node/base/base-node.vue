@@ -216,7 +216,7 @@ const saveNodeName = () => {
   flex-direction: column;
   align-items: center;
   position: relative;
-  margin: 0px 100px;
+  margin: 0 100px;
 }
 
 .ep-node-arrows {
