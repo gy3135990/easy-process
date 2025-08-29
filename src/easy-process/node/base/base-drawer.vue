@@ -1,6 +1,6 @@
 <template>
   <div v-if="node" class="ep-node-drawer-container">
-    <EpDrawer v-model="isShow" :title="`${config.title}设置`" icon="setting" width="600px">
+    <EpDrawer v-model="isShow" title="设置" icon="icon-ep-setting" width="600px">
       <template #default>
         <component :is="drawerComponents[node.nodeType]" :config="node.config"/>
       </template>
@@ -17,7 +17,7 @@ import EpButton from "@/easy-process/components/button/ep-button.vue";
 import {defineAsyncComponent, getCurrentInstance, ref, shallowRef} from "vue";
 import {nodeConfig} from "../../config/node-config.js";
 import { drawerComponents } from "../../config/node-component.js";
-import {copy} from "../../utils/tools.js";
+import {copy} from "../../utils/common-tools.js";
 
 const props = defineProps({
 

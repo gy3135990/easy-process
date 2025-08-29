@@ -7,7 +7,7 @@
 
 <script setup name="approver-node">
 import {getCurrentInstance, inject} from "vue";
-import { KEY_VALIDATOR, KEY_PROCESS_DATA } from "../../config/keys.js"
+import { KEY_VALIDATOR, KEY_PROCESS_DATA } from "@/easy-process/config/keys.js"
 
 const props = defineProps({
   node: { // 传入的流程配置数据

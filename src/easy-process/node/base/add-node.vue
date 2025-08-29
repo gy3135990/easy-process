@@ -1,12 +1,12 @@
 <template>
   <div class="ep-node-add">
     <div ref="nodeAddBtn" class="ep-node-add-btn" v-on:mouseenter="showAddSelect(true)" v-on:mouseleave="showAddSelect(false)">
-      <svg-icon icon-class="plus" class="ep-node-add-btn-icon" color="#FFFFFF"/>
+      <ep-svg-icon icon-class="icon-ep-plus" class="ep-node-add-btn-icon" color="#FFFFFF"/>
       <div ref="nodeAddSelect" :class="['ep-node-add-select-box', nodeAddSelectPostion == 1 ? 'ep-node-add-left' : 'ep-node-add-right']" v-if="isShowAddSelect">
-        <div :class="{'ep-node-add-select-item': true, 'ep-node-add-selected': item.selected}" v-for="item in nodeSelect" v-on:click="addNode(item.type)" v-on:mouseenter="addNodeSelected(item, true)" v-on:mouseleave="addNodeSelected(item, false)">
-          <svg-icon :icon-class="item.icon.name" class="ep-node-add-select-item-icon" :color="item.selected ? '#FFFFFF' : item.icon.color"/>
+        <div class="ep-node-add-select-item" v-for="item in nodeSelect" v-on:click="addNode(item.type)">
+          <ep-svg-icon :icon-class="item.icon.name" class="ep-node-add-select-item-icon" :color="item.selected ? '#FFFFFF' : item.icon.color"/>
           <div class="ep-node-add-select-item-title">
-            {{item.title}}
+            {{item.nodeName}}
           </div>
         </div>
       </div>
@@ -16,9 +16,10 @@
 </template>
 
 <script setup name="add-node">
-import {ref, onMounted, getCurrentInstance} from "vue";
+import {getCurrentInstance, onMounted, ref} from "vue";
 import {nodeConfig} from "../../config/node-config.js";
-import {copy, getUUID} from "../../utils/tools.js";
+import {copy, getUUID} from "../../utils/common-tools.js";
+import {createNode} from "../../utils/node-tools.js";
 
 const props = defineProps({
   node: { // 传入的流程节点数据
@@ -42,10 +43,10 @@ Object.keys(nodeConfig).forEach(key => {
   // 生成可增加节点数据
   if(item.canAdd) {
     nodeSelect.value.push({
-      "title": item.title,
-      "type": key,
-      "icon": item.icon,
-      "isSelected": false
+      nodeName: item.nodeName,
+      type: key,
+      icon: item.icon,
+      isSelected: false
     })
   }
 })
@@ -74,23 +75,11 @@ const showAddSelect = (flag) => {
   }
 }
 
-const addNodeSelected = (item, flag) => {
-  if (flag) {
-    item.selected = true
-  } else {
-    item.selected = false
-  }
-}
-
 // 添加节点
 const addNode = (nodeType) => {
-  let typeConfig = nodeConfig[nodeType]
-  if(typeConfig) {
-    let addNode = copy(typeConfig.defaultNode)
-    // 生成临时节点ID
-    addNode.tempNodeId = getUUID()
-    let childNode = copy(props.node.childNode)
-    addNode.childNode = childNode
+  let addNode = createNode(nodeType)
+  if(addNode) {
+    addNode.childNode = copy(props.node.childNode)
     props.node.childNode = addNode
   }
   showAddSelect(false)
@@ -103,7 +92,7 @@ const addNode = (nodeType) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 0px;
+  padding: 45px 0;
 
   .ep-node-add-btn {
     position: absolute;
@@ -169,6 +158,11 @@ const addNode = (nodeType) => {
         border-radius: 100px;
         color: #5a5e66;
 
+        &:hover {
+          background-color: #1e83e9;
+          color: #FFFFFF;
+        }
+
         .ep-node-add-select-item-icon {
           width: 35px;
           height: 35px;
@@ -176,11 +170,6 @@ const addNode = (nodeType) => {
         .ep-node-add-select-item-title {
           font-size: 14px;
         }
-      }
-
-      .ep-node-add-selected {
-        background-color: #1e83e9!important;
-        color: #FFFFFF!important;
       }
     }
 

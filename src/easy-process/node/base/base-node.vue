@@ -3,33 +3,33 @@
     <div :class="{'ep-node-content': true, 'ep-node-error': isError}">
       <!-- header -->
       <div class="ep-node-header" :style="{color: config.color, 'background-color': config.bgColor}">
-        <svg-icon :icon-class="config.icon.name" class="ep-node-icon" color="#FFFFFF"/>
+        <ep-svg-icon :icon-class="config.icon.name" class="ep-node-icon" color="#FFFFFF"/>
         <div class="ep-node-header-title">
           <div class="ep-node-header-title-text" v-if="!isShowEditNodeName">{{props.node.nodeName}}</div>
           <div class="ep-node-header-title-input" v-if="isShowEditNodeName">
             <input ref="nodeNameRef" v-model="props.node.nodeName" @blur="saveNodeName">
           </div>
-          <svg-icon class="ep-node-header-title-edit" icon-class="edit" color="#FFFFFF" @click="showEditNodeName" v-if="!isShowEditNodeName"/>
+          <ep-svg-icon class="ep-node-header-title-edit" icon-class="icon-ep-edit" color="#FFFFFF" @click="showEditNodeName" v-if="!isShowEditNodeName"/>
         </div>
-        <svg-icon icon-class="close" class="ep-node-close" color="#FFFFFF" v-if="canRemoved" @click="removeNode"/>
+        <ep-svg-icon icon-class="icon-ep-close" class="ep-node-close" color="#FFFFFF" v-if="canRemoved" @click="removeNode"/>
       </div>
       <!-- body -->
       <div class="ep-node-body" @click="showNodeDrawer">
         <component ref="node" :is="nodeComponents[props.node.nodeType]" :node="props.node" :isLastCondition="isLastCondition()"/>
       </div>
       <!-- 同级节点左移动 -->
-      <div class="ep-node-move ep-node-move-left">
-        <svg-icon icon-class="left" class="ep-node-move-icon" @click="moveNode(1)"/>
+      <div class="ep-node-move ep-node-move-left" v-if="isCondition()">
+        <ep-svg-icon icon-class="icon-ep-left" class="ep-node-move-icon" @click="moveNode(1)"/>
       </div>
       <!-- 同级节点右移动 -->
-      <div class="ep-node-move ep-node-move-right">
-        <svg-icon icon-class="right" class="ep-node-move-icon" @click="moveNode(2)"/>
+      <div class="ep-node-move ep-node-move-right" v-if="isCondition()">
+        <ep-svg-icon icon-class="icon-ep-right" class="ep-node-move-icon" @click="moveNode(2)"/>
       </div>
       <!-- 校验错误提示 -->
       <div class="ep-node-error-msg" v-if="isError">
         <div class="ep-node-error-msg-box">
-          <svg-icon icon-class="tips" class="ep-node-error-icon" color="red" @mouseenter="showErrorTips(true)" @mouseleave="showErrorTips(false)"/>
-          <div class="ep-node-error-tips" v-if="errorTips && errorMsg">{{errorMsg}}</div>
+          <ep-svg-icon icon-class="icon-ep-tips" class="ep-node-error-icon" color="red"/>
+          <div class="ep-node-error-tips" v-if="errorMsg">{{errorMsg}}</div>
         </div>
       </div>
     </div>
@@ -56,16 +56,18 @@ import {
   watch
 } from "vue";
 import {nodeConfig} from "../../config/node-config.js";
-import {CONDITION, START} from "../../config/node-type.js"
+import {CONDITION, START} from "../../config/default-node-type.js"
 import {KEY_PROCESS_CTRL, KEY_VALIDATOR} from "../../config/keys.js"
 import { nodeComponents } from "../../config/node-component.js";
+
+const { proxy } = getCurrentInstance();
 
 const props = defineProps({
   node: { // 传入的流程节点数据
     type: Object,
     default: {}
   },
-  conditionNodes: { // 条件集合，当节点类型为condition时有效
+  branchList: { // 条件集合，当节点类型为condition时有效
     type: Array,
     default: []
   },
@@ -75,10 +77,12 @@ const props = defineProps({
   },
 });
 
-const { proxy } = getCurrentInstance();
 
 // 节点配置数据
 const config = ref(nodeConfig[props.node.nodeType])
+if (!config.value) {
+  throw `未定义的节点类型: ${props.node.nodeType}`
+}
 
 const isShowEditNodeName = ref(false)
 const nodeNameRef = ref(null)
@@ -128,24 +132,18 @@ const canRemoved = computed(() => {
 // 显示节点配置组件
 const showNodeDrawer = () => {
   if(config.value.hasDrawer) {
-    if(isLastCondition()) {
-      return false;
-    }
     proxy.$refs.nodeDrawer.show(props.node)
   }
 }
 
 // 判断当前节点是否为条件节点
 const isCondition = () => {
-  if (props.node.nodeType === CONDITION) {
-    return true
-  }
-  return false
+  return props.node.nodeType === CONDITION;
 }
 
 // 判断当前节点是否为条件节点，且为最后一个条件
 const isLastCondition = () => {
-  if (isCondition() && props.conditionIndex === props.conditionNodes.length - 1) {
+  if (isCondition() && props.conditionIndex === props.branchList.length - 1) {
     return true
   }
   return false
@@ -163,24 +161,24 @@ const removeNode = () => {
  */
 const moveNode = (direction) => {
   let index = props.conditionIndex
-  let c = props.conditionNodes[index]
+  let c = props.branchList[index]
   let exchangeIndex
 
   if (direction === 1) {
     if (index > 0) {
       exchangeIndex = index - 1
     } else {
-      exchangeIndex = props.conditionNodes.length - 1
+      exchangeIndex = props.branchList.length - 1
     }
   } else {
-    if (index < props.conditionNodes.length - 1) {
+    if (index < props.branchList.length - 1) {
       exchangeIndex = index + 1
     } else {
       exchangeIndex = 0
     }
   }
-  props.conditionNodes[index] = props.conditionNodes[exchangeIndex]
-  props.conditionNodes[exchangeIndex] = c
+  props.branchList[index] = props.branchList[exchangeIndex]
+  props.branchList[exchangeIndex] = c
 }
 
 // 更新节点配置属性
@@ -194,22 +192,19 @@ const cancelUpdateConfig = () => {
   validator.validate()
 }
 
-// 显示错误提示信息
-const showErrorTips = (flag) => {
-  errorTips.value = flag
-}
-
+// 显示编辑节点名称
 const showEditNodeName = () => {
   isShowEditNodeName.value = true
   nextTick(()=>{
     nodeNameRef.value.focus()
   })
-
 }
+
+// 保存节点名称
 const saveNodeName = () => {
   isShowEditNodeName.value = false
   if (props.node.nodeName == null || props.node.nodeName.trim() === '') {
-    props.node.nodeName = config.value.title
+    props.node.nodeName = config.value.nodeName
   }
 }
 
@@ -363,9 +358,8 @@ const saveNodeName = () => {
       background-color: #FFFFFF;
       border-radius: 5px;
       box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
-      display: flex;
+      display: none;
       padding: 16px;
-
 
       &:before{
         content: '';
@@ -377,6 +371,11 @@ const saveNodeName = () => {
         left: -20px;
         transform: translateY(-50%);
         border-color: transparent #FFFFFF transparent transparent;
+      }
+    }
+    &:hover {
+      .ep-node-error-tips {
+        display: flex;
       }
     }
   }

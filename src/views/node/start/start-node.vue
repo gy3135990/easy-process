@@ -7,7 +7,7 @@
 
 <script setup name="start-node">
 import {getCurrentInstance, inject} from "vue";
-import {KEY_PROCESS_DATA, KEY_VALIDATOR} from "../../config/keys.js"
+import {KEY_PROCESS_DATA, KEY_VALIDATOR} from "@/easy-process/config/keys.js"
 
 const props = defineProps({
   node: { // 传入的流程配置数据

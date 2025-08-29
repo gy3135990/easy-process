@@ -1,4 +1,5 @@
 import {initNodes} from './config/node-component.js'
+import {loadNodeConfig} from './config/node-config.js'
 
 const requireGlobalComponent = import.meta.glob([
     './ep-designer.vue',
@@ -46,20 +47,11 @@ const registerGlobalComponent = (app, options) => {
  * @param options
  */
 const loadOptions = (app, options) => {
-    let {extNodeComponents, extIconPath} = options;
+    let {nodeImplPath, nodeConfig} = options;
     // 加载节点组件
-    initNodes(extNodeComponents)
-    // 加载图标
-    createSvgIcons(app, options)
-}
-
-/**
- * 加载图标
- * @param app
- * @param options
- */
-const createSvgIcons = (app, options) => {
-    // loadIcon(app, options)
+    initNodes(nodeImplPath)
+    // 加载节点配置
+    loadNodeConfig(nodeConfig)
 }
 
 //环境检测

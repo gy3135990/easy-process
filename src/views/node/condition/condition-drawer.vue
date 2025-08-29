@@ -1,17 +1,13 @@
 <template>
   <!-- 条件配置 -->
   <div>
-    <el-form :model="props.config" label-width="80px">
-      <el-form-item label="请假天数">
-        <el-input v-model="props.config.days" />
-      </el-form-item>
-    </el-form>
+    请假天数：<input v-model="props.config.days" />
   </div>
 </template>
 
 <script setup name="condition-drawer">
 import {getCurrentInstance, inject} from "vue";
-import { KEY_PROCESS_DATA } from "../../config/keys.js"
+import { KEY_PROCESS_DATA } from "@/easy-process/config/keys.js"
 
 const props = defineProps({
   config: { // 传入的流程配置数据

@@ -3,15 +3,15 @@
     <!-- 流程 -->
     <div class="ep-process" :style="`transform: scale(${ zoom / 100});`">
       <!-- 递归节点 -->
-      <NodeWrap v-if="processData && processData.nodeConfig" :node="processData.nodeConfig"/>
+      <node-wrap v-if="processData && processData.nodeConfig" :node="processData.nodeConfig"/>
       <!-- 结束节点 -->
-      <EndNode/>
+      <end-node/>
     </div>
     <!-- 缩放 -->
     <div class="ep-zoom">
-      <svg-icon icon-class="subtract" class="ep-zoom-icon" color="#ffffff" @click="setZoom(1)"/>
+      <ep-svg-icon icon-class="icon-ep-subtract" class="ep-zoom-icon" color="#ffffff" @click="setZoom(1)"/>
       <span>{{ zoom }}%</span>
-      <svg-icon icon-class="plus" class="ep-zoom-icon" color="#ffffff" @click="setZoom(2)"/>
+      <ep-svg-icon icon-class="icon-ep-plus" class="ep-zoom-icon" color="#ffffff" @click="setZoom(2)"/>
     </div>
   </div>
 </template>
@@ -21,8 +21,8 @@ import NodeWrap from "./node/node-wrap.vue";
 import EndNode from "./node/end/end-node.vue";
 
 import {ref, onMounted, getCurrentInstance, watch, provide, nextTick} from "vue";
-import { defaultConfig } from "./config/default-config.js";
-import { copy } from "./utils/tools.js";
+import { copy } from "./utils/common-tools.js";
+import { createNode } from "./utils/node-tools.js";
 import { createProcessCtrl } from "./utils/process-ctrl.js";
 import { createValidator } from "./utils/validator.js";
 import { KEY_PROCESS_CTRL, KEY_VALIDATOR, KEY_PROCESS_DATA } from "./config/keys.js"
@@ -87,7 +87,9 @@ const init = () => {
   if(props.data && props.data.nodeConfig) {
     processData.value = copy(props.data)
   } else {
-    processData.value = copy(defaultConfig)
+    processData.value = {
+      nodeConfig: createNode()
+    };
   }
   nextTick(() => {
     validate()

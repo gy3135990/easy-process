@@ -1,26 +1,26 @@
 <template>
   <div class="ep-node-wrap" v-if="props.node">
     <!-- 路由节点 -->
-    <RouterNode :node="props.node" @removeNode="removeNode" v-if="props.node.nodeType == ROUTER" :key="props.node.tempNodeId"/>
+    <gateway-node :node="props.node" @removeNode="removeNode" v-if="props.node.nodeType === GATEWAY" :key="props.node.tempNodeId"/>
     <!-- 普通节点 -->
-    <BaseNode :node="props.node" :conditionNodes="props.conditionNodes" :conditionIndex="props.conditionIndex" @removeNode="removeNode" :key="props.node.tempNodeId" v-else/>
+    <base-node :node="props.node" :branchList="props.branchList" :conditionIndex="props.conditionIndex" @removeNode="removeNode" :key="props.node.tempNodeId" v-else/>
     <!-- 子节点 -->
-    <NodeWrap :node="props.node.childNode" @removeNode="removeChildNode" v-if="props.node.childNode && props.node.childNode.nodeType" />
+    <node-wrap :node="props.node.childNode" @removeNode="removeChildNode" v-if="props.node.childNode && props.node.childNode.nodeType" />
   </div>
 </template>
 
 <script setup name="NodeWrap">
 import BaseNode from "./base/base-node.vue";
-import RouterNode from "./router/router-node.vue";
+import GatewayNode from "./gateway/gateway-node.vue";
 import {getCurrentInstance, onMounted, ref} from "vue";
-import {ROUTER} from "../config/node-type.js"
+import {GATEWAY} from "../config/default-node-type.js"
 
 const props = defineProps({
   node: { // 当前流程节点数据
     type: Object,
     default: {}
   },
-  conditionNodes: { // 条件集合，当节点类型为condition时有效
+  branchList: { // 条件集合，当节点类型为condition时有效
     type: Array,
     default: []
   },
@@ -51,13 +51,17 @@ const removeNode = () => {
 
 // 移除子节点
 const removeChildNode = () => {
-  let nextNode = props.node.childNode.conditionNodes[0].childNode
-  if (nextNode) {
-    nextNode.childNode = props.node.childNode.childNode
+  if (props.node.childNode.nodeType === GATEWAY) {
+    let nextNode = props.node.childNode.branchList[0].childNode
+    if (nextNode) {
+      nextNode.childNode = props.node.childNode.childNode
+    } else {
+      nextNode = props.node.childNode.childNode
+    }
+    props.node.childNode = nextNode ? nextNode : null
   } else {
-    nextNode = props.node.childNode.childNode
+    props.node.childNode = props.node.childNode.childNode
   }
-  props.node.childNode = nextNode ? nextNode : null
 }
 </script>
 

@@ -1,5 +1,3 @@
-import {START, APPROVER, NOTIFY, CONDITION} from "../config/node-type.js"
-import {reactive} from "vue";
 
 /**
  * 流程控制器

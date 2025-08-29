@@ -1,115 +1,102 @@
-import { ROUTER, CONDITION, START, APPROVER, NOTIFY } from "./node-type.js"
+import { GATEWAY, CONDITION, START, TASK } from "./default-node-type.js"
+import {copy} from "@/easy-process/utils/common-tools.js";
 
 // 节点配置
-export const nodeConfig = {}
+const nodeConfig = {}
 
 // 路由节点配置
-nodeConfig[ROUTER] = {
-    "title": "条件分支", // 节点标题
+nodeConfig[GATEWAY] = {
+    "nodeType": GATEWAY,
+    "nodeName": "网关", // 节点标题
+    "enable": true, // 节点是否可用
     "canAdd": true, // 节点是否可以增加
     "hasDrawer": false, // 节点是否可以进行配置
     "icon": { // 图标
-        "name": "router", // 图标名
+        "name": "icon-ep-gateway", // 图标名
         "color": "#3CB371" // 颜色
     },
-    "defaultNode": { // 默认节点结构，用于添加节点时
-        "nodeName": "路由",
-        "nodeType": ROUTER,
-        "config": {},
-        "childNode": null,
-        "conditionNodes": [
-            {
-                "nodeName": "条件",
-                "nodeType": "condition",
-                "config": {},
-                "childNode": null
-            },
-            {
-                "nodeName": "条件",
-                "nodeType": "condition",
-                "config": {},
-                "childNode": null
-            }
-        ],
-    }
+    "branchList": []
 }
 
 // 条件节点配置
 nodeConfig[CONDITION] = {
-    "title": "条件", // 节点标题
+    "nodeType": CONDITION,
+    "nodeName": "条件", // 节点标题
     "color": "#FFFFFF", // 节点标题颜色
     "bgColor": "#3CB371", // 节点标题背景颜色
+    "enable": true, // 节点是否可用
     "canAdd": false, // 节点是否可以增加
     "canRemoved": true, // 节点是否能够移除
     "hasDrawer": true, // 节点是否可以进行配置
     "icon": { // 图标
-        "name": "condition", // 图标名
+        "name": "icon-ep-condition", // 图标名
         "color": "#3CB371" // 颜色
-    },
-    "defaultNode": {
-        "nodeName": "条件",
-        "nodeType": CONDITION,
-        "config": {},
-        "childNode": {}
-    },
+    }
 }
 
-// 发起人节点配置
+// 开始节点配置
 nodeConfig[START] = {
-    "title": "发起人", // 节点标题
+    "nodeType": START,
+    "nodeName": "开始", // 节点标题
     "color": "#FFFFFF", // 节点标题颜色
     "bgColor": "#1e83e9", // 节点标题背景颜色
+    "enable": true, // 节点是否可用
     "canAdd": false, // 节点是否可以增加
     "canRemoved": false, // 节点是否能够移除
     "hasDrawer": true, // 节点是否可以进行配置
     "icon": { // 图标
-        "name": "start", // 图标名
+        "name": "icon-ep-start", // 图标名
         "color": "#1e83e9" // 颜色
-    },
-    "defaultNode": { // 默认节点结构，用于添加节点时
-        "nodeName": "发起人",
-        "nodeType": START,
-        "config": {},
-        "childNode": null,
     }
 }
 
-// 审核人节点配置
-nodeConfig[APPROVER] = {
-    "title": "审核人", // 节点标题
+// 任务节点配置
+nodeConfig[TASK] = {
+    "nodeType": TASK,
+    "nodeName": "任务", // 节点标题
     "color": "#FFFFFF", // 节点标题颜色
     "bgColor": "#FF8C00", // 节点标题背景颜色
+    "enable": true, // 节点是否可用
     "canAdd": true, // 节点是否可以增加
     "canRemoved": true, // 节点是否能够移除
     "hasDrawer": true, // 节点是否可以进行配置
     "icon": { // 图标
-        "name": "approver", // 图标名
+        "name": "icon-ep-task", // 图标名
         "color": "#FF8C00" // 颜色
-    },
-    "defaultNode": { // 默认节点结构，用于添加节点时
-        "nodeName": "审批人",
-        "nodeType": APPROVER,
-        "config": {},
-        "childNode": null
     }
 }
 
-// 抄送人节点配置
-nodeConfig[NOTIFY] = {
-    "title": "抄送人", // 节点标题
+/**
+ * 加载节点配置
+ * @param externalConfig
+ */
+const loadNodeConfig = (externalConfig) => {
+    if (externalConfig && externalConfig.length > 0) {
+        externalConfig.forEach(item => {
+            if (!item.nodeType) {
+                throw new Error('加载自定义配置：nodeType节点类型不能为空')
+            }
+            if (!nodeConfig[item.nodeType] && !item.nodeName) {
+                throw new Error('加载自定义配置：nodeName节点类型不能为空')
+            }
+            let node = nodeConfig[item.nodeType] || copy(nodeDefaultValue)
+            nodeConfig[item.nodeType] =  { ...node, ...item}
+        })
+    }
+}
+
+// 默认节点值
+const nodeDefaultValue = {
+    "enable": true, // 节点是否可用
     "color": "#FFFFFF", // 节点标题颜色
-    "bgColor": "#808000", // 节点标题背景颜色
+    "bgColor": "#8225e4", // 节点标题背景颜色
     "canAdd": true, // 节点是否可以增加
     "canRemoved": true, // 节点是否能够移除
     "hasDrawer": true, // 节点是否可以进行配置
     "icon": { // 图标
-        "name": "notify", // 图标名
-        "color": "#808000" // 颜色
-    },
-    "defaultNode": { // 默认节点结构，用于添加节点时
-        "nodeName": "抄送人",
-        "nodeType": NOTIFY,
-        "config": {},
-        "childNode": null
+        "name": "icon-ep-task", // 图标名
+        "color": "#8225e4" // 颜色
     }
 }
+
+export {nodeConfig, loadNodeConfig}

@@ -4,34 +4,30 @@
   </svg>
 </template>
 
-<script name="ep-svg-icon">
-export default defineComponent({
-  name: 'svg-icon',
-  props: {
-    iconClass: {
-      type: String,
-      required: true
-    },
-    className: {
-      type: String,
-      default: ''
-    },
-    color: {
-      type: String,
-      default: ''
-    },
+<script setup name="ep-svg-icon">
+import { computed } from 'vue'
+
+const props = defineProps({
+  iconClass: {
+    type: String,
+    required: true
   },
-  setup(props) {
-    return {
-      iconName: computed(() => `#icon-ep-${props.iconClass}`),
-      svgClass: computed(() => {
-        if (props.className) {
-          return `svg-icon ${props.className}`
-        }
-        return 'svg-icon'
-      })
-    }
+  className: {
+    type: String,
+    default: ''
+  },
+  color: {
+    type: String,
+    default: ''
+  },
+});
+
+const iconName = computed(() => `#${props.iconClass}`)
+const svgClass = computed(() => {
+  if (props.className) {
+    return `svg-icon ${props.className}`
   }
+  return 'svg-icon'
 })
 </script>
 

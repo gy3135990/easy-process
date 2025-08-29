@@ -84,7 +84,7 @@ easy-process
 │  │    ├─ config						// 流程设计器-配置文件
 │  │    │  ├─ default-config.js			// 初始化时默认流程结构
 │  │    │  ├─ node-config.js				// 各节点属性配置
-│  │    │  ├─ node-type.js				// 节点类型
+│  │    │  ├─ default-node-type.js				// 节点类型
 │  │    │  └─ keys.js					// 定义KEY
 │  │    └─ node							// 流程设计器-节点组件
 │  │       ├─ NodeWrap.vue				// 用于递归生成流程节点的组件
@@ -109,7 +109,7 @@ easy-process
 │  │       ├─ end						// 结束节点
 │  │       │  └─ endNode.vue			// 结束节点组件（仅用于展示，并没有实际意义）
 │  │       └─ utils						
-│  │         └─ tools.js				// 工具类
+│  │         └─ common-tools.js				// 工具类
 │  └─ views
 │     └─ index.vue						// demo
 └─ README.md							// 使用手册
@@ -156,10 +156,10 @@ easy-process
   "processName": "流程名称",
   "nodeConfig": {
     "nodeName": "节点名称",
-    "nodeType": "节点类型 start-发起人节点 approver-审批节点 router-路由节点 condition-条件节点 notify-抄送节点",
+    "nodeType": "节点类型 start-发起人节点 approver-审批节点 gateway-路由节点 condition-条件节点 notify-抄送节点",
     "config": {}, // 节点配置，根据需求可以自定义
     "childNode": {}, // 下级节点
-    "conditionNodes": [ // 条件节点，节点类型为router时有效，至少会有两个条件节点
+    "branchList": [ // 条件节点，节点类型为router时有效，至少会有两个条件节点
       {
         "nodeName": "条件",
         "nodeType": "condition",
@@ -182,7 +182,7 @@ easy-process
   "nodes": [
     {
       "nodeId": "节点ID",
-      "nodeType": "节点类型 start-发起人节点 approver-审批节点 router-路由节点 condition-条件节点 notify-抄送节点",
+      "nodeType": "节点类型 start-发起人节点 approver-审批节点 gateway-路由节点 condition-条件节点 notify-抄送节点",
       "parentNodeId": "父级节点ID",
     	"config": { // 节点配置，根据需求可以自定义
         "conditions": [ // 条件集合

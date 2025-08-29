@@ -3,7 +3,7 @@
     <div class="header">
       <div class="title">{{processData.processName}}</div>
       <div class="publish">
-        <el-button type="primary" @click="publish" round>发布</el-button>
+        <button @click="publish">发布</button>
       </div>
     </div>
     <div class="body">
@@ -13,20 +13,16 @@
 </template>
 
 <script setup name="WorkFlow">
-// import ProcessDesigner from "@/easy-process/ProcessDesigner";
-import { ElMessageBox } from 'element-plus'
 import {getCurrentInstance, onMounted, ref} from "vue";
 const { proxy } = getCurrentInstance();
 import mockData from '~/public/mock/data.json'
 
 // 审批数据
 let processData = ref({})
-let showDrawer = ref(true)
-let isShowInfo = ref(false)
 
 onMounted(async () => {
   // 获取审批数据
-  processData.value = mockData;
+  // processData.value = mockData;
 })
 
 /**
@@ -37,9 +33,9 @@ const publish = () => {
     if(valid) {
       let result = proxy.$refs.process.getResult();
       console.info("发布流程:", result)
-      ElMessageBox.alert(result, '结果')
+      alert(JSON.stringify(result))
     } else {
-      ElMessageBox.alert(messages, '结果')
+      alert(JSON.stringify(messages))
     }
 
   })
