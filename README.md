@@ -85,7 +85,7 @@ easy-process
 │  │    │  ├─ default-config.js			// 初始化时默认流程结构
 │  │    │  ├─ node-config.js				// 各节点属性配置
 │  │    │  ├─ default-node-type.js				// 节点类型
-│  │    │  └─ keys.js					// 定义KEY
+│  │    │  └─ provide-keys.js					// 定义KEY
 │  │    └─ node							// 流程设计器-节点组件
 │  │       ├─ NodeWrap.vue				// 用于递归生成流程节点的组件
 │  │       ├─ base						// 通用组件
@@ -283,7 +283,7 @@ const props = defineProps({
 const validator = inject(KEY_VALIDATOR)
 
 // 注册验证器
-validator.register(props.node.tempNodeId, () => {
+validator.register(props.node.tmpNodeId, () => {
   // 验证当前节点逻辑……
     
   // 返回验证结果
@@ -377,7 +377,7 @@ const processData = inject(KEY_PROCESS_DATA)
 const validator = inject(KEY_VALIDATOR)
 
 // 注册验证器
-validator.register(props.node.tempNodeId, () => {
+validator.register(props.node.tmpNodeId, () => {
   // 验证当前节点逻辑……
     
   // 返回验证结果

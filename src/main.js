@@ -24,6 +24,10 @@ app.use(ProcessDesigner, {
             "nodeName": "审批人",
         },
         {
+            "nodeType": "terminate",
+            "hasDrawer": false, // 禁用节点配置功能
+        },
+        {
             "nodeType": "notify",
             "nodeName": "抄送",
             "color": "#FFFFFF", // 节点标题颜色
@@ -37,6 +41,15 @@ app.use(ProcessDesigner, {
                 name: '主管'
             },
         }
-    ]
+    ],
+    zIndexConfig: {
+        initZIndexValue: 1000,
+        bindZIndexFunction: () => {
+            if (!window.zIndex) {
+                window.zIndex = 500
+            }
+            return window.zIndex++
+        }
+    },
 })
 app.mount('#app')

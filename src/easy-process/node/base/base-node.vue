@@ -57,7 +57,8 @@ import {
 } from "vue";
 import {nodeConfig} from "../../config/node-config.js";
 import {CONDITION, START} from "../../config/default-node-type.js"
-import {KEY_PROCESS_CTRL, KEY_VALIDATOR} from "../../config/keys.js"
+import {KEY_PROCESS_CTRL, KEY_VALIDATOR} from "../../config/provide-keys.js"
+import {ON_PRE_REMOVE_NODE, ON_AFTER_REMOVE_NODE} from "../../config/event-keys.js"
 import { nodeComponents } from "../../config/node-component.js";
 
 const { proxy } = getCurrentInstance();
@@ -92,7 +93,6 @@ const processCtrl = inject(KEY_PROCESS_CTRL)
 // 获取流程验证器实例
 const validator = inject(KEY_VALIDATOR)
 const errorMsg = ref(null)
-const errorTips = ref(false)
 
 watch(() => props.node, (val) => {
   config.value = nodeConfig[props.node.nodeType]
@@ -100,12 +100,12 @@ watch(() => props.node, (val) => {
 });
 
 onMounted(async () => {
-  processCtrl.addNode(props.node.tempNodeId, props.node)
+  processCtrl.addNode(props.node.tmpNodeId, props.node)
 });
 
 onUnmounted(async () => {
-  processCtrl.removeNode(props.node.tempNodeId)
-  validator.remove(props.node.tempNodeId)
+  processCtrl.removeNode(props.node.tmpNodeId)
+  validator.remove(props.node.tmpNodeId)
   validator.validate()
 });
 
@@ -115,7 +115,7 @@ const isStart = computed(() => {
 
 // 节点验证结果是否异常
 const isError = computed(() => {
-  let result = validator.getResult(props.node.tempNodeId)
+  let result = validator.getResult(props.node.tmpNodeId)
   if(result) {
     errorMsg.value = result.message
     return !result.valid
@@ -152,7 +152,22 @@ const isLastCondition = () => {
 // 移除当前节点
 const emit = defineEmits(["removeNode"]);
 const removeNode = () => {
+  // 触发移除节点之前事件
+  let isAllowRemove = processCtrl.triggerEvent(ON_PRE_REMOVE_NODE, {
+    tmpNodeId: props.node.tmpNodeId,
+  })
+  if(isAllowRemove !== undefined && !isAllowRemove) {
+    return
+  }
+
   emit("removeNode");
+
+  nextTick(() => {
+    // 触发移除节点之后事件
+    processCtrl.triggerEvent(ON_AFTER_REMOVE_NODE, {
+      tmpNodeId: props.node.tmpNodeId,
+    })
+  })
 }
 
 /**

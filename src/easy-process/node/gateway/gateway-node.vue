@@ -42,7 +42,7 @@ import AddNode from "../base/add-node.vue";
 import {ref, onMounted, getCurrentInstance, computed} from "vue";
 import {CONDITION} from "../../config/default-node-type.js"
 import {GATEWAY_TYPE_LIST, GATEWAY_TYPE_MAP, EXCLUSIVE, PARALLEL} from "../../config/gateway-type.js"
-import {createNode} from "../../utils/node-tools.js";
+import {createNode} from "../../tools/node-tools.js";
 
 const props = defineProps({
   node: { // 传入的流程配置数据
@@ -82,8 +82,7 @@ const removeCondition = (index) => {
 // 添加分支
 const addBranch = () => {
   let defaultNode = createNode(CONDITION)
-  let length = props.node.branchList.length
-  props.node.branchList.splice(length - 1, 0, defaultNode)
+  props.node.branchList.push(defaultNode)
 }
 </script>
 

@@ -1,75 +1,83 @@
 {
-  "processId": "10001",
-  "processName": "请假审批",
   "nodeConfig": {
-    "tempNodeId": "0",
+    "tmpNodeId": "ab173ea9-d776-4b8a-8e84-ee6d6fe07b44",
     "nodeName": "发起人",
     "nodeType": "start",
     "config": {
-      "name": null
+      "name": "张三"
     },
     "childNode": {
-      "tempNodeId": "1",
-      "nodeName": "审批人",
-      "nodeType": "task",
-      "config": {
-        "name": null
-      },
+      "tmpNodeId": "1632f624-8b04-4b62-93fc-7cef5b124189",
+      "nodeName": "网关",
+      "nodeType": "gateway",
+      "config": { },
       "childNode": {
-        "tempNodeId": "2",
-        "nodeName": "路由",
-        "nodeType": "gateway",
-        "branchList": [
-          {
-            "tempNodeId": "3",
-            "nodeName": "条件",
-            "nodeType": "condition",
-            "config": {
-              "days": 1
-            },
-            "childNode": {
-              "tempNodeId": "4",
-              "nodeName": "审批人",
-              "nodeType": "task",
-              "config": {
-                "name": "赵六"
-              }
-            }
-          },
-          {
-            "tempNodeId": "5",
-            "nodeName": "条件",
-            "nodeType": "condition",
-            "config": {
-              "days": 3
-            },
-            "childNode": {
-              "tempNodeId": "6",
-              "nodeName": "审批人",
-              "nodeType": "task",
-              "config": {
-                "name": "老王"
-              }
-            }
-          },
-          {
-            "tempNodeId": "7",
-            "nodeName": "条件",
-            "nodeType": "condition",
-            "config": {},
-            "childNode": {}
-          }
-        ],
-        "childNode": {
-          "tempNodeId": "8",
-          "nodeName": "审批人",
-          "nodeType": "task",
+        "tmpNodeId": "c4787616-3666-406e-bb10-75eca8a72a86",
+        "nodeName": "抄送",
+        "nodeType": "notify",
+        "config": {
+          "name": "HR"
+        },
+        "childNode": null
+      },
+      "branchList": [
+        {
+          "tmpNodeId": "f34a892f-e3a5-4503-ac95-fadf8f72cd20",
+          "nodeName": "条件",
+          "nodeType": "condition",
           "config": {
-            "name": "李四"
+            "days": "3"
+          },
+          "childNode": {
+            "tmpNodeId": "6af25285-ad47-4b19-ba20-401d5660a49b",
+            "nodeName": "审批人",
+            "nodeType": "task",
+            "config": {
+              "name": "项目经理"
+            },
+            "childNode": null
+          }
+        },
+        {
+          "tmpNodeId": "46c9248b-64b4-491e-848c-b208ebb09d18",
+          "nodeName": "条件",
+          "nodeType": "condition",
+          "config": {
+            "days": "5"
+          },
+          "childNode": {
+            "tmpNodeId": "3e83d699-7f9d-4814-83de-f073f05f0e7a",
+            "nodeName": "审批人",
+            "nodeType": "task",
+            "config": {
+              "name": "项目经理"
+            },
+            "childNode": {
+              "tmpNodeId": "0d17edf9-1acb-4b35-a1a8-a049c0dea37d",
+              "nodeName": "审批人",
+              "nodeType": "task",
+              "config": {
+                "name": "总监"
+              },
+              "childNode": null
+            }
+          }
+        },
+        {
+          "tmpNodeId": "80569c58-6b66-4bfc-bb4b-cee6ca376650",
+          "nodeName": "条件",
+          "nodeType": "condition",
+          "config": { },
+          "childNode": {
+            "tmpNodeId": "8d0f7822-36df-49b0-8dcd-19d11fce6429",
+            "nodeName": "终止",
+            "nodeType": "terminate",
+            "config": { },
+            "childNode": null
           }
         }
-      }
+      ],
+      "gatewayType": "exclusive"
     }
   }
 }
-

@@ -1,6 +1,6 @@
 import {nodeConfig} from '../config/node-config.js'
 import {START, GATEWAY, CONDITION} from '../config/default-node-type.js'
-import {getUUID} from '../utils/common-tools.js'
+import {getUUID} from '../tools/common-tools.js'
 
 /**
  * 创建节点
@@ -19,7 +19,7 @@ export const createNode = (nodeType = START) => {
 const generateNodeObj = (config) => {
     return {
         // 生成临时节点ID
-        tempNodeId: getUUID(),
+        tmpNodeId: getUUID(),
         nodeName: config.nodeName,
         nodeType: config.nodeType,
         config: config.config || {},

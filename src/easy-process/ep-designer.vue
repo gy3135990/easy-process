@@ -21,11 +21,12 @@ import NodeWrap from "./node/node-wrap.vue";
 import EndNode from "./node/end/end-node.vue";
 
 import {ref, onMounted, getCurrentInstance, watch, provide, nextTick} from "vue";
-import { copy } from "./utils/common-tools.js";
-import { createNode } from "./utils/node-tools.js";
-import { createProcessCtrl } from "./utils/process-ctrl.js";
-import { createValidator } from "./utils/validator.js";
-import { KEY_PROCESS_CTRL, KEY_VALIDATOR, KEY_PROCESS_DATA } from "./config/keys.js"
+import { copy } from "./tools/common-tools.js";
+import { createNode } from "./tools/node-tools.js";
+import { createProcessCtrl } from "./tools/process-ctrl.js";
+import { createValidator } from "./tools/validator.js";
+import { KEY_PROCESS_CTRL, KEY_VALIDATOR, KEY_PROCESS_DATA } from "./config/provide-keys.js"
+import { ON_DESIGNER_MOUNTED } from "./config/event-keys.js"
 
 const { proxy } = getCurrentInstance();
 
@@ -82,20 +83,26 @@ const setZoom = (type) => {
   }
 };
 
-// 初始化流程
+/**
+ * 初始化流程设计器
+ */
 const init = () => {
-  if(props.data && props.data.nodeConfig) {
+  if(props.data.nodeConfig) {
     processData.value = copy(props.data)
   } else {
-    processData.value = {
-      nodeConfig: createNode()
-    };
+    processData.value.nodeConfig = createNode()
   }
   nextTick(() => {
     validate()
+    // 触发设计器加载完成事件
+    processCtrl.triggerEvent(ON_DESIGNER_MOUNTED)
   })
 }
 
+/**
+ * 验证流程数据
+ * @param callback
+ */
 const validate = (callback) => {
   let result = validator.validate()
   if (callback && typeof callback === 'function') {
@@ -113,7 +120,7 @@ const getResult = () => {
 const getProcessCtrl = () => {
   return processCtrl
 }
-
+//=====================================画布拖动功能-开始==========================================
 // 是否正在拖动
 const isDragging = ref(false)
 // 鼠标按下时的坐标
@@ -148,11 +155,22 @@ const stopDragging = () => {
   document.removeEventListener('mousemove', doDragging);
   document.removeEventListener('mouseup', stopDragging);
 }
+//=====================================画布拖动功能-结束==========================================
+
+/**
+ * 绑定事件
+ * @param key
+ * @param callback
+ */
+const bindEvent = (key, callback) => {
+  processCtrl.bindEvent(key, callback)
+}
 
 defineExpose({
   validate,
   getResult,
-  getProcessCtrl
+  getProcessCtrl,
+  bindEvent,
 });
 </script>
 <style lang="less" scoped>

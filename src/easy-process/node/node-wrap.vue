@@ -1,9 +1,9 @@
 <template>
   <div class="ep-node-wrap" v-if="props.node">
     <!-- 路由节点 -->
-    <gateway-node :node="props.node" @removeNode="removeNode" v-if="props.node.nodeType === GATEWAY" :key="props.node.tempNodeId"/>
+    <gateway-node :node="props.node" @removeNode="removeNode" v-if="props.node.nodeType === GATEWAY" :key="props.node.tmpNodeId"/>
     <!-- 普通节点 -->
-    <base-node :node="props.node" :branchList="props.branchList" :conditionIndex="props.conditionIndex" @removeNode="removeNode" :key="props.node.tempNodeId" v-else/>
+    <base-node :node="props.node" :branchList="props.branchList" :conditionIndex="props.conditionIndex" @removeNode="removeNode" :key="props.node.tmpNodeId" v-else/>
     <!-- 子节点 -->
     <node-wrap :node="props.node.childNode" @removeNode="removeChildNode" v-if="props.node.childNode && props.node.childNode.nodeType" />
   </div>

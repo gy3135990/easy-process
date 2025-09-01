@@ -23,6 +23,7 @@
 
 <script setup name="ep-drawer">
 import {ref, reactive, onMounted, onUnmounted, getCurrentInstance} from "vue";
+import {nextZIndex} from "../../tools/z-index-tools";
 
 const props = defineProps({
   modelValue: {
@@ -36,10 +37,6 @@ const props = defineProps({
   icon: {
     type: String,
     default: null
-  },
-  'z-index': {
-    type: Number,
-    default: 2000
   },
   'hide-header': { // 控制是否显示 header 栏, 默认为 false
     type: Boolean,
@@ -56,6 +53,10 @@ const props = defineProps({
 });
 
 const { proxy } = getCurrentInstance();
+
+let zIndexOverlay = nextZIndex();
+let zIndexDrawer = nextZIndex();
+
 
 onMounted(() => {
   window.addEventListener('keydown', escListener);
@@ -90,7 +91,7 @@ const close = () => {
   box-shadow: -5px -5px 10px 2px rgba(0, 0, 0, 0.2);
   top: 0;
   right: 0;
-  z-index: v-bind("props.zIndex + 1");
+  z-index: v-bind("zIndexDrawer");
   display: flex;
   flex-direction: column;
 }
@@ -146,7 +147,7 @@ const close = () => {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: v-bind("props.zIndex");
+  z-index: v-bind("zIndexOverlay");
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   overflow: auto;

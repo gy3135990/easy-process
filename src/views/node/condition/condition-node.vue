@@ -2,7 +2,7 @@
   <!-- 条件节点 -->
   <div class="ep-node-condition">
     <div v-if="node.config.days">
-      请假天数: {{node.config.days}}天
+      请假天数&lt;{{node.config.days}}天
     </div>
     <div v-else>
       未设置条件
@@ -13,7 +13,7 @@
 
 <script setup name="condition-node">
 import {getCurrentInstance, inject} from "vue";
-import {KEY_PROCESS_DATA, KEY_VALIDATOR} from "@/easy-process/config/keys.js"
+import {KEY_PROCESS_DATA, KEY_VALIDATOR} from "@/easy-process/config/provide-keys.js"
 
 const props = defineProps({
   node: { // 传入的流程配置数据
@@ -34,7 +34,7 @@ const processData = inject(KEY_PROCESS_DATA)
 const validator = inject(KEY_VALIDATOR)
 
 // 注册验证器
-validator.register(props.node.tempNodeId, () => {
+validator.register(props.node.tmpNodeId, () => {
   let valid = true;
 
   return {

@@ -14,10 +14,12 @@
 <script setup name="base-drawer">
 import EpDrawer from "@/easy-process/components/drawer/ep-drawer.vue";
 import EpButton from "@/easy-process/components/button/ep-button.vue";
-import {defineAsyncComponent, getCurrentInstance, ref, shallowRef} from "vue";
+import {defineAsyncComponent, getCurrentInstance, nextTick, ref, shallowRef} from "vue";
 import {nodeConfig} from "../../config/node-config.js";
 import { drawerComponents } from "../../config/node-component.js";
-import {copy} from "../../utils/common-tools.js";
+import {KEY_PROCESS_CTRL} from "../../config/provide-keys.js"
+import {ON_PRE_UPDATE_NODE_CONFIG, ON_AFTER_UPDATE_NODE_CONFIG} from "../../config/event-keys.js"
+import {copy} from "../../tools/common-tools.js";
 
 const props = defineProps({
 
@@ -31,9 +33,18 @@ let node = ref(null);
 const config = ref(null)
 // 是否显示配置界面
 let isShow = ref(false);
+// 流程控制器实例
+const processCtrl = inject(KEY_PROCESS_CTRL)
 
 // 显示节点配置组件
 const show = (data) => {
+  // 触发修改节点配置之前事件
+  let isAllowUpdate = processCtrl.triggerEvent(ON_PRE_UPDATE_NODE_CONFIG, {
+    tmpNodeId: data.tmpNodeId
+  })
+  if(isAllowUpdate !== undefined && !isAllowUpdate) {
+    return
+  }
   // 复制数据
   node.value = copy(data)
   config.value = nodeConfig[node.value.nodeType]
@@ -47,6 +58,12 @@ const emit = defineEmits(["updateConfig", "cancelUpdateConfig"]);
 const updateConfig = () => {
   isShow.value = false
   emit("updateConfig", copy(node.value.config));
+  nextTick(() => {
+    // 触发修改节点配置之后事件
+    processCtrl.triggerEvent(ON_AFTER_UPDATE_NODE_CONFIG, {
+      tmpNodeId: node.value.tmpNodeId
+    })
+  })
 }
 
 // 取消更新节点配置数据

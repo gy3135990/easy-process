@@ -1,16 +1,16 @@
 <template>
-  <!-- 条件配置 -->
+  <!-- 抄送人节点 -->
   <div>
-    请假天数&lt;<input v-model="props.config.days" />
+    流程驳回
   </div>
 </template>
 
-<script setup name="condition-drawer">
+<script setup name="notify-node">
 import {getCurrentInstance, inject} from "vue";
-import { KEY_PROCESS_DATA } from "@/easy-process/config/provide-keys.js"
+import {KEY_PROCESS_DATA, KEY_VALIDATOR} from "@/easy-process/config/provide-keys.js"
 
 const props = defineProps({
-  config: { // 传入的流程配置数据
+  node: { // 传入的流程配置数据
     type: Object,
     default: {}
   }

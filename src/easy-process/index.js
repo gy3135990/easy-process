@@ -1,5 +1,6 @@
 import {initNodes} from './config/node-component.js'
 import {loadNodeConfig} from './config/node-config.js'
+import {loadZIndexConfig} from './tools/z-index-tools.js'
 
 const requireGlobalComponent = import.meta.glob([
     './ep-designer.vue',
@@ -47,11 +48,13 @@ const registerGlobalComponent = (app, options) => {
  * @param options
  */
 const loadOptions = (app, options) => {
-    let {nodeImplPath, nodeConfig} = options;
+    let {nodeImplPath, nodeConfig, zIndexConfig} = options;
     // 加载节点组件
     initNodes(nodeImplPath)
     // 加载节点配置
     loadNodeConfig(nodeConfig)
+    // 加载z-index配置
+    loadZIndexConfig(zIndexConfig)
 }
 
 //环境检测

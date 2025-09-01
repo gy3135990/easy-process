@@ -7,7 +7,7 @@
 
 <script setup name="start-node">
 import {getCurrentInstance, inject} from "vue";
-import {KEY_PROCESS_DATA, KEY_VALIDATOR} from "@/easy-process/config/keys.js"
+import {KEY_PROCESS_DATA, KEY_VALIDATOR} from "@/easy-process/config/provide-keys.js"
 
 const props = defineProps({
   node: { // 传入的流程配置数据
@@ -24,7 +24,7 @@ const processData = inject(KEY_PROCESS_DATA)
 const validator = inject(KEY_VALIDATOR)
 
 // 注册验证器
-validator.register(props.node.tempNodeId, () => {
+validator.register(props.node.tmpNodeId, () => {
   return {
     "valid": props.node.config.name ? true : false,
     "message": "请选择发起人"

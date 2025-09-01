@@ -12,6 +12,30 @@ export default defineConfig(({ mode, command }) => {
     // 例如 https://www.quxiou.vip/。如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 https://www.quxiou.vip/admin/，则设置 baseUrl 为 /admin/。
     base: '/',
     plugins: createVitePlugins(env, command === 'build'),
+    build: {
+      outDir: "dist-lib", // 打包输出目录
+      lib: {
+        // 指定库入口文件
+        entry: path.resolve(__dirname, "src/easy-process/index.js"),
+        // 指定库的名称
+        name: "easy-process",
+        fileName: "easy-process",
+      },
+      rollupOptions: {
+        external: ["vue"], // 防止将vue打包进库
+        output: {
+          globals: {
+            vue: "Vue",
+          },
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.name.endsWith(".css")) {
+              return "css/[name][extname]";
+            }
+            return "[name].[hash][extname]";
+          },
+        },
+      },
+    },
     resolve: {
       // https://cn.vitejs.dev/config/#resolve-alias
       alias: {

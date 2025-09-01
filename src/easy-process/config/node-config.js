@@ -1,5 +1,5 @@
 import { GATEWAY, CONDITION, START, TASK, TERMINATE } from "./default-node-type.js"
-import {copy} from "@/easy-process/utils/common-tools.js";
+import {copy} from "@/easy-process/tools/common-tools.js";
 
 // 节点配置
 const nodeConfig = {}

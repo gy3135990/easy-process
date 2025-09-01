@@ -14,6 +14,11 @@
 
 <script setup name="WorkFlow">
 import {getCurrentInstance, onMounted, ref} from "vue";
+import {
+  ON_DESIGNER_MOUNTED, ON_PRE_ADD_NODE, ON_AFTER_ADD_NODE,
+  ON_PRE_REMOVE_NODE, ON_AFTER_REMOVE_NODE,
+  ON_PRE_UPDATE_NODE_CONFIG, ON_AFTER_UPDATE_NODE_CONFIG
+} from "@/easy-process/config/event-keys.js"
 const { proxy } = getCurrentInstance();
 import mockData from '~/public/mock/data.json'
 
@@ -21,9 +26,41 @@ import mockData from '~/public/mock/data.json'
 let processData = ref({})
 
 onMounted(async () => {
-  // 获取审批数据
-  // processData.value = mockData;
+  // 获取流程数据
+  processData.value = mockData;
+  // 绑定事件
+  bindEvent()
 })
+
+/**
+ * 绑定事件
+ */
+const bindEvent = () => {
+  proxy.$refs.process.bindEvent(ON_DESIGNER_MOUNTED, () => {
+    console.log("触发流程设计器加载完成事件")
+  })
+  proxy.$refs.process.bindEvent(ON_PRE_ADD_NODE, (params) => {
+    console.log("触发新增节点之前事件", params)
+    return true
+  })
+  proxy.$refs.process.bindEvent(ON_AFTER_ADD_NODE, (params) => {
+    console.log("触发新增节点之后事件", params)
+  })
+  proxy.$refs.process.bindEvent(ON_PRE_REMOVE_NODE, (params) => {
+    console.log("触发移除节点之前事件", params)
+    return true
+  })
+  proxy.$refs.process.bindEvent(ON_AFTER_REMOVE_NODE, (params) => {
+    console.log("触发移除节点之后事件", params)
+  })
+  proxy.$refs.process.bindEvent(ON_PRE_UPDATE_NODE_CONFIG, (params) => {
+    console.log("触发更新节点配置之前事件", params)
+    return true
+  })
+  proxy.$refs.process.bindEvent(ON_AFTER_UPDATE_NODE_CONFIG, (params) => {
+    console.log("触发更新节点配置之后事件", params)
+  })
+}
 
 /**
  * 发布流程

@@ -7,7 +7,7 @@
 
 <script setup name="notify-drawer">
 import {getCurrentInstance, inject} from "vue";
-import {KEY_PROCESS_DATA} from "@/easy-process/config/keys.js"
+import {KEY_PROCESS_DATA} from "@/easy-process/config/provide-keys.js"
 
 const props = defineProps({
   config: { // 传入的流程配置数据

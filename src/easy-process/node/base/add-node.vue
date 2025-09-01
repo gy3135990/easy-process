@@ -16,11 +16,13 @@
 </template>
 
 <script setup name="add-node">
-import {computed, getCurrentInstance, onMounted, ref} from "vue";
+import {computed, getCurrentInstance, nextTick, onMounted, ref} from "vue";
 import {nodeConfig} from "../../config/node-config.js";
 import {TERMINATE} from "../../config/default-node-type.js";
-import {copy, getUUID} from "../../utils/common-tools.js";
-import {createNode} from "../../utils/node-tools.js";
+import {KEY_PROCESS_CTRL} from "../../config/provide-keys.js"
+import {ON_PRE_ADD_NODE, ON_AFTER_ADD_NODE} from "../../config/event-keys.js"
+import {copy, getUUID} from "../../tools/common-tools.js";
+import {createNode} from "../../tools/node-tools.js";
 
 const props = defineProps({
   node: { // 传入的流程节点数据
@@ -38,6 +40,8 @@ const config = ref(nodeConfig[props.node.nodeType])
 const isShowAddSelect = ref(false)
 const nodeAddSelectPosition = ref(null)
 const nodeSelect = ref([])
+// 流程控制器实例
+const processCtrl = inject(KEY_PROCESS_CTRL)
 
 Object.keys(nodeConfig).forEach(key => {
   let item = nodeConfig[key]
@@ -83,6 +87,14 @@ const showAddSelect = (flag) => {
 
 // 添加节点
 const addNode = (nodeType) => {
+  // 触发添加节点之前事件
+  let isAllowAdd = processCtrl.triggerEvent(ON_PRE_ADD_NODE, {
+    currentTmpNodeId: props.node.tmpNodeId,
+    addNodeType: nodeType
+  })
+  if(isAllowAdd !== undefined && !isAllowAdd) {
+    return
+  }
   let addNode = createNode(nodeType)
   if(addNode) {
     if (nodeType !== TERMINATE) {
@@ -91,6 +103,14 @@ const addNode = (nodeType) => {
     props.node.childNode = addNode
   }
   showAddSelect(false)
+  nextTick(() => {
+    // 触发添加节点之后事件
+    processCtrl.triggerEvent(ON_AFTER_ADD_NODE, {
+      currentTmpNodeId: props.node.tmpNodeId,
+      addTmpNodeId: addNode.tmpNodeId
+    })
+  })
+
 }
 </script>
 
