@@ -6,6 +6,7 @@
 
 <script setup name="ep-svg-icon">
 import { computed } from 'vue'
+import { getIconPrefix } from './index.js'
 
 const props = defineProps({
   iconClass: {
@@ -22,7 +23,7 @@ const props = defineProps({
   },
 });
 
-const iconName = computed(() => `#${props.iconClass}`)
+const iconName = computed(() => getIconPrefix() + `${props.iconClass}`)
 const svgClass = computed(() => {
   if (props.className) {
     return `svg-icon ${props.className}`

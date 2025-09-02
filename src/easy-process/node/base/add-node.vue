@@ -1,7 +1,7 @@
 <template>
   <div class="ep-node-add">
     <div ref="nodeAddBtn" class="ep-node-add-btn" v-if="isShowAdd" v-on:mouseenter="showAddSelect(true)" v-on:mouseleave="showAddSelect(false)">
-      <ep-svg-icon icon-class="icon-ep-plus" class="ep-node-add-btn-icon" color="#FFFFFF"/>
+      <ep-svg-icon icon-class="ep-plus" class="ep-node-add-btn-icon" color="#FFFFFF"/>
       <div ref="nodeAddSelect" :class="['ep-node-add-select-box', nodeAddSelectPosition == 1 ? 'ep-node-add-left' : 'ep-node-add-right']" v-if="isShowAddSelect">
         <div class="ep-node-add-select-item" v-for="item in nodeSelect" v-on:click="addNode(item.type)">
           <ep-svg-icon :icon-class="item.icon.name" class="ep-node-add-select-item-icon" :color="item.selected ? '#FFFFFF' : item.icon.color"/>
@@ -92,7 +92,7 @@ const addNode = (nodeType) => {
     currentTmpNodeId: props.node.tmpNodeId,
     addNodeType: nodeType
   })
-  if(isAllowAdd !== undefined && !isAllowAdd) {
+  if(!processCtrl.eventReturnIsTrue(isAllowAdd)) {
     return
   }
   let addNode = createNode(nodeType)

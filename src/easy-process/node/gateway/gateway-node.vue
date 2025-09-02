@@ -5,7 +5,7 @@
       <ep-svg-icon :icon-class="gatewayTypeConfig.icon" class="icon" v-if="gatewayTypeConfig"/>
       <div class="select-type-box">
         <div class="type-item"  @click="addBranch">
-          <ep-svg-icon icon-class="icon-ep-gateway" class="type-item-icon"/>
+          <ep-svg-icon icon-class="ep-gateway" class="type-item-icon"/>
           <div class="type-item-title">添加分支</div>
         </div>
         <div class="type-item" v-for="item in GATEWAY_TYPE_LIST" @click="selectGatewayType(item.type)">

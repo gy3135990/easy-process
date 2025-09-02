@@ -34,7 +34,7 @@ app.use(ProcessDesigner, {
             "bgColor": "#8225e4", // 节点标题背景颜色
             "hasDrawer": true, // 节点是否可以进行配置
             "icon": { // 图标
-                "name": "icon-ep-notify", // 图标名
+                "name": "ep-terminate", // 图标名
                 "color": "#8225e4" // 颜色
             },
             "config": {
@@ -51,5 +51,8 @@ app.use(ProcessDesigner, {
             return window.zIndex++
         }
     },
+    iconConfig: {
+        prefix: '#icon-'
+    }
 })
 app.mount('#app')

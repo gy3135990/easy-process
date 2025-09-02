@@ -3,8 +3,8 @@ import path from 'path'
 
 export default function createSvgIcon(isBuild) {
     return createSvgIconsPlugin({
-		iconDirs: [path.resolve(process.cwd(), 'src/easy-process/icons')],
-        symbolId: 'icon-ep-[dir]-[name]',
+		iconDirs: [path.resolve(process.cwd(), 'src/easy-process/assets/icons')],
+        symbolId: 'icon-[dir]-[name]',
         customDomId: '__EASY_PROCESS_SVG_ICONS__',
         svgoOptions: isBuild
     })

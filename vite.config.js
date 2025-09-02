@@ -13,13 +13,13 @@ export default defineConfig(({ mode, command }) => {
     base: '/',
     plugins: createVitePlugins(env, command === 'build'),
     build: {
-      outDir: "dist-lib", // 打包输出目录
+      outDir: "dist", // 打包输出目录
       lib: {
         // 指定库入口文件
         entry: path.resolve(__dirname, "src/easy-process/index.js"),
         // 指定库的名称
         name: "easy-process",
-        fileName: "easy-process",
+        fileName: (format) => `easy-process.${format}.js` // 输出文件名格式化函数。例如，'my-vue-plugin.es.js' 和 'my-vue-plugin.umd.js'。
       },
       rollupOptions: {
         external: ["vue"], // 防止将vue打包进库

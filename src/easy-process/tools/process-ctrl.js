@@ -49,6 +49,13 @@ export const createProcessCtrl = () => {
         }
         return null
     }
+    // 触发事件结果是否为真
+    ctrl.eventReturnIsTrue = (result) => {
+        if (typeof result === 'boolean') {
+            return result
+        }
+        return true
+    }
 
     return ctrl
 }

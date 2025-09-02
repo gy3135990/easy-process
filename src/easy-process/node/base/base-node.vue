@@ -9,9 +9,9 @@
           <div class="ep-node-header-title-input" v-if="isShowEditNodeName">
             <input ref="nodeNameRef" v-model="props.node.nodeName" @blur="saveNodeName">
           </div>
-          <ep-svg-icon class="ep-node-header-title-edit" icon-class="icon-ep-edit" color="#FFFFFF" @click="showEditNodeName" v-if="!isShowEditNodeName"/>
+          <ep-svg-icon class="ep-node-header-title-edit" icon-class="ep-edit" color="#FFFFFF" @click="showEditNodeName" v-if="!isShowEditNodeName"/>
         </div>
-        <ep-svg-icon icon-class="icon-ep-close" class="ep-node-close" color="#FFFFFF" v-if="canRemoved" @click="removeNode"/>
+        <ep-svg-icon icon-class="ep-close" class="ep-node-close" color="#FFFFFF" v-if="canRemoved" @click="removeNode"/>
       </div>
       <!-- body -->
       <div class="ep-node-body" @click="showNodeDrawer">
@@ -19,16 +19,16 @@
       </div>
       <!-- 同级节点左移动 -->
       <div class="ep-node-move ep-node-move-left" v-if="isCondition()">
-        <ep-svg-icon icon-class="icon-ep-left" class="ep-node-move-icon" @click="moveNode(1)"/>
+        <ep-svg-icon icon-class="ep-left" class="ep-node-move-icon" @click="moveNode(1)"/>
       </div>
       <!-- 同级节点右移动 -->
       <div class="ep-node-move ep-node-move-right" v-if="isCondition()">
-        <ep-svg-icon icon-class="icon-ep-right" class="ep-node-move-icon" @click="moveNode(2)"/>
+        <ep-svg-icon icon-class="ep-right" class="ep-node-move-icon" @click="moveNode(2)"/>
       </div>
       <!-- 校验错误提示 -->
       <div class="ep-node-error-msg" v-if="isError">
         <div class="ep-node-error-msg-box">
-          <ep-svg-icon icon-class="icon-ep-tips" class="ep-node-error-icon" color="red"/>
+          <ep-svg-icon icon-class="ep-tips" class="ep-node-error-icon" color="red"/>
           <div class="ep-node-error-tips" v-if="errorMsg">{{errorMsg}}</div>
         </div>
       </div>
@@ -156,7 +156,7 @@ const removeNode = () => {
   let isAllowRemove = processCtrl.triggerEvent(ON_PRE_REMOVE_NODE, {
     tmpNodeId: props.node.tmpNodeId,
   })
-  if(isAllowRemove !== undefined && !isAllowRemove) {
+  if(!processCtrl.eventReturnIsTrue(isAllowRemove)) {
     return
   }
 
@@ -182,18 +182,22 @@ const moveNode = (direction) => {
   if (direction === 1) {
     if (index > 0) {
       exchangeIndex = index - 1
+      props.branchList[index] = props.branchList[exchangeIndex]
+      props.branchList[exchangeIndex] = c
     } else {
-      exchangeIndex = props.branchList.length - 1
+      props.branchList.splice(0, 1)
+      props.branchList.push(c)
     }
   } else {
     if (index < props.branchList.length - 1) {
       exchangeIndex = index + 1
+      props.branchList[index] = props.branchList[exchangeIndex]
+      props.branchList[exchangeIndex] = c
     } else {
-      exchangeIndex = 0
+      props.branchList.splice(props.branchList.length - 1, 1)
+      props.branchList.splice(0, 0, c)
     }
   }
-  props.branchList[index] = props.branchList[exchangeIndex]
-  props.branchList[exchangeIndex] = c
 }
 
 // 更新节点配置属性

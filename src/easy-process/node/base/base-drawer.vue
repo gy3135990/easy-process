@@ -1,6 +1,6 @@
 <template>
   <div v-if="node" class="ep-node-drawer-container">
-    <EpDrawer v-model="isShow" title="设置" icon="icon-ep-setting" width="600px">
+    <EpDrawer v-model="isShow" title="设置" width="600px">
       <template #default>
         <component :is="drawerComponents[node.nodeType]" :config="node.config"/>
       </template>
@@ -38,13 +38,6 @@ const processCtrl = inject(KEY_PROCESS_CTRL)
 
 // 显示节点配置组件
 const show = (data) => {
-  // 触发修改节点配置之前事件
-  let isAllowUpdate = processCtrl.triggerEvent(ON_PRE_UPDATE_NODE_CONFIG, {
-    tmpNodeId: data.tmpNodeId
-  })
-  if(isAllowUpdate !== undefined && !isAllowUpdate) {
-    return
-  }
   // 复制数据
   node.value = copy(data)
   config.value = nodeConfig[node.value.nodeType]
@@ -56,6 +49,13 @@ const emit = defineEmits(["updateConfig", "cancelUpdateConfig"]);
 
 // 更新节点配置数据
 const updateConfig = () => {
+  // 触发修改节点配置之前事件
+  let isAllowUpdate = processCtrl.triggerEvent(ON_PRE_UPDATE_NODE_CONFIG, {
+    tmpNodeId: node.value.tmpNodeId
+  })
+  if(!processCtrl.eventReturnIsTrue(isAllowUpdate)) {
+    return
+  }
   isShow.value = false
   emit("updateConfig", copy(node.value.config));
   nextTick(() => {

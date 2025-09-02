@@ -12,7 +12,7 @@ nodeConfig[GATEWAY] = {
     "canAdd": true, // 节点是否可以增加
     "hasDrawer": false, // 节点是否可以进行配置
     "icon": { // 图标
-        "name": "icon-ep-gateway", // 图标名
+        "name": "ep-gateway", // 图标名
         "color": "#3CB371" // 颜色
     },
     "branchList": []
@@ -29,7 +29,7 @@ nodeConfig[CONDITION] = {
     "canRemoved": true, // 节点是否能够移除
     "hasDrawer": true, // 节点是否可以进行配置
     "icon": { // 图标
-        "name": "icon-ep-condition", // 图标名
+        "name": "ep-condition", // 图标名
         "color": "#3CB371" // 颜色
     }
 }
@@ -45,7 +45,7 @@ nodeConfig[START] = {
     "canRemoved": false, // 节点是否能够移除
     "hasDrawer": true, // 节点是否可以进行配置
     "icon": { // 图标
-        "name": "icon-ep-start", // 图标名
+        "name": "ep-start", // 图标名
         "color": "#1e83e9" // 颜色
     }
 }
@@ -61,7 +61,7 @@ nodeConfig[TASK] = {
     "canRemoved": true, // 节点是否能够移除
     "hasDrawer": true, // 节点是否可以进行配置
     "icon": { // 图标
-        "name": "icon-ep-task", // 图标名
+        "name": "ep-task", // 图标名
         "color": "#FF8C00" // 颜色
     }
 }
@@ -77,7 +77,7 @@ nodeConfig[TERMINATE] = {
     "canRemoved": true, // 节点是否能够移除
     "hasDrawer": true, // 节点是否可以进行配置
     "icon": { // 图标
-        "name": "icon-ep-terminate", // 图标名
+        "name": "ep-terminate", // 图标名
         "color": "#F56C6C" // 颜色
     }
 }
@@ -110,7 +110,7 @@ const nodeDefaultValue = {
     "canRemoved": true, // 节点是否能够移除
     "hasDrawer": true, // 节点是否可以进行配置
     "icon": { // 图标
-        "name": "icon-ep-task", // 图标名
+        "name": "task", // 图标名
         "color": "#8225e4" // 颜色
     }
 }

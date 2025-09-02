@@ -9,9 +9,9 @@
     </div>
     <!-- 缩放 -->
     <div class="ep-zoom">
-      <ep-svg-icon icon-class="icon-ep-subtract" class="ep-zoom-icon" color="#ffffff" @click="setZoom(1)"/>
+      <ep-svg-icon icon-class="ep-subtract" class="ep-zoom-icon" color="#ffffff" @click="setZoom(1)"/>
       <span>{{ zoom }}%</span>
-      <ep-svg-icon icon-class="icon-ep-plus" class="ep-zoom-icon" color="#ffffff" @click="setZoom(2)"/>
+      <ep-svg-icon icon-class="ep-plus" class="ep-zoom-icon" color="#ffffff" @click="setZoom(2)"/>
     </div>
   </div>
 </template>

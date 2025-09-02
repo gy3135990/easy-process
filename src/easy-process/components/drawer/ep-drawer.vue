@@ -5,7 +5,7 @@
       <div class="drawer-header" v-if="!props.hideHeader">
         <ep-svg-icon :icon-class="props.icon" class="drawer-header-icon" color="#5a5e66" v-if="props.icon"/>
         <div class="drawer-header-title">{{props.title}}</div>
-        <ep-svg-icon icon-class="icon-ep-close" class="drawer-header-close" color="#5a5e66" @click="close" v-if="!props.hideCloseBtn"/>
+        <ep-svg-icon icon-class="ep-close" class="drawer-header-close" color="#5a5e66" @click="close" v-if="!props.hideCloseBtn"/>
       </div>
       <!-- body -->
       <div class="drawer-body">
@@ -36,7 +36,7 @@ const props = defineProps({
   },
   icon: {
     type: String,
-    default: null
+    default: 'ep-setting'
   },
   'hide-header': { // 控制是否显示 header 栏, 默认为 false
     type: Boolean,
