@@ -12,6 +12,7 @@ Easy Process 流程设计器，基于vue3 + vite4 实现，提供易用的流程
 
 
 ## 传送门
+**项目源码：**[easy-process](https://gitee.com/quxiu-code/easy-process)
 
 **Demo项目：**[easy-process-demo](https://gitee.com/quxiu-code/easy-process-demo)
 
@@ -28,6 +29,20 @@ Node >= 14
 
 - vue3
 - vite4
+
+
+
+## 截图
+
+![1.png](http://file.uncode.vip/easy-process/image/demo/1.png)
+
+![1.png](http://file.uncode.vip/easy-process/image/demo/2.png)
+
+![1.png](http://file.uncode.vip/easy-process/image/demo/3.png)
+
+![1.png](http://file.uncode.vip/easy-process/image/demo/4.png)
+
+![1.png](http://file.uncode.vip/easy-process/image/demo/5.png)
 
 
 
