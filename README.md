@@ -1,4 +1,4 @@
-# Easy Process V3.0.9
+# Easy Process V3
 Easy Process 流程设计器，基于vue3 + vite4 实现，提供易用的流程管理框架和组件，支持快速集成与定制，适用于多种应用场景。
 
 
