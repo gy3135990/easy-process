@@ -14,7 +14,7 @@ Easy Process 流程设计器，基于vue3 + vite4 实现，提供易用的流程
 ## 传送门
 **项目源码：**[easy-process](https://gitee.com/quxiu-code/easy-process)
 
-**Demo项目：**[easy-process-demo](https://gitee.com/quxiu-code/easy-process-demo)
+**示例源码：**[easy-process-demo](https://gitee.com/quxiu-code/easy-process-demo)
 
 **使用手册：** [http://docs.process.uncode.vip](http://docs.process.uncode.vip)
 
