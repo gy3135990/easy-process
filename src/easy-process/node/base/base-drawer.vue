@@ -51,7 +51,8 @@ const emit = defineEmits(["updateConfig", "cancelUpdateConfig"]);
 const updateConfig = () => {
   // 触发修改节点配置之前事件
   let isAllowUpdate = processCtrl.triggerEvent(ON_PRE_UPDATE_NODE_CONFIG, {
-    tmpNodeId: node.value.tmpNodeId
+    tmpNodeId: node.value.tmpNodeId,
+    config: node.value.config
   })
   if(!processCtrl.eventReturnIsTrue(isAllowUpdate)) {
     return
