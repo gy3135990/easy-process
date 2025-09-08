@@ -30,6 +30,30 @@ Node >= 14
 - vue3
 - vite4
 
+
+
+## 安装
+
+
+
+### 安装qx-easy-process
+
+```shell
+npm install qx-easy-process
+```
+
+
+
+### 安装vite-plugin-svg-icons
+
+```shell
+npm install vite-plugin-svg-icons -D
+```
+
+
+
+
+
 ## 快速开始
 
 ### 导入组件
