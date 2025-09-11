@@ -1,7 +1,7 @@
 {
   "name": "qx-easy-process",
   "private": false,
-  "version": "3.0.10",
+  "version": "3.1.0",
   "type": "module",
   "description": "easy-process流程设计器，基于vue3 + vite4实现，具备低代码、快速应用及扩展的特点。【工作流】【流程引擎】",
   "keywords": [

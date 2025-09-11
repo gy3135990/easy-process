@@ -2,7 +2,7 @@
   <div v-if="node" class="ep-node-drawer-container">
     <EpDrawer v-model="isShow" title="设置" width="600px">
       <template #default>
-        <component :is="drawerComponents[node.nodeType]" :config="node.config"/>
+        <component ref="drawerImplRef" :is="drawerComponents[node.nodeType]" :config="node.config"/>
       </template>
       <template #footer>
         <ep-button @click="cancelUpdateConfig">取消</ep-button>
@@ -49,7 +49,15 @@ const emit = defineEmits(["updateConfig", "cancelUpdateConfig"]);
 
 // 更新节点配置数据
 const updateConfig = () => {
-  // 触发修改节点配置之前事件
+  // 调用节点配置组件的修改节点配置之前处理方法
+  let preUpdateHandleFn = proxy.$refs.drawerImplRef.preUpdateHandle
+  if (preUpdateHandleFn && typeof preUpdateHandleFn === "function") {
+    if (!processCtrl.eventReturnIsTrue(preUpdateHandleFn())) {
+      return
+    }
+  }
+
+  // 触发全局修改节点配置之前事件
   let isAllowUpdate = processCtrl.triggerEvent(ON_PRE_UPDATE_NODE_CONFIG, {
     tmpNodeId: node.value.tmpNodeId,
     config: node.value.config
