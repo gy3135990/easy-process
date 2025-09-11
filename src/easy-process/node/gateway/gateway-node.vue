@@ -2,13 +2,13 @@
   <!-- 路由节点 -->
   <div class="ep-node-gateway">
     <div class="ep-node-gateway-body">
-      <ep-svg-icon :icon-class="gatewayTypeConfig.icon" class="icon" v-if="gatewayTypeConfig"/>
+      <ep-svg-icon :icon-class="currentGatewayType.icon" class="icon" v-if="currentGatewayType"/>
       <div class="select-type-box">
         <div class="type-item"  @click="addBranch">
           <ep-svg-icon icon-class="ep-gateway" class="type-item-icon"/>
           <div class="type-item-title">添加分支</div>
         </div>
-        <div class="type-item" v-for="item in GATEWAY_TYPE_LIST" @click="selectGatewayType(item.type)">
+        <div class="type-item" v-if="gatewayTypeList && gatewayTypeList.length>1" v-for="item in gatewayTypeList" @click="selectGatewayType(item.type)">
           <ep-svg-icon :icon-class="item.icon" class="type-item-icon"/>
           <div class="type-item-title">
             {{item.name}}
@@ -41,7 +41,7 @@ import NodeWrap from "../node-wrap.vue";
 import AddNode from "../base/add-node.vue";
 import {ref, onMounted, getCurrentInstance, computed} from "vue";
 import {CONDITION} from "../../config/default-node-type.js"
-import {GATEWAY_TYPE_LIST, GATEWAY_TYPE_MAP, EXCLUSIVE, PARALLEL} from "../../config/gateway-type.js"
+import {gatewayTypeConfig, defaultGatewayType} from "../../config/gateway-type.js"
 import {createNode} from "../../tools/node-tools.js";
 
 const props = defineProps({
@@ -53,13 +53,24 @@ const props = defineProps({
 
 const { proxy } = getCurrentInstance();
 
-const gatewayTypeConfig = computed(() => {
-  return GATEWAY_TYPE_MAP.get(props.node.gatewayType)
+const currentGatewayType = computed(() => {
+  return gatewayTypeConfig[props.node.gatewayType]
+})
+
+const gatewayTypeList = computed(() => {
+  let gatewayTypeList = []
+  Object.keys(gatewayTypeConfig).forEach(key => {
+    let item = gatewayTypeConfig[key]
+    if(item.enable) {
+      gatewayTypeList.push(item)
+    }
+  })
+  return gatewayTypeList
 })
 
 onMounted(async () => {
-  if (!props.node.gatewayType || !gatewayTypeConfig) {
-    props.node.gatewayType = EXCLUSIVE
+  if (!props.node.gatewayType || !currentGatewayType) {
+    props.node.gatewayType = defaultGatewayType
   }
 });
 
@@ -196,7 +207,8 @@ const addBranch = () => {
   .select-type-box {
     position: absolute;
     z-index: 10;
-    right: -260px;
+    right: -20px;
+    transform: translateX(100%);
     top: revert-layer;
     background-color: #FFFFFF;
     border-radius: 5px;
@@ -223,7 +235,7 @@ const addBranch = () => {
       width: 60px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      //justify-content: center;
       align-items: center;
       padding: 10px;
       border-radius: 5px;

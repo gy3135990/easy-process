@@ -76,7 +76,7 @@ const setZoom = (type) => {
     }
     zoom.value -= 10;
   } else {
-    if (zoom.value === 100) {
+    if (zoom.value === 150) {
       return;
     }
     zoom.value += 10;
@@ -193,6 +193,7 @@ defineExpose({
   width: max-content;
   height: 100%;
   margin: auto;
+  transform-origin: top left;
 }
 
 .ep-zoom {
@@ -204,7 +205,8 @@ defineExpose({
   width: 125px;
   right: 40px;
   top: 70px;
-  z-index: 10
+  z-index: 10;
+  user-select: none;
 }
 
 .ep-zoom-icon {

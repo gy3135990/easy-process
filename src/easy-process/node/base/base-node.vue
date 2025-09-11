@@ -236,6 +236,7 @@ const saveNodeName = () => {
   align-items: center;
   position: relative;
   margin: 0 100px;
+  user-select: none;
 }
 
 .ep-node-arrows {

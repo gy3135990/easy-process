@@ -156,12 +156,11 @@ const addNode = (nodeType) => {
       z-index: 10;
       top: 50%;
       transform: translateY(-50%);
-      width: 330px;
       background-color: #FFFFFF;
       border-radius: 5px;
       box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
 
       &:before{
         content: '';
@@ -175,7 +174,7 @@ const addNode = (nodeType) => {
 
       .ep-node-add-select-item {
         width: 80px;
-        height: 100%;
+        //height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -198,6 +197,7 @@ const addNode = (nodeType) => {
         }
         .ep-node-add-select-item-title {
           font-size: 14px;
+          text-align: center;
         }
       }
     }

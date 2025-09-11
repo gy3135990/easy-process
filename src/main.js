@@ -24,8 +24,13 @@ app.use(ProcessDesigner, {
             "nodeName": "审批人",
         },
         {
+            "nodeType": "gateway",
+            // "enable": false,
+        },
+        {
             "nodeType": "terminate",
             "hasDrawer": false, // 禁用节点配置功能
+            // "enable": false,
         },
         {
             "nodeType": "notify",
@@ -33,6 +38,7 @@ app.use(ProcessDesigner, {
             "color": "#FFFFFF", // 节点标题颜色
             "bgColor": "#8225e4", // 节点标题背景颜色
             "hasDrawer": true, // 节点是否可以进行配置
+            // "enable": false,
             "icon": { // 图标
                 "name": "ep-terminate", // 图标名
                 "color": "#8225e4" // 颜色
@@ -53,6 +59,20 @@ app.use(ProcessDesigner, {
     },
     iconConfig: {
         prefix: '#icon-'
-    }
+    },
+    gatewayTypeConfig: [
+        {
+            type: 'exclusive',
+            enable: true, // 是否启用
+            icon: 'ep-exclusive-gateway',
+        },
+        {
+            type: 'parallel',
+            name: '并行网关',
+            enable: true, // 是否启用
+            isDefault: true,
+            icon: 'ep-parallel-gateway',
+        }
+    ]
 })
 app.mount('#app')
